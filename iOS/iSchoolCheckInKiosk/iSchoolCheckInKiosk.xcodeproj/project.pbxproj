@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		883DBB4E26F53192007DD2D5 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 883DBB4D26F53192007DD2D5 /* WebView.swift */; };
+		883DBB5026F5529B007DD2D5 /* IDCardGraphic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 883DBB4F26F5529B007DD2D5 /* IDCardGraphic.swift */; };
+		883DBB5226F55473007DD2D5 /* WalkInCheckScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 883DBB5126F55473007DD2D5 /* WalkInCheckScreen.swift */; };
+		883DBB5526F555A4007DD2D5 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 883DBB5426F555A4007DD2D5 /* HeaderView.swift */; };
+		883DBB5726F556E9007DD2D5 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 883DBB5626F556E9007DD2D5 /* SessionManager.swift */; };
+		883DBB5C26F55BA5007DD2D5 /* CheckInPhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 883DBB5B26F55BA5007DD2D5 /* CheckInPhase.swift */; };
 		8875187526E58491002046E2 /* CheckInSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8875187426E58491002046E2 /* CheckInSession.swift */; };
 		889559CF26E27C14005490A6 /* InitialScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889559CE26E27C14005490A6 /* InitialScreen.swift */; };
 		889559D126E27C25005490A6 /* ReasonsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889559D026E27C25005490A6 /* ReasonsScreen.swift */; };
@@ -18,12 +24,18 @@
 		889559E026E2A7D4005490A6 /* ReasonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889559DF26E2A7D4005490A6 /* ReasonView.swift */; };
 		88ACC22426E171DC009BB164 /* Advisor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88ACC22326E171DC009BB164 /* Advisor.swift */; };
 		88C2BF1526E0047400E2F0C2 /* iSchoolCheckInKioskApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C2BF1426E0047400E2F0C2 /* iSchoolCheckInKioskApp.swift */; };
-		88C2BF1726E0047400E2F0C2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C2BF1626E0047400E2F0C2 /* ContentView.swift */; };
+		88C2BF1726E0047400E2F0C2 /* SessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C2BF1626E0047400E2F0C2 /* SessionView.swift */; };
 		88C2BF1926E0047600E2F0C2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 88C2BF1826E0047600E2F0C2 /* Assets.xcassets */; };
 		88C2BF1C26E0047600E2F0C2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 88C2BF1B26E0047600E2F0C2 /* Preview Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		883DBB4D26F53192007DD2D5 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
+		883DBB4F26F5529B007DD2D5 /* IDCardGraphic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDCardGraphic.swift; sourceTree = "<group>"; };
+		883DBB5126F55473007DD2D5 /* WalkInCheckScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkInCheckScreen.swift; sourceTree = "<group>"; };
+		883DBB5426F555A4007DD2D5 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
+		883DBB5626F556E9007DD2D5 /* SessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
+		883DBB5B26F55BA5007DD2D5 /* CheckInPhase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInPhase.swift; sourceTree = "<group>"; };
 		8875187426E58491002046E2 /* CheckInSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInSession.swift; sourceTree = "<group>"; };
 		889559CE26E27C14005490A6 /* InitialScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialScreen.swift; sourceTree = "<group>"; };
 		889559D026E27C25005490A6 /* ReasonsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReasonsScreen.swift; sourceTree = "<group>"; };
@@ -36,7 +48,7 @@
 		88ACC22326E171DC009BB164 /* Advisor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Advisor.swift; sourceTree = "<group>"; };
 		88C2BF1126E0047400E2F0C2 /* iSchoolCheckInKiosk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iSchoolCheckInKiosk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		88C2BF1426E0047400E2F0C2 /* iSchoolCheckInKioskApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iSchoolCheckInKioskApp.swift; sourceTree = "<group>"; };
-		88C2BF1626E0047400E2F0C2 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		88C2BF1626E0047400E2F0C2 /* SessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionView.swift; sourceTree = "<group>"; };
 		88C2BF1826E0047600E2F0C2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		88C2BF1B26E0047600E2F0C2 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		88C2BF2226E0055A00E2F0C2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -53,6 +65,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		883DBB5326F55564007DD2D5 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				889559CD26E27BFF005490A6 /* Screens */,
+				889559DA26E27CF6005490A6 /* Components */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		883DBB5A26F55712007DD2D5 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				8875187426E58491002046E2 /* CheckInSession.swift */,
+				883DBB5626F556E9007DD2D5 /* SessionManager.swift */,
+				883DBB5B26F55BA5007DD2D5 /* CheckInPhase.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		889559CD26E27BFF005490A6 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
@@ -62,6 +93,7 @@
 				889559D426E27C57005490A6 /* MeetingHostScreen.swift */,
 				889559D626E27C63005490A6 /* DeniedScreen.swift */,
 				889559D826E27C75005490A6 /* ConfirmationScreen.swift */,
+				883DBB5126F55473007DD2D5 /* WalkInCheckScreen.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -71,6 +103,9 @@
 			children = (
 				88ACC22326E171DC009BB164 /* Advisor.swift */,
 				889559DF26E2A7D4005490A6 /* ReasonView.swift */,
+				883DBB4D26F53192007DD2D5 /* WebView.swift */,
+				883DBB4F26F5529B007DD2D5 /* IDCardGraphic.swift */,
+				883DBB5426F555A4007DD2D5 /* HeaderView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -95,10 +130,9 @@
 			isa = PBXGroup;
 			children = (
 				88C2BF1426E0047400E2F0C2 /* iSchoolCheckInKioskApp.swift */,
-				88C2BF1626E0047400E2F0C2 /* ContentView.swift */,
-				8875187426E58491002046E2 /* CheckInSession.swift */,
-				889559CD26E27BFF005490A6 /* Screens */,
-				889559DA26E27CF6005490A6 /* Components */,
+				88C2BF1626E0047400E2F0C2 /* SessionView.swift */,
+				883DBB5326F55564007DD2D5 /* Views */,
+				883DBB5A26F55712007DD2D5 /* Model */,
 				889559DB26E27DFA005490A6 /* Constants.swift */,
 				88C2BF1826E0047600E2F0C2 /* Assets.xcassets */,
 				88C2BF2226E0055A00E2F0C2 /* Info.plist */,
@@ -187,16 +221,22 @@
 			files = (
 				8875187526E58491002046E2 /* CheckInSession.swift in Sources */,
 				889559D126E27C25005490A6 /* ReasonsScreen.swift in Sources */,
+				883DBB4E26F53192007DD2D5 /* WebView.swift in Sources */,
 				889559D326E27C3C005490A6 /* IdentificationScreen.swift in Sources */,
 				889559CF26E27C14005490A6 /* InitialScreen.swift in Sources */,
 				889559D526E27C57005490A6 /* MeetingHostScreen.swift in Sources */,
-				88C2BF1726E0047400E2F0C2 /* ContentView.swift in Sources */,
+				88C2BF1726E0047400E2F0C2 /* SessionView.swift in Sources */,
 				889559DC26E27DFA005490A6 /* Constants.swift in Sources */,
 				889559D926E27C75005490A6 /* ConfirmationScreen.swift in Sources */,
 				88ACC22426E171DC009BB164 /* Advisor.swift in Sources */,
+				883DBB5226F55473007DD2D5 /* WalkInCheckScreen.swift in Sources */,
+				883DBB5C26F55BA5007DD2D5 /* CheckInPhase.swift in Sources */,
 				889559D726E27C63005490A6 /* DeniedScreen.swift in Sources */,
+				883DBB5026F5529B007DD2D5 /* IDCardGraphic.swift in Sources */,
 				889559E026E2A7D4005490A6 /* ReasonView.swift in Sources */,
 				88C2BF1526E0047400E2F0C2 /* iSchoolCheckInKioskApp.swift in Sources */,
+				883DBB5526F555A4007DD2D5 /* HeaderView.swift in Sources */,
+				883DBB5726F556E9007DD2D5 /* SessionManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

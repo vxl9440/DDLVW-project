@@ -11,7 +11,7 @@ import SwiftUI
 struct iSchoolCheckInKioskApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            SessionView()
         }
     }
 }

@@ -1,13 +1,13 @@
 //
-//  InitialScreen.swift
-//  InitialScreen
+//  WalkInCheckScreen.swift
+//  iSchoolCheckInKiosk
 //
-//  Created by Lowell Pence on 9/3/21.
+//  Created by Lowell Pence on 9/17/21.
 //
 
 import SwiftUI
 
-struct InitialScreen: View {
+struct WalkInCheckScreen: View {
 	
 	@EnvironmentObject var session: SessionManager
 	
@@ -33,7 +33,6 @@ struct InitialScreen: View {
     }
 }
 
-
 fileprivate struct MainButtonContent: View {
 	
 	var textColor: Color = .white
@@ -47,11 +46,8 @@ fileprivate struct MainButtonContent: View {
 	}
 }
 
-
-struct InitialScreen_Previews: PreviewProvider {
+struct WalkInCheckScreen_Previews: PreviewProvider {
     static var previews: some View {
-        InitialScreen()
-			.previewInterfaceOrientation(.landscapeLeft)
-			.environmentObject(CheckInSession())
+        WalkInCheckScreen()
     }
 }

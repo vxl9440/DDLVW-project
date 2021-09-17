@@ -8,7 +8,7 @@
 import SwiftUI
 
 
-struct ContentView: View {
+struct SessionView: View {
     
 	// TODO: Initialize a session for each iteration of a session
 	// when form resets, nullify session and wait for action before creating the next one
@@ -16,23 +16,15 @@ struct ContentView: View {
 	
 	var body: some View {
 		VStack {
-			HStack {
-				Image("rit_logo")
-					.resizable()
-					.aspectRatio(contentMode: .fit)
-					.frame(height: 100, alignment: .topLeading)
-					.padding(.horizontal, 40)
-				
-				Spacer()
-			}
+			HeaderView()
 			
 			Spacer()
 			
 			switch sessionManager.phase {
-				case .initial:
-					InitialScreen()
 				case .identification:
-					IdentificationScreen()
+					InitialScreen()
+				case .appointmentType:
+					WalkInCheckScreen()
 				case .reasons:
 					ReasonsScreen()
 				case .denied:
@@ -52,7 +44,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        SessionView()
 			.previewInterfaceOrientation(.landscapeLeft)
     }
 }
