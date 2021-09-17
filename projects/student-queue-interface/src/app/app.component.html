@@ -1,0 +1,21 @@
+<div class="grid-container">
+  <div class="top-bar">iSchool Check In System: Student Queue</div>
+  <div class="advisor-area">
+    <div class="advisor-box" *ngFor="let advisor of advisors">
+      <div class="advisor-info">
+        <img class="advisor-img" src="{{advisor.imgPath}}" alt="{{advisor.imgPath}}">
+        <h1>{{advisor.firstName}} {{advisor.lastName}}</h1>
+      </div>
+      <div class="student-box" *ngFor="let student of advisor.studentQueue">
+        <img class="student-img" src="{{student.imgPath}}" alt="{{student.imgPath}}">
+        <h3>{{student.firstName}} {{student.lastName}}</h3>
+      </div>
+      <!--div *ngIf="operation.maxOperations > 0" class="max-operations-display">{{operation.currentOperations}}/{{operation.maxOperations}}</div>
+      <div *ngIf="operation.maxOperations == -1" class="max-operations-display">{{operation.currentOperations}}/&infin;</div-->
+    </div>
+  </div>
+  <div class="banner-area">
+    <div *ngIf=""><img src=""></div>
+    <div *ngIf=""><p></p></div>
+  </div>
+</div>

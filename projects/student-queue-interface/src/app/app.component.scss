@@ -1,0 +1,70 @@
+/* global variables */
+/*:root {
+    $rit-orange: rgb(230, 113, 45);
+}*/
+$rit-orange: rgb(230, 113, 45);
+
+.grid-container {
+    display: grid;
+    grid-template-rows: 10% auto 20px auto;
+    width: calc(100% - 40px);
+    height: calc(100% - 40px);
+    padding: 20px;
+}
+
+.top-bar {
+    grid-row: 1 / 2;
+}
+
+.advisor-area {
+    display: flex;
+    grid-row: 2 / 3;
+}
+
+.advisor-box {
+    padding: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 10px;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+.advisor-info {
+    display: flex;
+    align-items: center;
+}
+
+.student-box {
+    display: flex;
+    align-items: center;
+    margin: 5px;
+    padding: 5px;
+    border: 1px solid black;
+    border-radius: 50px;
+}
+
+.banner-area {
+    grid-row: 3 / 4;
+    background-color: rgb(200, 200, 200);
+}
+
+.advisor-img {
+    width: 100px;
+    height: 100px;
+    margin-right: 5px;
+    background-color: $rit-orange;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid $rit-orange;
+}
+
+.student-img {
+    width: 50px;
+    height: 50px;
+    margin-right: 5px;
+    background-color: $rit-orange;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid $rit-orange;
+}
