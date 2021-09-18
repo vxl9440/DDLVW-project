@@ -26,13 +26,13 @@ CREATE TABLE `advisor` (
   `a_middle_name` varchar(24) DEFAULT NULL,
   `a_last_name` varchar(24) NOT NULL,
   `username` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `portriat_url` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'http://www.example.com',
+  `portrait_url` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'http://www.example.com',
   PRIMARY KEY (`advisor_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 /*Data for the table `advisor` */
 
-insert  into `advisor`(`advisor_id`,`a_first_name`,`a_middle_name`,`a_last_name`,`username`,`portriat_url`) values 
+insert  into `advisor`(`advisor_id`,`a_first_name`,`a_middle_name`,`a_last_name`,`username`,`portrait_url`) values 
 (1,'Melody',NULL,'Jackson','zxc1234','http://www.example.com'),
 (2,'Betty',NULL,'John','qwe1234','http://www.example.com'),
 (3,'Betty',NULL,'Jackson','jkl1234','http://www.example.com'),
@@ -55,8 +55,7 @@ insert  into `reason`(`reason_id`,`reason_name`,`needsAppt`) values
 (1,'reason a','N'),
 (2,'reason b','N'),
 (3,'reason c','N'),
-(4,'reason d','N'),
-(5,'Reason Name Updated','N');
+(4,'reason d','N');
 
 /*Table structure for table `registration` */
 
