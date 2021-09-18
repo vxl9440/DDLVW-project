@@ -1,13 +1,21 @@
 {
-  "name": "500",
+  "name": "ddlvw-project",
   "version": "1.0.0",
-  "description": "senior project backend",
+  "description": "iSchool appointment management system",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "DDLVW",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vxl9440/DDLVW-project.git"
+  },
+  "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vxl9440/DDLVW-project/issues"
+  },
+  "homepage": "https://github.com/vxl9440/DDLVW-project#readme",
   "dependencies": {
     "@azure/msal-node": "^1.3.0",
     "@microsoft/microsoft-graph-client": "^3.0.0",
