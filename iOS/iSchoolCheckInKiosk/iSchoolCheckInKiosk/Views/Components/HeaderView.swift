@@ -13,7 +13,7 @@ struct HeaderView: View {
 			Image("rit_logo")
 				.resizable()
 				.aspectRatio(contentMode: .fit)
-				.frame(height: 100, alignment: .topLeading)
+				.frame(height: 70, alignment: .topLeading)
 				.padding(.horizontal, 40)
 			
 			Spacer()

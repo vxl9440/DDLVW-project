@@ -38,20 +38,21 @@ struct ReasonsScreen: View {
     var body: some View {
 		VStack {
 			Text("Please select all reasons for your visit today.")
-				.font(.system(size: 60))
+				.font(.system(size: 40))
 			
 			ScrollView {
 				LazyVGrid(columns: columns) {
 					ForEach(reasons) { reason in
 						ReasonView(reason: reason)
-							.frame(height: 100)
+							.frame(height: 80)
 							.padding()
 					}
 				}
 			}
 			.padding(.horizontal)
+			.overlay(NavControls(), alignment: .bottom)
 			
-			NavControls()
+			
 		}
     }
 }
@@ -61,6 +62,9 @@ struct NavControls: View {
 	
 	@EnvironmentObject var session: SessionManager
 	
+	let width  = CGFloat(180)
+	let height = CGFloat(100)
+	
 	var body: some View {
 		HStack {
 			Button { session.goBack() } label: {
@@ -68,8 +72,7 @@ struct NavControls: View {
 					Image(systemName: SFSymbols.arrowBackward)
 					Text("Back")
 				}
-				.frame(width: 200, height: 100)
-				.font(.largeTitle)
+				.frame(width: width, height: height)
 			}
 			
 			Spacer()
@@ -79,14 +82,13 @@ struct NavControls: View {
 					Text("Next")
 					Image(systemName: SFSymbols.arrowForward)
 				}
-				.frame(width: 200, height: 100)
-				.font(.largeTitle)
+				.frame(width: width, height: height)
 			}
-			
 		}
+		.font(.title)
 		.buttonStyle(RITButtonStyle())
-		.padding(.horizontal, 100)
-		.padding(.vertical, 20)
+		.padding(.horizontal, 60)
+		.padding(.vertical, 40)
 	}
 }
 

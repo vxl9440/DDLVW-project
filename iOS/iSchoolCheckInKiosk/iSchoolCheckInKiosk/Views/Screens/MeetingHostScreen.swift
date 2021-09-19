@@ -21,6 +21,7 @@ struct MeetingHostScreen: View {
 		Advisor(name: "Stephanie LongLastName", picture: URL(string: "https://claws.rit.edu/photos/getphotoid.php?Client=Marketing&UN=sjzics&HASH=fde0c30cbca73f29895bb66f390d76190ae537af&T=1630690226"), isAvailable: true),
 		Advisor(name: "First Last Really Long", picture: URL(string: "https://claws.rit.edu/photos/getphotoid.php?Client=Marketing&UN=sjzics&HASH=fde0c30cbca73f29895bb66f390d76190ae537af&T=1630690226"), isAvailable: true)]
 	
+	//var advisors: [Advisor] = []
 	
     var body: some View {
 		VStack {
@@ -40,6 +41,10 @@ struct MeetingHostScreen: View {
 						.buttonStyle(.plain)
 					}
 				}
+//				.task {
+//					let n = NetworkManager()
+//					advisors = n.fetchAvailableAdivsors()
+//				}
 			}
 		}
     }

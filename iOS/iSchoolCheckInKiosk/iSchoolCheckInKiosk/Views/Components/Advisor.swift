@@ -9,8 +9,8 @@ import Foundation
 import SwiftUI
 
 
-struct Advisor: Identifiable {
-	let id = UUID()
+struct Advisor: Identifiable, Decodable {
+	var id = UUID()
 	let name: String
 	let picture: URL?
 	var isAvailable: Bool

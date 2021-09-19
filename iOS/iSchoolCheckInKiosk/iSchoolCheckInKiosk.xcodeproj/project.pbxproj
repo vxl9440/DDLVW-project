@@ -23,6 +23,7 @@
 		889559DC26E27DFA005490A6 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889559DB26E27DFA005490A6 /* Constants.swift */; };
 		889559E026E2A7D4005490A6 /* ReasonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889559DF26E2A7D4005490A6 /* ReasonView.swift */; };
 		88ACC22426E171DC009BB164 /* Advisor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88ACC22326E171DC009BB164 /* Advisor.swift */; };
+		88B9BAED26F7E308001D3FF8 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88B9BAEC26F7E308001D3FF8 /* NetworkManager.swift */; };
 		88C2BF1526E0047400E2F0C2 /* iSchoolCheckInKioskApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C2BF1426E0047400E2F0C2 /* iSchoolCheckInKioskApp.swift */; };
 		88C2BF1726E0047400E2F0C2 /* SessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C2BF1626E0047400E2F0C2 /* SessionView.swift */; };
 		88C2BF1926E0047600E2F0C2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 88C2BF1826E0047600E2F0C2 /* Assets.xcassets */; };
@@ -46,6 +47,7 @@
 		889559DB26E27DFA005490A6 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		889559DF26E2A7D4005490A6 /* ReasonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReasonView.swift; sourceTree = "<group>"; };
 		88ACC22326E171DC009BB164 /* Advisor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Advisor.swift; sourceTree = "<group>"; };
+		88B9BAEC26F7E308001D3FF8 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		88C2BF1126E0047400E2F0C2 /* iSchoolCheckInKiosk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iSchoolCheckInKiosk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		88C2BF1426E0047400E2F0C2 /* iSchoolCheckInKioskApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iSchoolCheckInKioskApp.swift; sourceTree = "<group>"; };
 		88C2BF1626E0047400E2F0C2 /* SessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionView.swift; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 			children = (
 				88C2BF1426E0047400E2F0C2 /* iSchoolCheckInKioskApp.swift */,
 				88C2BF1626E0047400E2F0C2 /* SessionView.swift */,
+				88B9BAEC26F7E308001D3FF8 /* NetworkManager.swift */,
 				883DBB5326F55564007DD2D5 /* Views */,
 				883DBB5A26F55712007DD2D5 /* Model */,
 				889559DB26E27DFA005490A6 /* Constants.swift */,
@@ -219,6 +222,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				88B9BAED26F7E308001D3FF8 /* NetworkManager.swift in Sources */,
 				8875187526E58491002046E2 /* CheckInSession.swift in Sources */,
 				889559D126E27C25005490A6 /* ReasonsScreen.swift in Sources */,
 				883DBB4E26F53192007DD2D5 /* WebView.swift in Sources */,
