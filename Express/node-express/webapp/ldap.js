@@ -107,7 +107,8 @@ one parameter for the response object.
 
     let client = createConnection();
     search(client, studentID, callback);
-    unbind(client);
+
+    if (client.connected) { unbind(client); }
 }
 
 module.exports = { getStudentData };
