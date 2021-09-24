@@ -29,3 +29,14 @@ extension Color {
 	static let ritRed    = Color("ritRed")
 	static let ritGreen  = Color("ritGreen")
 }
+
+
+enum ScreenSize {
+	static let width                 = UIScreen.main.bounds.size.width
+	static let height                = UIScreen.main.bounds.size.height
+	static let maxLength             = max(ScreenSize.width, ScreenSize.height)
+	static let minLength             = min(ScreenSize.width, ScreenSize.height)
+}
+
+
+

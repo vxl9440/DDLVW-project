@@ -27,6 +27,8 @@ struct WalkInCheckScreen: View {
 					MainButtonContent(textColor: .white, title: "NO (Walk-In)")
 				}
 				.padding()
+			
+				Text("Note: Walk-in meetings are limited to 15 minutes.")
 				
 		}
 		.buttonStyle(RITButtonStyle())
@@ -49,5 +51,6 @@ fileprivate struct MainButtonContent: View {
 struct WalkInCheckScreen_Previews: PreviewProvider {
     static var previews: some View {
         WalkInCheckScreen()
+			.previewInterfaceOrientation(.landscapeLeft)
     }
 }

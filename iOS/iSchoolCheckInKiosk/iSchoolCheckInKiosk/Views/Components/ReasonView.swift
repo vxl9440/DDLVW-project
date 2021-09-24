@@ -16,8 +16,8 @@ struct ReasonView: View {
 	
 	
 	var body: some View {
-		Button(reason.name) {
-			reason.selected.toggle()
+		Button { reason.selected.toggle() } label: {
+			ButtonText(reason.name)
 		}
 		.buttonStyle(ReasonButtonStyle(color: color, textColor: textColor))
 		.controlSize(.large)
@@ -43,7 +43,6 @@ struct ReasonButtonStyle: ButtonStyle {
 				.lineLimit(3)
 				.multilineTextAlignment(.center)
 				.minimumScaleFactor(0.5)
-				.font(.system(size: 20, weight: .semibold))
 				.foregroundColor(textColor)
 		}
 		.scaleEffect(configuration.isPressed ? 0.9 : 1)
@@ -53,6 +52,6 @@ struct ReasonButtonStyle: ButtonStyle {
 
 struct ReasonView_Previews: PreviewProvider {
     static var previews: some View {
-		ReasonView()
+		ReasonView().frame(width: 180, height: 100)
     }
 }

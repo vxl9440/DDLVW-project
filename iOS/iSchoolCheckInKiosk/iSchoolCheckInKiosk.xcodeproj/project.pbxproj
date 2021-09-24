@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		882DA9E326FCF0DD00EAEA8B /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882DA9E226FCF0DD00EAEA8B /* Card.swift */; };
+		882DA9E526FCF98D00EAEA8B /* TextStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882DA9E426FCF98D00EAEA8B /* TextStyles.swift */; };
+		882DA9E726FD351600EAEA8B /* Strings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 882DA9E626FD351600EAEA8B /* Strings.plist */; };
+		882DA9EB26FD364200EAEA8B /* BusinessRules.plist in Resources */ = {isa = PBXBuildFile; fileRef = 882DA9EA26FD364200EAEA8B /* BusinessRules.plist */; };
+		882DA9ED26FD3CE900EAEA8B /* BusinessRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882DA9EC26FD3CE900EAEA8B /* BusinessRules.swift */; };
 		883DBB4E26F53192007DD2D5 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 883DBB4D26F53192007DD2D5 /* WebView.swift */; };
 		883DBB5026F5529B007DD2D5 /* IDCardGraphic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 883DBB4F26F5529B007DD2D5 /* IDCardGraphic.swift */; };
 		883DBB5226F55473007DD2D5 /* WalkInCheckScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 883DBB5126F55473007DD2D5 /* WalkInCheckScreen.swift */; };
@@ -31,6 +36,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		882DA9E226FCF0DD00EAEA8B /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
+		882DA9E426FCF98D00EAEA8B /* TextStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStyles.swift; sourceTree = "<group>"; };
+		882DA9E626FD351600EAEA8B /* Strings.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Strings.plist; sourceTree = "<group>"; };
+		882DA9EA26FD364200EAEA8B /* BusinessRules.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BusinessRules.plist; sourceTree = "<group>"; };
+		882DA9EC26FD3CE900EAEA8B /* BusinessRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessRules.swift; sourceTree = "<group>"; };
 		883DBB4D26F53192007DD2D5 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		883DBB4F26F5529B007DD2D5 /* IDCardGraphic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDCardGraphic.swift; sourceTree = "<group>"; };
 		883DBB5126F55473007DD2D5 /* WalkInCheckScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkInCheckScreen.swift; sourceTree = "<group>"; };
@@ -67,11 +77,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		882DA9E126FCF0B400EAEA8B /* Styles */ = {
+			isa = PBXGroup;
+			children = (
+				882DA9E226FCF0DD00EAEA8B /* Card.swift */,
+				882DA9E426FCF98D00EAEA8B /* TextStyles.swift */,
+			);
+			path = Styles;
+			sourceTree = "<group>";
+		};
 		883DBB5326F55564007DD2D5 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				889559CD26E27BFF005490A6 /* Screens */,
 				889559DA26E27CF6005490A6 /* Components */,
+				882DA9E126FCF0B400EAEA8B /* Styles */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -79,9 +99,11 @@
 		883DBB5A26F55712007DD2D5 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				88ACC22326E171DC009BB164 /* Advisor.swift */,
 				8875187426E58491002046E2 /* CheckInSession.swift */,
 				883DBB5626F556E9007DD2D5 /* SessionManager.swift */,
 				883DBB5B26F55BA5007DD2D5 /* CheckInPhase.swift */,
+				882DA9EC26FD3CE900EAEA8B /* BusinessRules.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -103,7 +125,6 @@
 		889559DA26E27CF6005490A6 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				88ACC22326E171DC009BB164 /* Advisor.swift */,
 				889559DF26E2A7D4005490A6 /* ReasonView.swift */,
 				883DBB4D26F53192007DD2D5 /* WebView.swift */,
 				883DBB4F26F5529B007DD2D5 /* IDCardGraphic.swift */,
@@ -139,6 +160,8 @@
 				889559DB26E27DFA005490A6 /* Constants.swift */,
 				88C2BF1826E0047600E2F0C2 /* Assets.xcassets */,
 				88C2BF2226E0055A00E2F0C2 /* Info.plist */,
+				882DA9E626FD351600EAEA8B /* Strings.plist */,
+				882DA9EA26FD364200EAEA8B /* BusinessRules.plist */,
 				88C2BF1A26E0047600E2F0C2 /* Preview Content */,
 			);
 			path = iSchoolCheckInKiosk;
@@ -210,8 +233,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				882DA9EB26FD364200EAEA8B /* BusinessRules.plist in Resources */,
 				88C2BF1C26E0047600E2F0C2 /* Preview Assets.xcassets in Resources */,
 				88C2BF1926E0047600E2F0C2 /* Assets.xcassets in Resources */,
+				882DA9E726FD351600EAEA8B /* Strings.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -229,14 +254,17 @@
 				889559D326E27C3C005490A6 /* IdentificationScreen.swift in Sources */,
 				889559CF26E27C14005490A6 /* InitialScreen.swift in Sources */,
 				889559D526E27C57005490A6 /* MeetingHostScreen.swift in Sources */,
+				882DA9E326FCF0DD00EAEA8B /* Card.swift in Sources */,
 				88C2BF1726E0047400E2F0C2 /* SessionView.swift in Sources */,
 				889559DC26E27DFA005490A6 /* Constants.swift in Sources */,
 				889559D926E27C75005490A6 /* ConfirmationScreen.swift in Sources */,
+				882DA9ED26FD3CE900EAEA8B /* BusinessRules.swift in Sources */,
 				88ACC22426E171DC009BB164 /* Advisor.swift in Sources */,
 				883DBB5226F55473007DD2D5 /* WalkInCheckScreen.swift in Sources */,
 				883DBB5C26F55BA5007DD2D5 /* CheckInPhase.swift in Sources */,
 				889559D726E27C63005490A6 /* DeniedScreen.swift in Sources */,
 				883DBB5026F5529B007DD2D5 /* IDCardGraphic.swift in Sources */,
+				882DA9E526FCF98D00EAEA8B /* TextStyles.swift in Sources */,
 				889559E026E2A7D4005490A6 /* ReasonView.swift in Sources */,
 				88C2BF1526E0047400E2F0C2 /* iSchoolCheckInKioskApp.swift in Sources */,
 				883DBB5526F555A4007DD2D5 /* HeaderView.swift in Sources */,

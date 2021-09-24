@@ -25,11 +25,6 @@ struct ReasonsScreen: View {
 		Reason(name: "Class Drop", needsAppointment: true),
 		Reason(name: "Class Drop", needsAppointment: true),
 		Reason(name: "Class Drop", needsAppointment: true),
-		Reason(name: "Class Drop", needsAppointment: true),
-		Reason(name: "Class Drop", needsAppointment: true),
-		Reason(name: "Class Drop", needsAppointment: true),
-		Reason(name: "Class Drop", needsAppointment: true),
-		Reason(name: "Class Drop", needsAppointment: true),
 		Reason(name: "Class Drop", needsAppointment: true)
 	]
 	
@@ -37,14 +32,13 @@ struct ReasonsScreen: View {
 	
     var body: some View {
 		VStack {
-			Text("Please select all reasons for your visit today.")
-				.font(.system(size: 40))
+			Title("Please select up to two reaons for your visit.")
 			
 			ScrollView {
 				LazyVGrid(columns: columns) {
 					ForEach(reasons) { reason in
 						ReasonView(reason: reason)
-							.frame(height: 80)
+							.frame(height: ScreenSize.height * 0.1)
 							.padding()
 					}
 				}
@@ -67,10 +61,11 @@ struct NavControls: View {
 	
 	var body: some View {
 		HStack {
+			
 			Button { session.goBack() } label: {
 				HStack {
 					Image(systemName: SFSymbols.arrowBackward)
-					Text("Back")
+					ButtonText("Back")
 				}
 				.frame(width: width, height: height)
 			}
@@ -79,7 +74,7 @@ struct NavControls: View {
 			
 			Button { session.proceed() } label: {
 				HStack {
-					Text("Next")
+					ButtonText("Next")
 					Image(systemName: SFSymbols.arrowForward)
 				}
 				.frame(width: width, height: height)

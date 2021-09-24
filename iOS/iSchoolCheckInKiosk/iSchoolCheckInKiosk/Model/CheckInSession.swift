@@ -9,10 +9,14 @@ import Foundation
 
 class CheckInSession: ObservableObject {
 	
-	@Published var reasons: [Reason]   = []
-	@Published var student: Student?   = nil
-	@Published var advisor: Advisor?   = nil
+	@Published var reasons = Set<Reason>()
+	@Published var student: Student? = nil
+	@Published var advisor: Advisor? = nil
 	
 	let dateTime = Date()
+	
+	func addReason(_ reason: Reason) {
+		
+	}
 	
 }

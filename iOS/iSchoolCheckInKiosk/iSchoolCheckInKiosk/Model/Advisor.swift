@@ -24,7 +24,7 @@ struct Student: Identifiable {
 }
 
 
-struct Reason: Identifiable {
+struct Reason: Identifiable, Hashable {
 	let id = UUID()
 	let name: String
 	let needsAppointment: Bool

@@ -11,10 +11,14 @@ import Foundation
 class SessionManager: ObservableObject {
 	
 	// on init should contact server and get updated Reasons
-	
 	@Published var phase: CheckInPhase = .identification
 	
+	
+	let rules = BusinessRules.shared
+	
+	
 	private var currentSession: CheckInSession?
+	
 	
 	func startSession() {
 		currentSession = CheckInSession()
