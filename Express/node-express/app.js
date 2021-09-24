@@ -5,7 +5,6 @@ var express = require('express');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-
 const reasonRouter = require('./webapp/route/reason');
 const advisorRouter = require('./webapp/route/advisor');
 
@@ -66,8 +65,9 @@ app.use('/meetingHost',advisorRouter);
 // app.use('/auth',authRouter);
 // app.use('/test',testRouter);
 
-app.listen(8080,'localhost',()=>{
-    console.log('RUNNING');
-})
+let port = 8080;
+app.listen(port,'localhost',()=>{
+    console.log('RUNNING on port ', port);
+});
 
 module.exports = app;
