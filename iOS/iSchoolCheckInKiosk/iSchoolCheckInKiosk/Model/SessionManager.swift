@@ -13,11 +13,9 @@ class SessionManager: ObservableObject {
 	// on init should contact server and get updated Reasons
 	@Published var phase: CheckInPhase = .identification
 	
+	private var currentSession: CheckInSession?
 	
 	let rules = BusinessRules.shared
-	
-	
-	private var currentSession: CheckInSession?
 	
 	
 	func startSession() {
@@ -44,4 +42,12 @@ class SessionManager: ObservableObject {
 		// maybe should init session with a student
 		currentSession?.student = student
 	}
+	
+	func addReason(_ reason: Reason) -> Bool {
+		currentSession?.addReason(reason) ?? false
+	}
+	
+//	func getStudent() -> Student {
+//		currentSession?.student
+//	}
 }

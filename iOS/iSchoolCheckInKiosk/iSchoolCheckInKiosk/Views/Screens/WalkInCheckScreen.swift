@@ -13,6 +13,7 @@ struct WalkInCheckScreen: View {
 	
     var body: some View {
 		VStack {
+			//Text("Welcome \(session.)")
 			Text("Do you have a scheduled appointment?")
 				.font(.system(size: 60))
 			

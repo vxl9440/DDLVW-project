@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		88195FDD26FF9A33008A286A /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88195FDC26FF9A33008A286A /* ErrorManager.swift */; };
+		88195FDF26FF9FC9008A286A /* AlertItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88195FDE26FF9FC9008A286A /* AlertItem.swift */; };
+		88195FE326FFB3F1008A286A /* PreviewContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88195FE226FFB3F1008A286A /* PreviewContent.swift */; };
 		882DA9E326FCF0DD00EAEA8B /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882DA9E226FCF0DD00EAEA8B /* Card.swift */; };
 		882DA9E526FCF98D00EAEA8B /* TextStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882DA9E426FCF98D00EAEA8B /* TextStyles.swift */; };
 		882DA9E726FD351600EAEA8B /* Strings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 882DA9E626FD351600EAEA8B /* Strings.plist */; };
@@ -36,6 +39,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		88195FDC26FF9A33008A286A /* ErrorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorManager.swift; sourceTree = "<group>"; };
+		88195FDE26FF9FC9008A286A /* AlertItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertItem.swift; sourceTree = "<group>"; };
+		88195FE226FFB3F1008A286A /* PreviewContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewContent.swift; sourceTree = "<group>"; };
 		882DA9E226FCF0DD00EAEA8B /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		882DA9E426FCF98D00EAEA8B /* TextStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextStyles.swift; sourceTree = "<group>"; };
 		882DA9E626FD351600EAEA8B /* Strings.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Strings.plist; sourceTree = "<group>"; };
@@ -77,6 +83,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		88195FE026FFA1A6008A286A /* Errors */ = {
+			isa = PBXGroup;
+			children = (
+				88195FDC26FF9A33008A286A /* ErrorManager.swift */,
+				88195FDE26FF9FC9008A286A /* AlertItem.swift */,
+			);
+			path = Errors;
+			sourceTree = "<group>";
+		};
+		88195FE126FFA1D7008A286A /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				88B9BAEC26F7E308001D3FF8 /* NetworkManager.swift */,
+				88195FE226FFB3F1008A286A /* PreviewContent.swift */,
+				889559DB26E27DFA005490A6 /* Constants.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
 		882DA9E126FCF0B400EAEA8B /* Styles */ = {
 			isa = PBXGroup;
 			children = (
@@ -112,12 +137,12 @@
 			isa = PBXGroup;
 			children = (
 				889559CE26E27C14005490A6 /* InitialScreen.swift */,
-				889559D026E27C25005490A6 /* ReasonsScreen.swift */,
 				889559D226E27C3C005490A6 /* IdentificationScreen.swift */,
-				889559D426E27C57005490A6 /* MeetingHostScreen.swift */,
-				889559D626E27C63005490A6 /* DeniedScreen.swift */,
-				889559D826E27C75005490A6 /* ConfirmationScreen.swift */,
 				883DBB5126F55473007DD2D5 /* WalkInCheckScreen.swift */,
+				889559D026E27C25005490A6 /* ReasonsScreen.swift */,
+				889559D426E27C57005490A6 /* MeetingHostScreen.swift */,
+				889559D826E27C75005490A6 /* ConfirmationScreen.swift */,
+				889559D626E27C63005490A6 /* DeniedScreen.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -154,10 +179,10 @@
 			children = (
 				88C2BF1426E0047400E2F0C2 /* iSchoolCheckInKioskApp.swift */,
 				88C2BF1626E0047400E2F0C2 /* SessionView.swift */,
-				88B9BAEC26F7E308001D3FF8 /* NetworkManager.swift */,
+				88195FE026FFA1A6008A286A /* Errors */,
 				883DBB5326F55564007DD2D5 /* Views */,
+				88195FE126FFA1D7008A286A /* Utilities */,
 				883DBB5A26F55712007DD2D5 /* Model */,
-				889559DB26E27DFA005490A6 /* Constants.swift */,
 				88C2BF1826E0047600E2F0C2 /* Assets.xcassets */,
 				88C2BF2226E0055A00E2F0C2 /* Info.plist */,
 				882DA9E626FD351600EAEA8B /* Strings.plist */,
@@ -248,6 +273,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				88B9BAED26F7E308001D3FF8 /* NetworkManager.swift in Sources */,
+				88195FDF26FF9FC9008A286A /* AlertItem.swift in Sources */,
 				8875187526E58491002046E2 /* CheckInSession.swift in Sources */,
 				889559D126E27C25005490A6 /* ReasonsScreen.swift in Sources */,
 				883DBB4E26F53192007DD2D5 /* WebView.swift in Sources */,
@@ -261,10 +287,12 @@
 				882DA9ED26FD3CE900EAEA8B /* BusinessRules.swift in Sources */,
 				88ACC22426E171DC009BB164 /* Advisor.swift in Sources */,
 				883DBB5226F55473007DD2D5 /* WalkInCheckScreen.swift in Sources */,
+				88195FE326FFB3F1008A286A /* PreviewContent.swift in Sources */,
 				883DBB5C26F55BA5007DD2D5 /* CheckInPhase.swift in Sources */,
 				889559D726E27C63005490A6 /* DeniedScreen.swift in Sources */,
 				883DBB5026F5529B007DD2D5 /* IDCardGraphic.swift in Sources */,
 				882DA9E526FCF98D00EAEA8B /* TextStyles.swift in Sources */,
+				88195FDD26FF9A33008A286A /* ErrorManager.swift in Sources */,
 				889559E026E2A7D4005490A6 /* ReasonView.swift in Sources */,
 				88C2BF1526E0047400E2F0C2 /* iSchoolCheckInKioskApp.swift in Sources */,
 				883DBB5526F555A4007DD2D5 /* HeaderView.swift in Sources */,

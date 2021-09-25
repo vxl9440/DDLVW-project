@@ -15,6 +15,7 @@ struct InitialScreen: View {
 		VStack {
 			#if DEBUG
 			Button("Simulate Card Swipe") {
+				session.startSession()
 				session.proceed()
 			}
 			#endif

@@ -9,15 +9,16 @@ import SwiftUI
 
 struct ReasonView: View {
 	
-	@State var reason: Reason = Reason(name: "Add / Drop", needsAppointment: true)
+	@Binding var reason: Reason
+	@EnvironmentObject var session: SessionManager
 	
 	private var color: Color { reason.selected ? .ritOrange : .white }
 	private var textColor: Color { reason.selected ? .white : .black }
 	
 	
 	var body: some View {
-		Button { reason.selected.toggle() } label: {
-			ButtonText(reason.name)
+		Button { reason.selected = session.addReason(reason) } label: {
+			BodyText(reason.name)
 		}
 		.buttonStyle(ReasonButtonStyle(color: color, textColor: textColor))
 		.controlSize(.large)
@@ -52,6 +53,7 @@ struct ReasonButtonStyle: ButtonStyle {
 
 struct ReasonView_Previews: PreviewProvider {
     static var previews: some View {
-		ReasonView().frame(width: 180, height: 100)
+		ReasonView(reason: .constant(Reason(name: "Class Drop", needsAppointment: true)))
+			.frame(width: 180, height: 100)
     }
 }

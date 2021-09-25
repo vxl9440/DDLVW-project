@@ -11,32 +11,18 @@ struct ReasonsScreen: View {
 	
 	@EnvironmentObject var session: CheckInSession
 	
-	let reasons: [Reason] = [
-		Reason(name: "Class Drop", needsAppointment: true),
-		Reason(name: "Class Drop", needsAppointment: true),
-		Reason(name: "Class Drop", needsAppointment: true),
-		Reason(name: "Class Drop", needsAppointment: true),
-		Reason(name: "Class Drop", needsAppointment: true),
-		Reason(name: "Class Drop", needsAppointment: true),
-		Reason(name: "Class Drop", needsAppointment: true),
-		Reason(name: "Class Drop", needsAppointment: true),
-		Reason(name: "Class Drop", needsAppointment: true),
-		Reason(name: "Class Drop", needsAppointment: true),
-		Reason(name: "Class Drop", needsAppointment: true),
-		Reason(name: "Class Drop", needsAppointment: true),
-		Reason(name: "Class Drop", needsAppointment: true),
-		Reason(name: "Class Drop", needsAppointment: true)
-	]
+	@State private var reasons = [Reason]()
 	
 	private let columns: [GridItem] = Array(repeating: .init(.flexible(minimum: 100, maximum: 400)), count: 3)
 	
     var body: some View {
 		VStack {
-			Title("Please select up to two reaons for your visit.")
+			Title("Please select up to (\(Rules.maxReasons)) reaons for your visit.")
 			
 			ScrollView {
+				if (reasons.isEmpty) { ProgressView("Loading Reasons") } 
 				LazyVGrid(columns: columns) {
-					ForEach(reasons) { reason in
+					ForEach($reasons) { reason in
 						ReasonView(reason: reason)
 							.frame(height: ScreenSize.height * 0.1)
 							.padding()
@@ -45,8 +31,9 @@ struct ReasonsScreen: View {
 			}
 			.padding(.horizontal)
 			.overlay(NavControls(), alignment: .bottom)
-			
-			
+		}
+		.task {
+			reasons = await NetworkManager.fetchReasons()
 		}
     }
 }

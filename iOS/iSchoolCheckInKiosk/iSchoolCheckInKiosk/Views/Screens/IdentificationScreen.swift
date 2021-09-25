@@ -8,6 +8,8 @@
 import SwiftUI
 
 
+
+
 struct IdentificationScreen: View {
 	
 	/**
@@ -22,10 +24,23 @@ struct IdentificationScreen: View {
 	
 	@State private var isShowingWebView = false
 	@State private var studentID = ""
+	@FocusState private var focus
+	
 	
     var body: some View {
+		let id_binding = Binding<String>(get: { studentID }, set: {
+			studentID = $0
+			if (studentID.isValidRITidFormat) {
+				//NetworkManager().fetchStudent(id: studentID)
+				print("Firing network request...")
+			}
+		})
+		
+		
 		VStack {
-			TextField("Student UID", text: $studentID).hidden()
+			Button("Focus") { focus = true }
+			TextField("Student UID", text: id_binding)
+				.focused($focus).hidden()
 			
 			IDCardGraphic().rotationEffect(.degrees(20))
 				

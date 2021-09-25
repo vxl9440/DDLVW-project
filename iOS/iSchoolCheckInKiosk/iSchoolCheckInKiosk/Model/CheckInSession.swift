@@ -15,8 +15,13 @@ class CheckInSession: ObservableObject {
 	
 	let dateTime = Date()
 	
-	func addReason(_ reason: Reason) {
-		
+	func addReason(_ reason: Reason) -> Bool {
+		if reasons.count < Rules.maxReasons {
+			let result = reasons.insert(reason)
+			return result.inserted
+		} else {
+			return false
+		}
 	}
 	
 }

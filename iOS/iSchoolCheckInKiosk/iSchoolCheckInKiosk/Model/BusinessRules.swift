@@ -30,7 +30,20 @@ final class BusinessRules {
 		}
 		
 		self.maxReasons = maxReasons
-		
-
 	}
+}
+
+
+extension String {
+	var isValidRITidFormat: Bool {
+		let isNumerical  = CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: self))
+		let isNineDigits = self.count == 9
+		
+		return isNumerical && isNineDigits
+	}
+}
+
+
+enum Rules {
+	static let maxReasons = BusinessRules.shared.maxReasons
 }

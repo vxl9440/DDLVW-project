@@ -14,14 +14,14 @@ struct MeetingHostScreen: View {
 	private let columns: [GridItem] = Array(repeating: .init(.flexible(minimum: 220, maximum: 400)), count: 4)
 	
 	
-	let advisors: [Advisor] = [
-		Advisor(name: "First Last", picture: URL(string: "https://claws.rit.edu/photos/getphotoid.php?Client=Marketing&UN=sjzics&HASH=fde0c30cbca73f29895bb66f390d76190ae537af&T=1630690226"), isAvailable: true),
-		Advisor(name: "First Last", picture: URL(string: "https://claws.rit.edu/photos/getphotoid.php?Client=Marketing&UN=sjzics&HASH=fde0c30cbca73f29895bb66f390d76190ae537af&T=1630690226"), isAvailable: true),
-		Advisor(name: "First Last", picture: URL(string: "https://claws.rit.edu/photos/getphotoid.php?Client=Marketing&UN=sjzics&HASH=fde0c30cbca73f29895bb66f390d76190ae537af&T=1630690226"), isAvailable: true),
-		Advisor(name: "Stephanie LongLastName", picture: URL(string: "https://claws.rit.edu/photos/getphotoid.php?Client=Marketing&UN=sjzics&HASH=fde0c30cbca73f29895bb66f390d76190ae537af&T=1630690226"), isAvailable: true),
-		Advisor(name: "First Last Really Long", picture: URL(string: "https://claws.rit.edu/photos/getphotoid.php?Client=Marketing&UN=sjzics&HASH=fde0c30cbca73f29895bb66f390d76190ae537af&T=1630690226"), isAvailable: true)]
-	
-	//var advisors: [Advisor] = []
+//	let advisors: [Advisor] = [
+//		Advisor(name: "First Last", picture: URL(string: "https://claws.rit.edu/photos/getphotoid.php?Client=Marketing&UN=sjzics&HASH=fde0c30cbca73f29895bb66f390d76190ae537af&T=1630690226"), isAvailable: true),
+//		Advisor(name: "First Last", picture: URL(string: "https://claws.rit.edu/photos/getphotoid.php?Client=Marketing&UN=sjzics&HASH=fde0c30cbca73f29895bb66f390d76190ae537af&T=1630690226"), isAvailable: true),
+//		Advisor(name: "First Last", picture: URL(string: "https://claws.rit.edu/photos/getphotoid.php?Client=Marketing&UN=sjzics&HASH=fde0c30cbca73f29895bb66f390d76190ae537af&T=1630690226"), isAvailable: true),
+//		Advisor(name: "Stephanie LongLastName", picture: URL(string: "https://claws.rit.edu/photos/getphotoid.php?Client=Marketing&UN=sjzics&HASH=fde0c30cbca73f29895bb66f390d76190ae537af&T=1630690226"), isAvailable: true),
+//		Advisor(name: "First Last Really Long", picture: URL(string: "https://claws.rit.edu/photos/getphotoid.php?Client=Marketing&UN=sjzics&HASH=fde0c30cbca73f29895bb66f390d76190ae537af&T=1630690226"), isAvailable: true)]
+//
+	@State private var advisors: [Advisor] = []
 	
     var body: some View {
 		VStack {
@@ -41,10 +41,9 @@ struct MeetingHostScreen: View {
 						.buttonStyle(.plain)
 					}
 				}
-//				.task {
-//					let n = NetworkManager()
-//					advisors = n.fetchAvailableAdivsors()
-//				}
+				.task {
+					advisors = await NetworkManager.fetchAvailableAdivsors()
+				}
 			}
 		}
     }

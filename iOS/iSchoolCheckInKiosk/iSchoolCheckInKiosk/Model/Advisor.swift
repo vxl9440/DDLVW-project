@@ -17,15 +17,15 @@ struct Advisor: Identifiable, Decodable {
 }
 
 
-struct Student: Identifiable {
-	let id = UUID()
-	let name: String
-	let userName: String
+struct Student: Identifiable, Decodable {
+	var id = UUID()
+	let fname: String
+	let lname: String
 }
 
 
-struct Reason: Identifiable, Hashable {
-	let id = UUID()
+struct Reason: Identifiable, Hashable, Decodable {
+	var id = UUID()
 	let name: String
 	let needsAppointment: Bool
 	var selected: Bool = false
