@@ -109,8 +109,8 @@ function unbind(client) {
 
 Attempts to retrieve student data from LDAP server
 - Student ID: Must be a valid student ID (string or number)
-- Callback: A function that is called upon successful response from LDAP server. Must have
-one parameter for the response object.
+- Usage (from within an async func or top-level scope in a module):
+    const studentInfo = await getStudentData('xxxxxxxxx');
 */
 async function getStudentData(studentID) {
 
