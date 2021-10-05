@@ -4,7 +4,7 @@ import { FormBuilder } from '@angular/forms';
 interface Student {
   firstName: String,
   lastName: String,
-  imgPath: String
+  img: String
 }
 
 interface Advisor {
@@ -12,7 +12,7 @@ interface Advisor {
   lastName: String,
   email: String,
   meetsWithWalkIns: boolean,
-  imgPath: String,
+  img: String,
   studentQueue: Student[]
 }
 
@@ -24,7 +24,7 @@ interface Advisor {
 export class AppComponent implements OnInit {
   title = 'front-desk-interface';
   advisors: Advisor[] = [];
-  selectedAdvisor: Advisor = {firstName: "", lastName: "", email: "", meetsWithWalkIns: false, imgPath: "", studentQueue: []};
+  selectedAdvisor: Advisor = {firstName: "", lastName: "", email: "", meetsWithWalkIns: false, img: "", studentQueue: []};
 
   advisorInfoForm = this.formBuilder.group({
     fname: '',
@@ -34,31 +34,33 @@ export class AppComponent implements OnInit {
     meetsWithWalkIns: ''
   });
 
+  imgPathStart: string = "../assets/";
+
   constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit() {
-    this.advisors.push({firstName: "John", lastName: "Doe", email: "jnd1234@rit.edu", meetsWithWalkIns: false, imgPath: "../assets/person2.jpg", studentQueue: [
-      {firstName: "Jack", lastName: "Smith", imgPath: "../assets/person1.jpg"}, 
-      {firstName: "Jane", lastName: "Doe", imgPath: "../assets/person3.jpg"}, 
-      {firstName: "Jill", lastName: "Smith", imgPath: "../assets/person4.jpg"}
+    this.advisors.push({firstName: "John", lastName: "Doe", email: "jnd1234@rit.edu", meetsWithWalkIns: false, img: "person2.jpg", studentQueue: [
+      {firstName: "Jack", lastName: "Smith", img: "person1.jpg"}, 
+      {firstName: "Jane", lastName: "Doe", img: "person3.jpg"}, 
+      {firstName: "Jill", lastName: "Smith", img: "person4.jpg"}
     ]});
-    this.advisors.push({firstName: "Rachel", lastName: "Smachel", email: "rcs4321@rit.edu", meetsWithWalkIns: true, imgPath: "../assets/person4.jpg", studentQueue: [
-      {firstName: "Tim", lastName: "Bim", imgPath: "../assets/person1.jpg"}, 
-      {firstName: "Rebecca", lastName: "Grobb", imgPath: "../assets/person3.jpg"}, 
-      {firstName: "Billy", lastName: "Mann", imgPath: "../assets/person2.jpg"}
+    this.advisors.push({firstName: "Rachel", lastName: "Smachel", email: "rcs4321@rit.edu", meetsWithWalkIns: true, img: "person4.jpg", studentQueue: [
+      {firstName: "Tim", lastName: "Bim", img: "person1.jpg"}, 
+      {firstName: "Rebecca", lastName: "Grobb", img: "person3.jpg"}, 
+      {firstName: "Billy", lastName: "Mann", img: "person2.jpg"}
     ]});
-    this.advisors.push({firstName: "George", lastName: "Guywithaverylongname", email: "gym1324@rit.edu", meetsWithWalkIns: true, imgPath: "../assets/person1.jpg", studentQueue: [
-      {firstName: "Tim", lastName: "Bim", imgPath: "../assets/person1.jpg"}, 
-      {firstName: "Rebecca", lastName: "Grobb", imgPath: "../assets/person3.jpg"}, 
-      {firstName: "Billy", lastName: "Mann", imgPath: "../assets/person2.jpg"}, 
-      {firstName: "Mikah", lastName: "Guell", imgPath: "../assets/person4.jpg"}, 
-      {firstName: "Diesel", lastName: "Feesel", imgPath: "../assets/person2.jpg"}, 
-      {firstName: "Dani", lastName: "Sel", imgPath: "../assets/person3.jpg"}, 
-      {firstName: "Larry", lastName: "Grobb", imgPath: "../assets/person1.jpg"}, 
-      {firstName: "Shima", lastName: "Plok", imgPath: "../assets/person4.jpg"}, 
-      {firstName: "Gus", lastName: "Juss", imgPath: "../assets/person2.jpg"}, 
+    this.advisors.push({firstName: "George", lastName: "Guywithaveryveryverylongname", email: "gym1324@rit.edu", meetsWithWalkIns: true, img: "person1.jpg", studentQueue: [
+      {firstName: "Tim", lastName: "Bim", img: "person1.jpg"}, 
+      {firstName: "Rebecca", lastName: "Grobb", img: "person3.jpg"}, 
+      {firstName: "Billy", lastName: "Mann", img: "person2.jpg"}, 
+      {firstName: "Mikah", lastName: "Guell", img: "person4.jpg"}, 
+      {firstName: "Diesel", lastName: "Feesel", img: "person2.jpg"}, 
+      {firstName: "Dani", lastName: "Sel", img: "person3.jpg"}, 
+      {firstName: "Larry", lastName: "Grobb", img: "person1.jpg"}, 
+      {firstName: "Shima", lastName: "Plok", img: "person4.jpg"}, 
+      {firstName: "Gus", lastName: "Juss", img: "person2.jpg"}, 
     ]});
-    this.advisors.push({firstName: "Sabrina", lastName: "Quazz", email: "stq2413@rit.edu", meetsWithWalkIns: false, imgPath: "../assets/person3.jpg", studentQueue: []});
+    this.advisors.push({firstName: "Sabrina", lastName: "Quazz", email: "stq2413@rit.edu", meetsWithWalkIns: false, img: "person3.jpg", studentQueue: []});
 
     this.selectedAdvisor = this.advisors[0];
 
@@ -91,5 +93,9 @@ export class AppComponent implements OnInit {
 
   saveAdvisorInfo() {
 
+  }
+
+  deleteStudentFromQueue(advisor: Advisor, i: number) {
+    advisor.studentQueue.splice(i, 1);
   }
 }

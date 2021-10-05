@@ -1,9 +1,12 @@
 /* global variables */
 $rit-orange: rgb(230, 113, 45);
+$rit-orange-highlighted: rgb(255, 126, 51);
+$rit-light-orange: rgb(253, 137, 69);
+$rit-white-orange: rgb(255, 245, 240);
 
 .grid-container {
     display: grid;
-    grid-template-rows: /*20px */10% auto 10px auto 20px;
+    grid-template-rows: 10% auto 10px auto 20px;
     grid-template-columns: 20px 33% 10px 66% 20px;
     width: calc(100% - 40px);
     height: calc(100% - 40px);
@@ -25,7 +28,6 @@ button:hover {
 
 .top-bar {
     grid-row: 1 / 2;
-    //grid-row: 2 / 3;
     grid-column: 2 / 5;
     display: flex;
     justify-content: space-between;
@@ -35,6 +37,7 @@ button:hover {
 .top-bar h1 {
     margin: 0;
     padding: 0;
+    font-size: 1.5vw;
 }
 
 .top-bar-buttons {
@@ -43,29 +46,105 @@ button:hover {
     height: calc(100% - 40px);
     margin-top: 20px;
     margin-bottom: 20px;
+    //height: calc(100% - 4vh);
+    //margin-top: 2vh;
+    //margin-bottom: 2vh;
 }
 
 .top-bar-buttons button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 100%;
-    width: 300px;
+    //width: 300px;
+    width: 15vw;
     padding: 10px;
     margin: 0;
+    background-color: $rit-orange;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
+    font-size: 1vw;
+}
+
+.top-bar-buttons button:hover {
+    background-color: $rit-orange-highlighted;
+}
+
+.top-bar-buttons button:active {
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25) inset;
+}
+
+.top-bar-buttons button img {
+    height: 75%;
+    margin-right: 5px;
+}
+
+.section-label {
+    font-size: 1.1vw;
 }
 
 .student-queue-manager {
     grid-row: 2 / 5;
-    //grid-row: 3 / 6;
     grid-column: 2 / 3;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border: 1px solid black;
     padding: 10px;
+    //background-color: white;
+    background-color: $rit-white-orange;
+    border: 5px solid $rit-orange;
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
+}
+
+.student-queue-manager h2 {
+    //width: 90%;
+    //height: 5vh;
+    //width:calc(100% - 30px);
+    height: auto;
+    margin-top: -15px;
+    margin-left: -15px;
+    padding: 15px;
+    //padding-left: 15px;
+    background-color: $rit-orange;
+    color: white;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    //border-bottom-left-radius: 10px;
+    //border-bottom-right-radius: 10px;
 }
 
 .student-queue-stuff {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     height: calc(100% - 70px - 100px);
     width: 100%;
+    //overflow-y: scroll;
+}
+
+//.student-queue-stuff div {
+.student-item {
+    display: flex;
+    width: 100%;
+    margin-top: 10px;
+}
+
+//.student-queue-stuff div:first-child {
+.student-item:first-child {
+    margin-top: 0;
+}
+
+.none-text-area {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.student-queue-stuff h1 {
+    font-size: 8vw;
+    color: lightgray;
 }
 
 .add-student-button {
@@ -74,28 +153,80 @@ button:hover {
     margin: 20px;
 }
 
-.student-item {
+.student-item div {
+    box-sizing: border-box;
     display: flex;
-    justify-content: space-between;
-    border: 1px solid black;
-    padding: 10px;
-    margin-top: 10px;
+    //justify-content: space-between;
+    align-items: center;
+    width: calc(100% - 55px);
+    //margin-top: 10px;
+    margin-right: 5px;
+    padding: 5px;
+    padding-left: 10px;
+    background-color: $rit-light-orange;
+    color: white;
+    //border: 1px solid black;
+    //border-radius: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.125);
 }
 
-.student-item:first-child {
+/*.student-item:first-child {
     margin-top: 0;
+}*/
+
+.student-item div h3 {
+    margin: 0;
 }
 
 .student-item button {
-    width: 60px;
+//.student-queue-stuff div button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    padding: 0;
+    background-color: rgb(233, 83, 83);
+    border: none;
+    //border-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.125);
+}
+
+.student-item button:hover {
+//.student-queue-stuff div button:hover {
+    background-color: rgb(236, 46, 46);
+}
+
+.student-item button:active {
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25) inset;
 }
 
 .advisor-list-manager {
     grid-row: 2 / 3;
-    //grid-row: 3 / 4;
     grid-column: 4 / 5;
-    border: 1px solid black;
     padding: 10px;
+    //background-color: white;
+    background-color: $rit-white-orange;
+    border: 5px solid $rit-orange;
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
+}
+
+.advisor-list-manager h2 {
+    width: 20%;
+    //height: 5vh;
+    height: auto;
+    margin-top: -15px;
+    margin-left: -15px;
+    padding: 15px;
+    background-color: $rit-orange;
+    color: white;
+    border-top-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 .advisor-stuff {
@@ -109,9 +240,14 @@ button:hover {
 }
 
 .advisor-item {
-    border: 1px solid black;
-    padding: 10px;
+    display: flex;
+    align-items: center;
     margin-top: 5px;
+    padding: 10px;
+    background-color: $rit-orange;
+    color: white;
+    //border: 1px solid black;
+    border-radius: 5px;
 }
 
 .advisor-item:first-child {
@@ -120,25 +256,103 @@ button:hover {
 
 .advisor-item:hover {
     cursor: pointer;
-    background-color: lightgray;
+    //background-color: lightgray;
+    background-color: $rit-orange-highlighted;
+}
+
+.advisor-item img {
+    height: 1.8vh;
+    //margin-bottom: 2px;
+    margin-right: 5px;
 }
 
 .selectedAdvisor {
-    background-color: lightgray;
+    //background-color: lightgray;
+    background-color: $rit-orange-highlighted;
+    font-weight: bold;
 }
 
 .advisor-info {
+    display: flex;
     flex-grow: 1;
+    font-size: 1vw;
 }
 
-form label {
-    margin-top: 5px;
+.advisor-info img {
+    height: 8vw;
+    width: 8vw;
+    object-fit: cover;
+    background-color: black;
+    border: 1px solid black;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+/*.advisor-info form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}*/
+
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.form-row label {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-row {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+input[type="text"] {
+    flex-grow: 1;
+    margin-left: 10px;
+    font-size: 1vw;
+    background-color: lightgray;
+    border: none;
+    padding: 3px;
+}
+
+input[type="email"] {
+    flex-grow: 1;
+    margin-left: 10px;
+    font-size: 1vw;
+    background-color: lightgray;
+    border: none;
+    padding: 3px;
+}
+
+input[type = "checkbox"] {
+    margin-left: 0;
 }
 
 .banner-info-manager {
     grid-row: 4 / 5;
-    //grid-row: 5 / 6;
     grid-column: 4 / 5;
-    border: 1px solid black;
     padding: 10px;
+    //background-color: white;
+    background-color: $rit-white-orange;
+    border: 5px solid $rit-orange;
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
+}
+
+.banner-info-manager h2 {
+    width: 20%;
+    height: 5vh;
+    margin-top: -15px;
+    margin-left: -15px;
+    padding-left: 15px;
+    background-color: $rit-orange;
+    color: white;
+    border-top-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }

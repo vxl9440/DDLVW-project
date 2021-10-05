@@ -3,11 +3,11 @@
   <div class="advisor-area">
     <div class="advisor-box" *ngFor="let advisor of advisors">
       <div class="advisor-info">
-        <img class="advisor-img" src="{{advisor.imgPath}}" alt="{{advisor.imgPath}}">
+        <img class="advisor-img" src="{{imgPathStart}}{{advisor.img}}" alt="{{imgPathStart}}{{advisor.img}}">
         <h1>{{advisor.firstName}} {{advisor.lastName}}</h1>
       </div>
       <div class="student-box" *ngFor="let student of advisor.studentQueue">
-        <img class="student-img" src="{{student.imgPath}}" alt="{{student.imgPath}}">
+        <img class="student-img" src="{{imgPathStart}}{{student.img}}" alt="{{imgPathStart}}{{student.img}}">
         <h3>{{student.firstName}} {{student.lastName}}</h3>
       </div>
       <!--div *ngIf="operation.maxOperations > 0" class="max-operations-display">{{operation.currentOperations}}/{{operation.maxOperations}}</div>
