@@ -61,10 +61,14 @@ for cal in calendar_items:
 # # print(i)
 for k in test_list:
     if 'subject' in k:
-        print(k)
+        # print(k)
+        print()
     elif 'ttendee' in k:
         student = k.split("'")
-        # print(student[1])
+        if len(student) >= 2:
+            # print(student[0])
+            print(student[1])
+            # print(student[2])
     # print()
 year = ''
 month = ''
