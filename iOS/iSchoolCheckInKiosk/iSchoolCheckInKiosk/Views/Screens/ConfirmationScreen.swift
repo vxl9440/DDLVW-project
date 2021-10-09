@@ -9,7 +9,8 @@ import SwiftUI
 
 struct ConfirmationScreen: View {
 	
-	@EnvironmentObject var session: SessionManager
+	@EnvironmentObject var session: CheckInSession
+	@EnvironmentObject var sessionManager: SessionManager
 	
     var body: some View {
 		VStack {
@@ -25,19 +26,21 @@ struct ConfirmationScreen: View {
 						.font(.system(.largeTitle, design: .rounded))
 						.padding(.bottom)
 					
-					Text("Please wait to be greeted by ")
+					Text("Please wait to be greeted by \(session.advisorName)")
 						.font(.custom(Font.primary, size: 20))
 				}.padding()
 				
 				VStack(alignment: .leading, spacing: 0) {
-					ConfirmationItem(icon: SFSymbols.student, content: "John Doe")
-					ConfirmationItem(icon: SFSymbols.person, content: "Jim Krynd")
+					ConfirmationItem(icon: SFSymbols.student, content: session.studentName)
+					ConfirmationItem(icon: SFSymbols.person, content: session.advisorName)
 					ConfirmationItem(icon: SFSymbols.calendar, content: "10:00 - 10:15")
 				}
 				.padding()
 			}
 			
-			Button{} label: {
+			Button {
+				sessionManager.reset()
+			} label: {
 				Text("OK")
 					.font(.custom(Font.primary, size: 40))
 					.padding(.horizontal, 50)
@@ -70,6 +73,6 @@ struct ConfirmationScreen_Previews: PreviewProvider {
     static var previews: some View {
         ConfirmationScreen()
 			.previewInterfaceOrientation(.landscapeLeft)
-			.environmentObject(CheckInSession())
+			.environmentObject(SessionManager())
     }
 }

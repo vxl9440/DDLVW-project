@@ -10,14 +10,15 @@ import SwiftUI
 struct ReasonView: View {
 	
 	@Binding var reason: Reason
-	@EnvironmentObject var session: SessionManager
+	@EnvironmentObject var session: CheckInSession
+	@State private var selected = false
 	
-	private var color: Color { reason.selected ? .ritOrange : .white }
-	private var textColor: Color { reason.selected ? .white : .black }
+	private var color: Color { session.reasonIsSelected(reason) ? .ritOrange : .white }
+	private var textColor: Color { session.reasonIsSelected(reason) ? .white : .black }
 	
 	
 	var body: some View {
-		Button { reason.selected = session.addReason(reason) } label: {
+		Button { selected = session.addReason(reason) } label: {
 			BodyText(reason.name)
 		}
 		.buttonStyle(ReasonButtonStyle(color: color, textColor: textColor))

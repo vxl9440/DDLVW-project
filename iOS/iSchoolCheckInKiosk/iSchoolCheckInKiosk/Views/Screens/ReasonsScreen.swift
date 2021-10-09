@@ -9,9 +9,7 @@ import SwiftUI
 
 struct ReasonsScreen: View {
 	
-	@EnvironmentObject var session: CheckInSession
-	
-	@State private var reasons = [Reason]()
+	@State private var reasons: [Reason] = []
 	
 	private let columns: [GridItem] = Array(repeating: .init(.flexible(minimum: 100, maximum: 400)), count: 3)
 	
@@ -20,7 +18,7 @@ struct ReasonsScreen: View {
 			Title("Please select up to (\(Rules.maxReasons)) reaons for your visit.")
 			
 			ScrollView {
-				if (reasons.isEmpty) { ProgressView("Loading Reasons") } 
+				if (reasons.isEmpty) { ProgressView("Loading Reasons") }
 				LazyVGrid(columns: columns) {
 					ForEach($reasons) { reason in
 						ReasonView(reason: reason)
@@ -32,16 +30,14 @@ struct ReasonsScreen: View {
 			.padding(.horizontal)
 			.overlay(NavControls(), alignment: .bottom)
 		}
-		.task {
-			reasons = await NetworkManager.fetchReasons()
-		}
+		.task { reasons = await NetworkManager.fetchReasons() }
     }
 }
 
 
 struct NavControls: View {
 	
-	@EnvironmentObject var session: SessionManager
+	@EnvironmentObject var session: CheckInSession
 	
 	let width  = CGFloat(180)
 	let height = CGFloat(100)
@@ -88,32 +84,9 @@ struct RITButtonStyle: ButtonStyle {
 
 
 struct ReasonsScreen_Previews: PreviewProvider {
-	
-	static let reasons = [
-		Reason(name: "Class Drop", needsAppointment: true),
-		Reason(name: "Class Drop", needsAppointment: true),
-		Reason(name: "Class Drop", needsAppointment: true),
-		Reason(name: "Class Drop", needsAppointment: true),
-		Reason(name: "Class Drop", needsAppointment: true),
-		Reason(name: "Class Drop", needsAppointment: true),
-		Reason(name: "Class Drop", needsAppointment: true),
-		Reason(name: "Class Drop", needsAppointment: true),
-		Reason(name: "Class Drop", needsAppointment: true),
-		Reason(name: "Class Drop", needsAppointment: true),
-		Reason(name: "Class Drop", needsAppointment: true),
-		Reason(name: "Class Drop", needsAppointment: true),
-		Reason(name: "Class Drop", needsAppointment: true),
-		Reason(name: "Class Drop", needsAppointment: true),
-		Reason(name: "Class Drop", needsAppointment: true),
-		Reason(name: "Class Drop", needsAppointment: true),
-		Reason(name: "Class Drop", needsAppointment: true),
-		Reason(name: "Class Drop", needsAppointment: true),
-		Reason(name: "Class Drop", needsAppointment: true)
-	]
-	
-	
     static var previews: some View {
 		ReasonsScreen()
 			.previewInterfaceOrientation(.landscapeLeft)
+			.environmentObject(SessionManager())
     }
 }

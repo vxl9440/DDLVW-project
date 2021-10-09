@@ -9,27 +9,25 @@ import SwiftUI
 
 struct WalkInCheckScreen: View {
 	
-	@EnvironmentObject var session: SessionManager
+	@EnvironmentObject var session: CheckInSession
 	
     var body: some View {
 		VStack {
-			//Text("Welcome \(session.)")
-			Text("Do you have a scheduled appointment?")
-				.font(.system(size: 60))
+			Title("Welcome, \(session.studentName).")
 			
+			BodyText("Do you have a scheduled appointment?")
 			
-				Button { session.proceed() } label: {
-					MainButtonContent(textColor: .white, title: "YES")
-				}
-				.padding()
-				
+			Button { session.proceed() } label: {
+				MainButtonContent(textColor: .white, title: "YES")
+			}
+			.padding()
 			
-				Button { session.proceed(happyPath: false) } label: {
-					MainButtonContent(textColor: .white, title: "NO (Walk-In)")
-				}
-				.padding()
-			
-				Text("Note: Walk-in meetings are limited to 15 minutes.")
+			Button { session.proceed(happyPath: false) } label: {
+				MainButtonContent(textColor: .white, title: "NO (Walk-In)")
+			}
+			.padding()
+		
+			CaptionText("Note: Walk-in meetings are limited to 15 minutes.")
 				
 		}
 		.buttonStyle(RITButtonStyle())

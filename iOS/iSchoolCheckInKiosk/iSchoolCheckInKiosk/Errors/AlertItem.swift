@@ -23,11 +23,14 @@ struct AlertItem: Identifiable {
 
 enum AlertContext {
 	static let networkAlert = AlertItem(title: AlertTitle.networkError, message: AlertMessage.networkError)
+	
+	static let identificationError = AlertItem(title: AlertTitle.identificationError, message: AlertMessage.nextStep)
 }
 
 
 fileprivate enum AlertTitle {
 	static let networkError = "Network Error"
+	static let identificationError = "Error Identifying Student"
 }
 
 

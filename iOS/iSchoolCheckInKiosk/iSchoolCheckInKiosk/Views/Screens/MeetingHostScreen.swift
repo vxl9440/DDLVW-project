@@ -9,19 +9,12 @@ import SwiftUI
 
 struct MeetingHostScreen: View {
 	
-	@EnvironmentObject var session: SessionManager
+	@EnvironmentObject var session: CheckInSession
+	@State private var advisors: [Advisor] = []
+	@State private var isLoading = false
 	
 	private let columns: [GridItem] = Array(repeating: .init(.flexible(minimum: 220, maximum: 400)), count: 4)
 	
-	
-//	let advisors: [Advisor] = [
-//		Advisor(name: "First Last", picture: URL(string: "https://claws.rit.edu/photos/getphotoid.php?Client=Marketing&UN=sjzics&HASH=fde0c30cbca73f29895bb66f390d76190ae537af&T=1630690226"), isAvailable: true),
-//		Advisor(name: "First Last", picture: URL(string: "https://claws.rit.edu/photos/getphotoid.php?Client=Marketing&UN=sjzics&HASH=fde0c30cbca73f29895bb66f390d76190ae537af&T=1630690226"), isAvailable: true),
-//		Advisor(name: "First Last", picture: URL(string: "https://claws.rit.edu/photos/getphotoid.php?Client=Marketing&UN=sjzics&HASH=fde0c30cbca73f29895bb66f390d76190ae537af&T=1630690226"), isAvailable: true),
-//		Advisor(name: "Stephanie LongLastName", picture: URL(string: "https://claws.rit.edu/photos/getphotoid.php?Client=Marketing&UN=sjzics&HASH=fde0c30cbca73f29895bb66f390d76190ae537af&T=1630690226"), isAvailable: true),
-//		Advisor(name: "First Last Really Long", picture: URL(string: "https://claws.rit.edu/photos/getphotoid.php?Client=Marketing&UN=sjzics&HASH=fde0c30cbca73f29895bb66f390d76190ae537af&T=1630690226"), isAvailable: true)]
-//
-	@State private var advisors: [Advisor] = []
 	
     var body: some View {
 		VStack {
@@ -29,11 +22,14 @@ struct MeetingHostScreen: View {
 				.font(.system(size: 60))
 			
 			ScrollView {
+				if isLoading {
+					ProgressView()
+				}
+				
 				LazyVGrid(columns: columns) {
 					ForEach(advisors) { advisor in
 						Button {
-							session.setSessionAdvisor(advisor)
-							session.proceed()
+							session.selectAdvisor(advisor)
 						} label: {
 							MeetingHostCell(advisor: advisor)
 								.frame(height: 340)
@@ -42,7 +38,10 @@ struct MeetingHostScreen: View {
 					}
 				}
 				.task {
-					advisors = await NetworkManager.fetchAvailableAdivsors()
+					isLoading = true
+					advisors  = await session.getAvailableAdvisors()
+					advisors  = PreviewContent.getAdvisors()
+					isLoading = false
 				}
 			}
 		}
@@ -56,7 +55,7 @@ struct MeetingHostCell: View {
 	
 	var body: some View {
 		VStack {
-			AsyncImage(url: advisor.picture!) { image in
+			AsyncImage(url: URL(string: advisor.picture)) { image in
 				image.resizable()
 			} placeholder: {
 				ZStack {
@@ -66,12 +65,9 @@ struct MeetingHostCell: View {
 						.font(.system(size: 80))
 						.foregroundColor(.gray)
 				}
-				
 			}
 			.clipShape(Circle())
 			.frame(width: 220, height: 220)
-			
-			
 			
 			Text(advisor.name)
 				.font(.largeTitle)
@@ -85,9 +81,11 @@ struct MeetingHostCell: View {
 	}
 }
 
+
 struct MeetingHostScreen_Previews: PreviewProvider {
     static var previews: some View {
         MeetingHostScreen()
 			.previewInterfaceOrientation(.landscapeLeft)
+			.environmentObject(CheckInSession())
     }
 }

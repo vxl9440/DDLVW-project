@@ -9,9 +9,13 @@ import SwiftUI
 
 @main
 struct iSchoolCheckInKioskApp: App {
+	
+	@StateObject var sessionManager = SessionManager()
+	
     var body: some Scene {
         WindowGroup {
-            SessionView()
+			SessionView(session: sessionManager.currentSession)
+				.environmentObject(sessionManager)
         }
     }
 }

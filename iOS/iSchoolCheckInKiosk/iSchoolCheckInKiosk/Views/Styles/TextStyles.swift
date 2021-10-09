@@ -14,7 +14,9 @@ struct Title: View {
 	init(_ text: String) { self.text = text }
 	
     var body: some View {
-		Text(text).font(.custom(Font.primary, size: 40, relativeTo: .largeTitle))
+		Text(text)
+			.font(.custom(Font.primary, size: 40, relativeTo: .largeTitle))
+			.padding()
     }
 }
 

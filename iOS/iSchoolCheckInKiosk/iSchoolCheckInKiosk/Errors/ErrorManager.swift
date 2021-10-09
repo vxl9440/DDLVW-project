@@ -10,6 +10,7 @@ import Foundation
 @MainActor
 final class ErrorManager: ObservableObject {
 	
+	// Singleton instance in order for the app to post alerts easily
 	static let shared = ErrorManager()
 	
 	@Published var alertItem: AlertItem?

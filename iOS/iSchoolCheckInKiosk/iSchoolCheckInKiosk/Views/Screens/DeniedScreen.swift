@@ -9,7 +9,7 @@ import SwiftUI
 
 struct DeniedScreen: View {
 	
-	@EnvironmentObject var session: SessionManager
+	@EnvironmentObject var session: CheckInSession
 	
     var body: some View {
 		VStack {

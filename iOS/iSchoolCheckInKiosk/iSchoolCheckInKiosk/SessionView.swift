@@ -21,8 +21,12 @@ struct SessionView: View {
     
 	// TODO: Initialize a session for each iteration of a session
 	// when form resets, nullify session and wait for action before creating the next one
-	@StateObject private var sessionManager = SessionManager()
-	@StateObject private var errorManager   = ErrorManager.shared
+	@ObservedObject var session: CheckInSession
+	
+	@EnvironmentObject var sessionManager: SessionManager
+
+	// Used to present alerts
+	@StateObject private var errorManager = ErrorManager.shared
 	
 	var body: some View {
 		VStack {
@@ -30,7 +34,7 @@ struct SessionView: View {
 			
 			Spacer()
 			
-			switch sessionManager.phase {
+			switch session.phase {
 				case .identification:
 					InitialScreen()
 				case .appointmentType:
@@ -47,7 +51,7 @@ struct SessionView: View {
 			
 			Spacer()
 		}
-		.environmentObject(sessionManager)
+		.environmentObject(session)
 		.alert(item: $errorManager.alertItem) { alertItem in
 			Alert(title: alertItem.title, message: alertItem.message, dismissButton: alertItem.dismissButton)
 		}
@@ -56,8 +60,12 @@ struct SessionView: View {
 
 
 struct ContentView_Previews: PreviewProvider {
+	
+	static var sessionManager = SessionManager()
+	
     static var previews: some View {
-        SessionView()
+		SessionView(session: sessionManager.currentSession)
+			.environmentObject(sessionManager)
 			.previewInterfaceOrientation(.landscapeLeft)
     }
 }

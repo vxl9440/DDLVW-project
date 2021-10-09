@@ -30,30 +30,16 @@ final class NetworkManager {
 		
 		guard let (data, _) = await makeRequest(url) else { return [] }
 		
-		do {
-			return try JSONDecoder().decode([Advisor].self, from: data)
-		} catch {
-			// TODO: Handle response error
-			print("ADVISOR PARSE ERROR: \(error)")
-		}
-		
-		return []
+		return (try? JSONDecoder().decode([Advisor].self, from: data)) ?? []
 	}
 	
 	
 	static func fetchStudent(id: String) async -> Student? {
-		guard let url = URL(string: "test/id=\(id)") else {	return nil }
+		guard let url = URL(string: "https://www.google.com") else { return nil }
 		
 		guard let (data, _) = await makeRequest(url) else { return nil }
 		
-		do {
-			return try JSONDecoder().decode(Student.self, from: data)
-		} catch {
-			// TODO: Handle response error
-			print("STUDENT PARSE ERROR: \(error)")
-		}
-		
-		return nil
+		return try? JSONDecoder().decode(Student.self, from: data)
 	}
 	
 	

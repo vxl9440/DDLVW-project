@@ -1,32 +1,28 @@
 //
-//  Advisor.swift
-//  Advisor
+//  Model.swift
 //
 //  Created by Lowell Pence on 9/2/21.
 //
 
 import Foundation
-import SwiftUI
 
 
 struct Advisor: Identifiable, Decodable {
 	var id = UUID()
 	let name: String
-	let picture: URL?
-	var isAvailable: Bool
+	let picture: String
 }
 
 
 struct Student: Identifiable, Decodable {
-	var id = UUID()
-	let fname: String
-	let lname: String
+	var id: String
+	let studentName: String
+	let studentUsername: String
 }
 
 
 struct Reason: Identifiable, Hashable, Decodable {
-	var id = UUID()
+	var id: String { name }
 	let name: String
 	let needsAppointment: Bool
-	var selected: Bool = false
 }
