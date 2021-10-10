@@ -6,27 +6,31 @@
 //
 
 import SwiftUI
+import Combine
 
 // Used by a focused UIResponder to handle key presses from a physical device.
 // (USB Card reader in this application's case)
 protocol InputHandler {
 	func handleInput(_ key: UIKey?)
+	func didCancelInput()
 }
 
 
 // Concrete class of InputHandler for handling a Student's ID Card data
 final class StudentIDHandler: InputHandler {
 	
-	@Published private(set) var studentID = ""
-	
 	private var rawData: String = ""
+	
+	// StudentID publisher - when a valid RIT ID is read in, this publisher emits it to all subscribers
+	let studentID = PassthroughSubject<String, Never>()
+	
 	
 	// Data from RIT ID is formatted like: ";999999999=0047?"
 	func handleInput(_ key: UIKey?) {
 		if let key = key {
 			let keyValue = key.charactersIgnoringModifiers
 			
-			if keyValue == ";" {
+			if keyValue == ";" || keyValue == "?" {
 				// start of a new id
 				rawData = ""
 			} else if keyValue.isInt {
@@ -34,25 +38,32 @@ final class StudentIDHandler: InputHandler {
 			} else if keyValue == "=" && rawData.isValidRITidFormat {
 				// end of id input so publish result or show error
 				if rawData.isValidRITidFormat {
-					studentID = rawData
+					studentID.send(rawData)
 				} else {
-					DispatchQueue.main.async {
-						ErrorManager.shared.presentAlert(AlertContext.identificationError)
+					Task {
+						await MainActor.run {
+							ErrorManager.shared.presentAlert(AlertContext.cardReaderError)
+						}
 					}
 				}
-			} else if keyValue == "?" {
-				rawData = ""
 			}
 		}
+	}
+	
+	
+	// Called if the sequence of input from card reader is disrupted
+	func didCancelInput() {
+		rawData = ""
 	}
 }
 
 
 // UIView wrapper to access UIKit's UIResponder's "pressesBegan" api for handling a physical device input
 // In SwiftUI, can be enabled by focusing it using a .focus modifier (added in iOS 15)
+// Essentially listens for incoming data and sends it off to the provided input handler
 struct StudentIDSwipeListener: UIViewRepresentable {
 	
-	var inputHandler: InputHandler
+	let inputHandler: InputHandler
 	
 	func makeUIView(context: Context) -> IDListener {
 		IDListener(handler: inputHandler)
@@ -75,10 +86,17 @@ struct StudentIDSwipeListener: UIViewRepresentable {
 		}
 		
 		
+		// Handle presses cancelled event
+		override func pressesCancelled(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
+			handler.didCancelInput()
+		}
+		
+		
 		// Handle "presses" from the USB card swipe reader that acts as a keyboard emulator
 		override func pressesBegan(_ presses: Set<UIPress>, with event: UIPressesEvent?) {
 			handler.handleInput(presses.first?.key)
 		}
+		
 		
 		// Manually make this view focusable
 		override var canBecomeFocused: Bool { true }

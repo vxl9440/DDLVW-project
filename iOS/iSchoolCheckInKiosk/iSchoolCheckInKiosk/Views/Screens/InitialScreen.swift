@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// The first screen that is shown on launch
+// Handles student identification
 struct InitialScreen: View {
 
 	@EnvironmentObject var session: CheckInSession
@@ -34,11 +36,29 @@ struct InitialScreen: View {
 	var CardSwipe: some View {
 		VStack {
 			
-//			#if DEBUG
-//			Button("Simulate Card Swipe") {
-//				session.studentID = "626001313"
-//			}
-//			#endif
+			// Not actually a tangible view - just using as a UIResponder
+			StudentIDSwipeListener(inputHandler: sessionManager.inputHandler)
+				.frame(width: 0, height: 0)
+				.focused($isFocused)
+			
+				// Need to wait a second once view appears before focusing (SwiftUI bug? [iOS 15])
+				.task {
+					await Task.sleep(1_000_000_000)
+					isFocused = true
+				}
+			
+				// Every few seconds, check that the listener is still ready (just in case)
+				.onReceive(timer) { _ in
+					if !isFocused { isFocused = true }
+				}
+			
+				// Receives emitted student ID and calls fetchStudent
+				.onReceive(sessionManager.inputHandler.studentID) { id in
+					Task {
+						await sessionManager.fetchStudent(id: id)
+					}
+				}
+				
 			
 			IDCardGraphic().rotationEffect(.degrees(20))
 
@@ -52,19 +72,6 @@ struct InitialScreen: View {
 			Circle()
 				.foregroundColor(isFocused ? .ritGreen : .ritRed)
 				.frame(width: 30, height: 30)
-			
-			StudentIDSwipeListener(inputHandler: sessionManager.inputHandler)
-				.frame(width: 0, height: 0)
-				.focused($isFocused)
-				.task {
-					await Task.sleep(1_000_000_000)
-					isFocused = true
-				}
-				.onReceive(timer) { _ in // ensure that this view is always listening for an input
-					if !isFocused {
-						isFocused = true
-					}
-				}
 			
 			ProgressView()
 				.padding()

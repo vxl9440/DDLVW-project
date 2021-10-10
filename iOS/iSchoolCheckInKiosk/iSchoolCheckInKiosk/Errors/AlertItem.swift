@@ -23,20 +23,21 @@ struct AlertItem: Identifiable {
 
 enum AlertContext {
 	static let networkAlert = AlertItem(title: AlertTitle.networkError, message: AlertMessage.networkError)
-	
+	static let cardReaderError = AlertItem(title: AlertTitle.cardReaderError, message: AlertMessage.cardReaderError)
 	static let identificationError = AlertItem(title: AlertTitle.identificationError, message: AlertMessage.nextStep)
 }
 
 
 fileprivate enum AlertTitle {
 	static let networkError = "Network Error"
+	static let cardReaderError = "Card Reader Error"
 	static let identificationError = "Error Identifying Student"
 }
 
 
 fileprivate enum AlertMessage {
 	static let networkError = "There was a problem connecting to the Check In system. \(nextStep)"
-	
+	static let cardReaderError = "There was a problem reading card data. Please try again or ask for assistance."
 	
 	static let nextStep     = "Please ask the front desk for assistance."
 }
