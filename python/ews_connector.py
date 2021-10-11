@@ -1,10 +1,11 @@
-from exchangelib import Account, Credentials
 import datetime
+import sys
+from exchangelib import Account, Credentials
 
 
 # Username for Demo: 'iSchoolCheckIn@rit.edu'
 # Password for Demo: 'Iste501SeniorDev'
-def outlook_Cal(startDate, endDate, username, pword ):
+def outlook_Cal(startDate, endDate, username, pword):
     credentials = Credentials(
         username=username,
         password=pword
@@ -15,12 +16,19 @@ def outlook_Cal(startDate, endDate, username, pword ):
         autodiscover=True,
         # access_type=DELEGATE
     )
+    startList = startDate.split('-')
+    endList = endDate.split('-')
 
-    start = datetime.datetime(2021,9,1, tzinfo=a.default_timezone)
-    end = datetime.datetime(2021,9,30, tzinfo=a.default_timezone)
+    startYear = int(startList[0])
+    startMonth = int(startList[1])
+    startDay = int(startList[2])
 
-    # start = datetime.datetime(startDate)
-    # end = datetime.datetime(endDate)
+    endYear = int(endList[0])
+    endMonth = int(endList[1])
+    endDay = int(endList[2])
+
+    start = datetime.datetime(startYear, startMonth, startDay, tzinfo=a.default_timezone)
+    end = datetime.datetime(endYear, endMonth, endDay, tzinfo=a.default_timezone)
 
     # create a meeting request and send it out
     calendar_items = a.calendar.view(start=start, end=end).order_by('subject', 'categories')
@@ -39,4 +47,9 @@ def outlook_Cal(startDate, endDate, username, pword ):
         print()
 
 
-outlook_Cal('iSchoolCheckIn@rit.edu', 'Iste501SeniorDev')
+start = sys.argv[1]
+end = sys.argv[2]
+email = sys.argv[3]
+password = sys.argv[4]
+
+outlook_Cal(start, end, email, password)

@@ -24,7 +24,6 @@ def outlook_Cal(username, pword, startDate, endDate):
     start = datetime.datetime(2021, 9, 1, tzinfo=a.default_timezone)
     end = datetime.datetime(2021, 9, 30, tzinfo=a.default_timezone)
 
-
     # create a meeting request and send it out
     calendar_items = a.calendar.view(start=start, end=end).order_by('subject', 'categories')
 
