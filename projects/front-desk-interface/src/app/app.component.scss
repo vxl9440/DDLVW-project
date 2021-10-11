@@ -3,6 +3,10 @@ $rit-orange: rgb(230, 113, 45);
 $rit-orange-highlighted: rgb(255, 126, 51);
 $rit-light-orange: rgb(253, 137, 69);
 $rit-white-orange: rgb(255, 245, 240);
+$light-red: rgb(233, 83, 83);
+$light-red-highlighted: rgb(236, 46, 46);
+$light-green: rgb(77, 187, 77);
+$light-green-highlighted: rgb(115, 211, 91);
 
 .grid-container {
     display: grid;
@@ -88,6 +92,9 @@ button:hover {
 .student-queue-manager {
     grid-row: 2 / 5;
     grid-column: 2 / 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     padding: 10px;
     //background-color: white;
     background-color: $rit-white-orange;
@@ -102,24 +109,22 @@ button:hover {
     //width:calc(100% - 30px);
     height: auto;
     margin-top: -15px;
-    margin-left: -15px;
+    //margin-left: -15px;
     padding: 15px;
-    //padding-left: 15px;
     background-color: $rit-orange;
     color: white;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    //border-bottom-left-radius: 10px;
-    //border-bottom-right-radius: 10px;
 }
 
 .student-queue-stuff {
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: calc(100% - 70px - 100px);
+    max-height: 65vh;
+    //height: calc(100% - 70px - 100px);
     width: 100%;
-    //overflow-y: scroll;
+    overflow-y: scroll;
 }
 
 //.student-queue-stuff div {
@@ -142,15 +147,38 @@ button:hover {
     align-items: center;
 }
 
+// the 'NONE' text that appears when there are no students
 .student-queue-stuff h1 {
     font-size: 8vw;
     color: lightgray;
 }
 
 .add-student-button {
-    height: 60px;
-    width: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 10vw;
     margin: 20px;
+    padding: 10px;
+    background-color: $light-green;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
+    font-size: 1vw;
+}
+
+.add-student-button:hover {
+    background-color: $light-green-highlighted;
+}
+
+.add-student-button:active {
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25) inset;
+}
+
+.add-student-button img {
+    height: 75%;
+    margin-right: 5px;
 }
 
 .student-item div {
@@ -188,7 +216,7 @@ button:hover {
     width: 50px;
     height: 50px;
     padding: 0;
-    background-color: rgb(233, 83, 83);
+    background-color: $light-red;
     border: none;
     //border-radius: 5px;
     border-top-right-radius: 5px;
@@ -198,7 +226,7 @@ button:hover {
 
 .student-item button:hover {
 //.student-queue-stuff div button:hover {
-    background-color: rgb(236, 46, 46);
+    background-color: $light-red-highlighted;
 }
 
 .student-item button:active {

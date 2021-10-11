@@ -59,6 +59,15 @@ export class AppComponent implements OnInit {
       {firstName: "Larry", lastName: "Grobb", img: "person1.jpg"}, 
       {firstName: "Shima", lastName: "Plok", img: "person4.jpg"}, 
       {firstName: "Gus", lastName: "Juss", img: "person2.jpg"}, 
+      {firstName: "Tim", lastName: "Bim", img: "person1.jpg"}, 
+      {firstName: "Rebecca", lastName: "Grobb", img: "person3.jpg"}, 
+      {firstName: "Billy", lastName: "Mann", img: "person2.jpg"}, 
+      {firstName: "Mikah", lastName: "Guell", img: "person4.jpg"}, 
+      {firstName: "Diesel", lastName: "Feesel", img: "person2.jpg"}, 
+      {firstName: "Dani", lastName: "Sel", img: "person3.jpg"}, 
+      {firstName: "Larry", lastName: "Grobb", img: "person1.jpg"}, 
+      {firstName: "Shima", lastName: "Plok", img: "person4.jpg"}, 
+      {firstName: "Gus", lastName: "Juss", img: "person2.jpg"}
     ]});
     this.advisors.push({firstName: "Sabrina", lastName: "Quazz", email: "stq2413@rit.edu", meetsWithWalkIns: false, img: "person3.jpg", studentQueue: []});
 
