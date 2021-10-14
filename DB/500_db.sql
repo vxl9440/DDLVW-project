@@ -22,28 +22,29 @@ DROP TABLE IF EXISTS `advisor`;
 
 CREATE TABLE `advisor` (
   `advisor_id` int(5) unsigned NOT NULL AUTO_INCREMENT,
-  `a_first_name` varchar(24) NOT NULL,
-  `a_middle_name` varchar(24) DEFAULT NULL,
-  `a_last_name` varchar(24) NOT NULL,
+  `first_name` varchar(24) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `middle_name` varchar(24) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `last_name` varchar(24) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `username` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `portrait_url` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'http://www.example.com',
+  `is_available` char(1) NOT NULL DEFAULT 'Y',
   PRIMARY KEY (`advisor_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 /*Data for the table `advisor` */
 
-insert  into `advisor`(`advisor_id`,`a_first_name`,`a_middle_name`,`a_last_name`,`username`,`portrait_url`) values 
-(1,'Melody',NULL,'Jackson','zxc1234','http://www.example.com'),
-(2,'Betty',NULL,'John','qwe1234','http://www.example.com'),
-(3,'Betty',NULL,'Jackson','jkl1234','http://www.example.com'),
-(4,'Melody',NULL,'John','abc1234','http://www.example.com');
+insert  into `advisor`(`advisor_id`,`first_name`,`middle_name`,`last_name`,`username`,`portrait_url`,`is_available`) values 
+(1,'Melody',NULL,'Jackson','zxc1234','http://www.example.com','Y'),
+(2,'Betty',NULL,'John','qwe1234','http://www.example.com','Y'),
+(3,'Betty',NULL,'Jackson','jkl1234','http://www.example.com','Y'),
+(4,'Melody',NULL,'John','abc1234','http://www.example.com','Y');
 
 /*Table structure for table `reason` */
 
 DROP TABLE IF EXISTS `reason`;
 
 CREATE TABLE `reason` (
-  `reason_id` int(3) unsigned NOT NULL AUTO_INCREMENT,
+  `reason_id` int(4) unsigned NOT NULL AUTO_INCREMENT,
   `reason_name` varchar(64) NOT NULL,
   `needsAppt` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'N',
   PRIMARY KEY (`reason_id`)
@@ -63,58 +64,57 @@ DROP TABLE IF EXISTS `registration`;
 
 CREATE TABLE `registration` (
   `registration_id` int(8) unsigned NOT NULL AUTO_INCREMENT,
-  `student_id` int(7) unsigned NOT NULL,
   `advisor_id` int(5) unsigned NOT NULL,
-  `reason_id` int(3) unsigned NOT NULL,
   `check_in_time` timestamp NOT NULL,
   `check_out_time` timestamp NULL DEFAULT NULL,
   `remove_reason` varchar(128) DEFAULT NULL,
   `appointment_type` char(1) NOT NULL,
+  `student_username` varchar(10) NOT NULL,
+  `student_first_name` varchar(24) NOT NULL,
+  `student_middle_name` varchar(24) DEFAULT NULL,
+  `student_last_name` varchar(24) NOT NULL,
   PRIMARY KEY (`registration_id`),
-  KEY `registration_reason_fk` (`reason_id`),
-  KEY `registration_student_fk` (`student_id`),
   KEY `registration_advisor_fk` (`advisor_id`),
   CONSTRAINT `registration_advisor_fk` FOREIGN KEY (`advisor_id`) REFERENCES `advisor` (`advisor_id`),
-  CONSTRAINT `registration_reason_fk` FOREIGN KEY (`reason_id`) REFERENCES `reason` (`reason_id`),
-  CONSTRAINT `registration_student_fk` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`),
   CONSTRAINT `CHK_appointment_type` CHECK (((`appointment_type` = _utf8mb3'0') or (`appointment_type` = _utf8mb3'1')))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `registration` */
 
-/*Table structure for table `student` */
+/*Table structure for table `registration_reason_assoc` */
 
-DROP TABLE IF EXISTS `student`;
+DROP TABLE IF EXISTS `registration_reason_assoc`;
 
-CREATE TABLE `student` (
-  `student_id` int(7) unsigned NOT NULL AUTO_INCREMENT,
-  `s_first_name` varchar(24) NOT NULL,
-  `s_middle_name` varchar(24) DEFAULT NULL,
-  `s_last_name` varchar(24) NOT NULL,
-  `username` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `major` varchar(42) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  PRIMARY KEY (`student_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+CREATE TABLE `registration_reason_assoc` (
+  `registration_id` int(8) unsigned NOT NULL,
+  `reason_id` int(4) unsigned NOT NULL,
+  PRIMARY KEY (`registration_id`,`reason_id`),
+  KEY `registrationReasonAssoc_reason_fk` (`reason_id`),
+  CONSTRAINT `registrationReasonAssoc_reason_fk` FOREIGN KEY (`reason_id`) REFERENCES `reason` (`reason_id`),
+  CONSTRAINT `registrationReasonAssoc_registration_fk` FOREIGN KEY (`registration_id`) REFERENCES `registration` (`registration_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Data for the table `student` */
+/*Data for the table `registration_reason_assoc` */
 
-insert  into `student`(`student_id`,`s_first_name`,`s_middle_name`,`s_last_name`,`username`,`major`) values 
-(1,'Bob',NULL,'Messi','vxf8410','Web and Mobile'),
-(2,'Kevin',NULL,'John','osb1023','HCC'),
-(3,'Bob',NULL,'Alice','toe4812','Computing Information and Technologies'),
-(4,'Bob',NULL,'John','bhs1586','Web and Mobile'),
-(5,'Jones',NULL,'John','fdj2478','Web and Mobile'),
-(6,'Kevin',NULL,'Jackson','itk4127','HCC'),
-(7,'Jones',NULL,'Messi','adh8615','HCC'),
-(8,'Jones',NULL,'Jackson','thd8225','HCC'),
-(9,'Kevin',NULL,'Messi','lco1276','Computing Information and Technologies'),
-(10,'Jones',NULL,'Ronaldo','ayo4444','Web and Mobile'),
-(11,'Bob',NULL,'Ronaldo','bol8190','Computing Information and Technologies'),
-(12,'Kevin',NULL,'Ronaldo','tef3970','HCC'),
-(13,'Bob',NULL,'Jackson','ghj8158','Web and Mobile'),
-(14,'Jones',NULL,'Alice','inz8268','Computing Information and Technologies'),
-(15,'Kevin',NULL,'Alice','keo3161','Web and Mobile'),
-(16,'Kevin',NULL,'John','cjd4619','Computing Information and Technologies');
+/*Table structure for table `walk_in_hour` */
+
+DROP TABLE IF EXISTS `walk_in_hour`;
+
+CREATE TABLE `walk_in_hour` (
+  `advisor_id` int(5) unsigned NOT NULL,
+  `start_time` time NOT NULL,
+  `end_time` time NOT NULL,
+  `weekday` char(3) NOT NULL,
+  PRIMARY KEY (`advisor_id`,`start_time`,`end_time`,`weekday`),
+  CONSTRAINT `walkInHour_advisor_fk` FOREIGN KEY (`advisor_id`) REFERENCES `advisor` (`advisor_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `walk_in_hour` */
+
+insert  into `walk_in_hour`(`advisor_id`,`start_time`,`end_time`,`weekday`) values 
+(1,'13:00:00','16:00:00','Mon'),
+(2,'12:00:00','13:00:00','Sat'),
+(2,'22:00:00','23:30:00','Mon');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
