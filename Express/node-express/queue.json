@@ -1,5 +1,36 @@
-{
-    "queue_data": [
-        
-    ]
-}
+[
+    {
+       "meetingHost":1,
+       "queue":[
+          {
+             "studentName":"student name2",
+             "username":"qwe1234"
+          },
+          {
+             "studentName":"student name1",
+             "username":"abc1234"
+          },
+          {
+             "studentName":"student name3",
+             "username":"zxc1234"
+          }
+       ]
+    },
+    {
+       "meetingHost":2,
+       "queue":[
+          {
+             "studentName":"student name4",
+             "username":"cba1234"
+          },
+          {
+             "studentName":"student name5",
+             "username":"ewq1234"
+          },
+          {
+             "studentName":"student name6",
+             "username":"cxz1234"
+          }
+       ]
+    }
+ ]
