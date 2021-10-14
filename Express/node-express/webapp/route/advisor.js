@@ -4,21 +4,20 @@ const queue = require('../entity/queue');
 const walkInHour = require('../entity/walkInHour');
 
 
-// router.get('/available',(req,res)=>{
-//     console.log('in');
-//     var p  = advisor.getAdvisorByWalkInAvailability();
-//     p.then((value)=>{
-//         res.json(value);
-//     });
-// });
+router.get('/available',(req,res)=>{
+    var p  = advisor.getAdvisorByWalkInAvailability();
+    p.then((value)=>{
+        res.json(value);
+    });
+});
 
 
-// router.get('/:id/walkInHours',(req,res)=>{
-//     var p = walkInHour.getWorkInHoursByAdvisorId(req.params.id);
-//     p.then((value)=>{
-//         res.json(value);
-//     });
-// });
+router.get('/:id/walkInHours',(req,res)=>{
+    var p = walkInHour.getWorkInHoursByAdvisorId(req.params.id);
+    p.then((value)=>{
+        res.json(value);
+    });
+});
 
 router.get('/queue',(req,res)=>{
     res.json(queue.getAdvisorQueueByIds(req.body))
