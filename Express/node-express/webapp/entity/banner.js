@@ -22,25 +22,28 @@ exports.getBannerInfo = function() {
 }
 
 exports.insertBannerInfo = function(content) {
-    var returnData = {"message": 'Fail'};
-    if(write(content['bannerInfo'])){
+    const returnData = {"message": 'Fail'};
+    if (write(content['bannerInfo'])) {
         returnData['message'] = 'Success';
     }
+
     return returnData;
 }
 
 exports.updateBannerInfo = function(content) {
-    var returnData = {"message": 'Fail'};
-    if(write(content['bannerInfo'])){
+    const returnData = {"message": 'Fail'};
+    if (write(content['bannerInfo'])) {
         returnData['message'] = 'Success';
     }
+
     return returnData;
 }
 
 exports.deleteBannerInfo = function() {
-    var returnData = {"message": 'Fail'};
-    if(write('')){
+    const returnData = {"message": 'Fail'};
+    if (write('')) {
         returnData['message'] = 'Success';
     }
+    
     return returnData;
 }

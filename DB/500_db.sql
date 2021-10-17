@@ -27,38 +27,37 @@ CREATE TABLE `advisor` (
   `last_name` varchar(24) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `username` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `portrait_url` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'http://www.example.com',
-  `is_available` char(1) NOT NULL DEFAULT 'Y',
   PRIMARY KEY (`advisor_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
-/*Data for the table `advisor` */
+/* Data for the table `advisor` */
 
-insert  into `advisor`(`advisor_id`,`first_name`,`middle_name`,`last_name`,`username`,`portrait_url`,`is_available`) values 
-(1,'Melody',NULL,'Jackson','zxc1234','http://www.example.com','Y'),
-(2,'Betty',NULL,'John','qwe1234','http://www.example.com','Y'),
-(3,'Betty',NULL,'Jackson','jkl1234','http://www.example.com','Y'),
-(4,'Melody',NULL,'John','abc1234','http://www.example.com','Y');
+insert  into `advisor`(`advisor_id`,`first_name`,`middle_name`,`last_name`,`username`,`portrait_url`) values 
+(1,'Melody',NULL,'Jackson','zxc1234','http://www.example.com'),
+(2,'Betty',NULL,'John','qwe1234','http://www.example.com'),
+(3,'Betty',NULL,'Jackson','jkl1234','http://www.example.com'),
+(4,'Melody',NULL,'John','abc1234','http://www.example.com');
 
-/*Table structure for table `reason` */
+/* Table structure for table `reason` */
 
 DROP TABLE IF EXISTS `reason`;
 
 CREATE TABLE `reason` (
   `reason_id` int(4) unsigned NOT NULL AUTO_INCREMENT,
   `reason_name` varchar(64) NOT NULL,
-  `needsAppt` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'N',
+  `needsAppt` boolean NOT NULL DEFAULT 0,
   PRIMARY KEY (`reason_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
-/*Data for the table `reason` */
+/* Data for the table `reason` */
 
 insert  into `reason`(`reason_id`,`reason_name`,`needsAppt`) values 
-(1,'reason a','N'),
-(2,'reason b','N'),
-(3,'reason c','N'),
-(4,'reason d','N');
+(1,'reason a',0),
+(2,'reason b',0),
+(3,'reason c',1),
+(4,'reason d',1);
 
-/*Table structure for table `registration` */
+/* Table structure for table `registration` */
 
 DROP TABLE IF EXISTS `registration`;
 
@@ -67,21 +66,19 @@ CREATE TABLE `registration` (
   `advisor_id` int(5) unsigned NOT NULL,
   `check_in_time` timestamp NOT NULL,
   `check_out_time` timestamp NULL DEFAULT NULL,
-  `remove_reason` varchar(128) DEFAULT NULL,
+  `registration_reason_id` varchar(128) DEFAULT NULL,
   `appointment_type` char(1) NOT NULL,
   `student_username` varchar(10) NOT NULL,
-  `student_first_name` varchar(24) NOT NULL,
-  `student_middle_name` varchar(24) DEFAULT NULL,
-  `student_last_name` varchar(24) NOT NULL,
+  `student_name` varchar(24) NOT NULL,
   PRIMARY KEY (`registration_id`),
   KEY `registration_advisor_fk` (`advisor_id`),
   CONSTRAINT `registration_advisor_fk` FOREIGN KEY (`advisor_id`) REFERENCES `advisor` (`advisor_id`),
   CONSTRAINT `CHK_appointment_type` CHECK (((`appointment_type` = _utf8mb3'0') or (`appointment_type` = _utf8mb3'1')))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Data for the table `registration` */
+/* Data for the table `registration` */
 
-/*Table structure for table `registration_reason_assoc` */
+/* Table structure for table `registration_reason_assoc` */
 
 DROP TABLE IF EXISTS `registration_reason_assoc`;
 
@@ -94,9 +91,9 @@ CREATE TABLE `registration_reason_assoc` (
   CONSTRAINT `registrationReasonAssoc_registration_fk` FOREIGN KEY (`registration_id`) REFERENCES `registration` (`registration_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Data for the table `registration_reason_assoc` */
+/* Data for the table `registration_reason_assoc` */
 
-/*Table structure for table `walk_in_hour` */
+/* Table structure for table `walk_in_hour` */
 
 DROP TABLE IF EXISTS `walk_in_hour`;
 
@@ -109,7 +106,7 @@ CREATE TABLE `walk_in_hour` (
   CONSTRAINT `walkInHour_advisor_fk` FOREIGN KEY (`advisor_id`) REFERENCES `advisor` (`advisor_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*Data for the table `walk_in_hour` */
+/* Data for the table `walk_in_hour` */
 
 insert  into `walk_in_hour`(`advisor_id`,`start_time`,`end_time`,`weekday`) values 
 (1,'13:00:00','16:00:00','Mon'),

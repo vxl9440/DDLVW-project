@@ -55,7 +55,7 @@ export function getAdvisorQueueByIds(data) {
     var queue = read();
     var selectedList = [];
     for(var i = 0;i < idList.length;i++){
-        selectedList.push(queue[findAdvisorByObjIndex(queue,idList[i])]); 
+        selectedList.push(queue[findAdvisorByObjIndex(queue, idList[i])]); 
     } 
     return selectedList;
 }

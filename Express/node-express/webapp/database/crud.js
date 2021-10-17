@@ -22,9 +22,11 @@ const executeQuery = function doAll(sql, sqlParam) {
 
 exports.select = function(sql,sqlParam) {
     return new Promise((resolve, reject) => {
-        connection.query(sql, sqlParam, function(error,result,field) {
-            console.log(error);
-            if (!error) {
+        connection.query(sql, sqlParam, function(error, result, field) {
+            if (error) {
+                console.log(error);
+                reject(error);
+            } else {
                 resolve(result);
             }
         });

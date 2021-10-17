@@ -20,7 +20,8 @@ exports.getAdvisorById = function(targetId) {
     return crud.select(sql, [parseInt(targetId)]);
 }
 
-exports.getAdvisorByWalkInAvailability = function(){
+// TODO: Update this to get advisors that currently have walk in hours
+exports.getAdvisorByWalkInAvailability = function() {
     const sql = 'SELECT a.advisor_id as id,a.first_name as firstName,' +
                      'a.middle_name as middleName,a.last_name as lastName,' +
                      'a.username as username,a.portrait_url as portraitURL '+
@@ -32,7 +33,7 @@ exports.getAdvisorByWalkInAvailability = function(){
 }
 
 
-exports.insertAdvisor = function(data){
+exports.insertAdvisor = function(data) {
     const sql = 'INSERT INTO advisor(first_name,middle_name,last_name,username,portrait_url)'+
               'VALUES(?,?,?,?,?)';
     const sqlParam = [data['firstName'], data['middleName'] === '' ? null : data['middleName'],
@@ -42,7 +43,7 @@ exports.insertAdvisor = function(data){
 }
 
 
-exports.updateAdvisor = function(data,targetId){
+exports.updateAdvisor = function(data, targetId) {
     const sql = 'UPDATE advisor SET first_name = ?,middle_name = ?,last_name = ?,'+
                                   'username = ?,portrait_url = ? '+
                                   'WHERE advisor_id = ?';
@@ -52,7 +53,8 @@ exports.updateAdvisor = function(data,targetId){
     return crud.update(sql, sqlParam);
 }
 
-exports.deleteAdvisor = function (targetId) {
+
+exports.deleteAdvisor = function(targetId) {
     const sql = 'DELETE FROM advisor WHERE advisor_id = ?';
 
     return crud.delete(sql, [parseInt(targetId)]);

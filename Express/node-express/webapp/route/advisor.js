@@ -4,83 +4,71 @@ const queue = require('../entity/queue');
 const walkInHour = require('../entity/walkInHour');
 
 
-router.get('/available',(req,res)=>{
-    var p  = advisor.getAdvisorByWalkInAvailability();
-    p.then((value)=>{
-        res.json(value);
-    });
+router.get('/available', (req, res) => {
+    advisor.getAdvisorByWalkInAvailability()
+        .then(advisors => res.json(advisors));
 });
 
 
-router.get('/:id/walkInHours',(req,res)=>{
-    var p = walkInHour.getWorkInHoursByAdvisorId(req.params.id);
-    p.then((value)=>{
-        res.json(value);
-    });
+router.get('/:id/walkInHours', (req, res) => {
+    walkInHour.getWorkInHoursByAdvisorId(req.params.id)
+        .then(hours => res.json(hours));
 });
 
-router.get('/queue',(req,res)=>{
+
+router.get('/queue', (req, res) => {
     res.json(queue.getAdvisorQueueByIds(req.body))
 });
 
-router.post('/:id/queue',(req,res)=>{
+
+router.post('/:id/queue', (req, res) => {
     res.json(queue.insertStudentByAdvisorId(req.params.id,req.body));
 });
 
-router.put('/:id/queue',(req,res)=>{
+
+router.put('/:id/queue', (req, res) => {
     res.json(queue.adjustStudentPositionByAdvisorId(req.params.id,req.body)); 
 }); 
 
-router.delete('/:id/queue',(req,res)=>{
+
+router.delete('/:id/queue', (req, res) => {
     res.json(queue.deleteStudentByAdvisorId(req.params.id,req.body)); 
 }); 
 
+
 //select all advisors
-router.get('/',(req,res)=>{
-    var p = advisor.getAllAdvisors();
-    p.then((value)=>{
-        res.json(value);
-    });
+router.get('/', (req, res) => {
+    advisor.getAllAdvisors()
+        .then(advisors => res.json(advisors));
 });
 
 
 //select advisor by Id
-router.get('/:id',(req,res)=>{
-    var p = advisor.getAdvisorById(req.params.id);
-    p.then((value)=>{
-        res.json(value[0]);
-    });
+router.get('/:id', (req, res) => {
+    advisor.getAdvisorById(req.params.id)
+        .then(success => res.json(success[0]));
 });
 
 
 //insert advisor
-router.post('/',(req,res)=>{
-    var p = advisor.insertAdvisor(req.body);
-    p.then((value)=>{
-        res.json(value);
-    },(reason)=>{
-        res.json(reason);
-    });
+router.post('/', (req, res) => {
+    advisor.insertAdvisor(req.body)
+        .then(success => res.json(success))
+        .catch(error => res.json(error));
 });
 
 //update advisor
-router.put('/:id',(req,res)=>{
-    var p = advisor.updateAdvisor(req.body,req.params.id);
-    p.then((value)=>{
-        res.json(value);
-    },(reason)=>{
-        res.json(reason);
-    });
+router.put('/:id', (req, res) => {
+    advisor.updateAdvisor(req.body,req.params.id)
+        .then(success => res.json(success))
+        .catch(error => res.json(error));
 });
 
 //delete advisor
-router.delete('/:id',(req,res)=>{
-    var p = advisor.deleteAdvisor(req.params.id);
-    p.then((value)=>{
-        res.json(value);
-    },(reason)=>{
-        res.json(reason);
-    });
+router.delete('/:id', (req, res) => {
+    advisor.deleteAdvisor(req.params.id)
+        .then(success => res.json(success))
+        .catch(error => res.json(error));
 });
 
 export default router;

@@ -1,5 +1,5 @@
 const router = require('express').Router();
-import { getStudentData } from '../entity/ldap';
+import { getStudentData } from '../util/ldap';
 import { getTodayOutlookCalendar } from '../entity/outlook';
 
 
