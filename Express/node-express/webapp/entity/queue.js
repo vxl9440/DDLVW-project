@@ -1,44 +1,48 @@
-const { log } = require('console');
-const fs = require('fs');
-const fileLocation = 'C:\\Users\\miaox\\Desktop\\500-node\\queue.json';
+import { log } from 'console';
+import { readFileSync, writeFileSync } from 'fs';
+const fileLocation = '../../queue.json';
 
 
-function read(){
-    return JSON.parse(fs.readFileSync(fileLocation));
+function read() {
+    return JSON.parse(readFileSync(fileLocation));
 }
 
-function write(queue){
-    var returnData = {
+function write(queue) {
+    const returnData = {
         "message": "Success"
     };
+
     try {
-        const data = fs.writeFileSync(fileLocation, JSON.stringify(queue));
+        writeFileSync(fileLocation, JSON.stringify(queue));
     } catch (err) {
         returnData['message'] = 'Fail';
         return returnData;
     }
+
     return returnData;
 }
 
-function findAdvisorByObjIndex(queue,advisorId){
-    for(var i = 0;i < queue.length;i++){
-        if(queue[i]['meetingHost'] === advisorId){
+function findAdvisorByObjIndex(queue, advisorId) {
+    for (var i = 0; i < queue.length; i++) {
+        if (queue[i]['meetingHost'] === advisorId) {
             return i;
         }
     }
+
     return -1;
 }
 
 function findStudentPositionByAdvisorId(queue,advisorIndex,studentUsername){
-    for(var k = 0;k < queue[advisorIndex]['queue'].length;k++){
-        if(queue[advisorIndex]['queue'][k]['username'] === studentUsername){
+    for (var k = 0; k < queue[advisorIndex]['queue'].length; k++) {
+        if(queue[advisorIndex]['queue'][k]['username'] === studentUsername) {
             return k;
         }
     }
+
     return -1;
 }
 
-function insertAdvisor(queue,advisorId){
+function insertAdvisor(queue,advisorId) {
     var advisorObj = {
         "meetingHost": advisorId,
         "queue":[]
@@ -46,7 +50,7 @@ function insertAdvisor(queue,advisorId){
     queue.push(advisorObj);
 }
 
-exports.getAdvisorQueueByIds = function (data) {
+export function getAdvisorQueueByIds(data) {
     var idList = data['id'];
     var queue = read();
     var selectedList = [];
@@ -56,7 +60,7 @@ exports.getAdvisorQueueByIds = function (data) {
     return selectedList;
 }
 
-exports.insertStudentByAdvisorId = function (targetId,data) {
+export function insertStudentByAdvisorId (targetId,data) {
     var queue = read();
     var targetIndex = findAdvisorByObjIndex(queue,parseInt(targetId));
     if(targetIndex === -1){
@@ -66,7 +70,7 @@ exports.insertStudentByAdvisorId = function (targetId,data) {
     return write(queue);
 }
 
-exports.adjustStudentPositionByAdvisorId = function(targetId,data){
+export function adjustStudentPositionByAdvisorId(targetId,data){
     var queue = read();
     var advisorIndex = findAdvisorByObjIndex(queue,parseInt(targetId));
     var currentPosition = findStudentPositionByAdvisorId(queue,advisorIndex,data['username']);
@@ -76,10 +80,12 @@ exports.adjustStudentPositionByAdvisorId = function(targetId,data){
     return write(queue);
 }
 
-exports.deleteStudentByAdvisorId = function (targetId,data) {
-    var queue = read();
-    var advisorIndex = findAdvisorByObjIndex(queue,parseInt(targetId));
-    var currentPosition = findStudentPositionByAdvisorId(queue,advisorIndex,data['username']);
+export function deleteStudentByAdvisorId(targetId, data) {
+    const queue = read();
+    const advisorIndex = findAdvisorByObjIndex(queue, parseInt(targetId));
+    const currentPosition = findStudentPositionByAdvisorId(queue, advisorIndex, data['username']);
+    
     queue[advisorIndex]['queue'].splice(currentPosition,1);
+    
     return write(queue);
 }

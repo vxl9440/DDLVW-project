@@ -1,5 +1,5 @@
 
-var weekdayMapper = {
+const weekdayMapper = {
     1: 'Mon',
     2: 'Tue',
     3: 'Wed',
@@ -10,19 +10,20 @@ var weekdayMapper = {
 };
 
 
-exports.getCurrentWeekDay = function(){
+export function getCurrentWeekDay() {
     return weekdayMapper[new Date().getDay()];
 }
 
-exports.getCurrentTime = function(){
-    var d = new Date();
-    return `${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`;
+export function getCurrentTime() {
+    const d = new Date();
+    return `${ d.getHours() }:${ d.getMinutes() }:${ d.getSeconds() }`;
 }
 
-exports.getCurrentDay = function (plusOne) {
-    var d = new Date();
-    if(plusOne){
+export function getCurrentDay (plusOne) {
+    const d = new Date();
+    if (plusOne) {
         d.setDate(d.getDate() + 1);
     }
-    return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+
+    return `${ d.getFullYear() }-${ d.getMonth() + 1 }-${ d.getDate() }`;
 }

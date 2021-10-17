@@ -1,23 +1,22 @@
-var express = require('express');
+import express, { json, urlencoded } from 'express';
+import reasonRouter from './webapp/route/reason';
+import advisorRouter from './webapp/route/advisor';
+import studentRouter from './webapp/route/student';
+import bannerRouter from './webapp/route/banner';
 
+const port = 8080;
+const app  = express();
 
-const reasonRouter = require('./webapp/route/reason');
-const advisorRouter = require('./webapp/route/advisor');
-const ldapRouter = require('./webapp/route/ldap');
-const bannerRouter = require('./webapp/route/banner');
+app.use(json());
+app.use(urlencoded({ extended: false }));
 
-var app = express();
+app.use('/reason', reasonRouter);
+app.use('/meetingHost', advisorRouter);
+app.use('/student', studentRouter);
+app.use('/bannerInfo', bannerRouter);
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-
-app.use('/reason',reasonRouter);
-app.use('/meetingHost',advisorRouter);
-app.use('/ldap',ldapRouter);
-app.use('/bannerInfo',bannerRouter);
-
-app.listen(8080,'localhost',()=>{
-    console.log('RUNNING');
+app.listen(port, () => {
+    console.log('Running on port ', port);
 })
 
-module.exports = app;
+export default app;

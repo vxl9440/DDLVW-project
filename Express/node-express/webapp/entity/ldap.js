@@ -6,7 +6,7 @@ const assert = require('assert');
 const ldap_server = 'ldaps://ldap.rit.edu',
       ldap_user   = 'iSchoolCheckIn',
       ldap_pass   = 'Iste501SeniorDev',
-      attributes  = ['uid', 'cn','distinguishedName'],
+      attributes  = ['uid', 'cn'],
       search_dn   = 'ou=people,dc=rit,dc=edu',
       bind_dn     = `uid=${ ldap_user },${ search_dn }`;
 // ----------------------------------------------------
@@ -61,7 +61,7 @@ async function search(client, studentID) {
         filter: `(ritID=${ studentID })`,
         scope: 'sub',
         attributes: attributes,
-        sizeLimit: 100  
+        sizeLimit: 1 
     };
 
     return new Promise((resolve, reject) => {
@@ -75,11 +75,10 @@ async function search(client, studentID) {
             
             // Listen for returned data and resolve promise
             res.on('searchEntry', (entry) => {
-                var returnData = {
+                resolve({
                     'studentName': entry.object['cn'],
                     'studentUsername': entry.object['uid']
-                }
-                resolve(returnData); 
+                }); 
             });
         
             // Listen for errors from the result
@@ -118,7 +117,7 @@ Attempts to retrieve student data from LDAP server
 */
 async function getStudentData(studentID) {
 
-    if (!studentIDIsValid(studentID)) { return; }
+    if (!studentIDIsValid(studentID)) { return null; }
 
     // returns a connected client or null if connection failed
     const client = await createConnection(); 
@@ -127,14 +126,14 @@ async function getStudentData(studentID) {
         try {
             return await search(client, studentID); 
         } catch {
-            return {};
+            return null;
         } finally {
             if (client.connected) { 
                 unbind(client); 
             }
         }
     } else {
-        return {};
+        return null;
     }
 }
 

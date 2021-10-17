@@ -17,4 +17,4 @@ router.delete('/',(req,res)=>{
      res.json(banner.deleteBannerInfo());
 });
 
-module.exports = router;
+export default router;

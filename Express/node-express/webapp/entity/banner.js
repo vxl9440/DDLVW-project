@@ -15,13 +15,13 @@ function write(content){
 }
 
 
-exports.getBannerInfo = function () {
+exports.getBannerInfo = function() {
     return {
         "bannerInfo": read()
     };
 }
 
-exports.InsertBannerInfo = function (content) {
+exports.insertBannerInfo = function(content) {
     var returnData = {"message": 'Fail'};
     if(write(content['bannerInfo'])){
         returnData['message'] = 'Success';
@@ -29,7 +29,7 @@ exports.InsertBannerInfo = function (content) {
     return returnData;
 }
 
-exports.updateBannerInfo = function (content) {
+exports.updateBannerInfo = function(content) {
     var returnData = {"message": 'Fail'};
     if(write(content['bannerInfo'])){
         returnData['message'] = 'Success';
@@ -37,7 +37,7 @@ exports.updateBannerInfo = function (content) {
     return returnData;
 }
 
-exports.deleteBannerInfo = function () {
+exports.deleteBannerInfo = function() {
     var returnData = {"message": 'Fail'};
     if(write('')){
         returnData['message'] = 'Success';
