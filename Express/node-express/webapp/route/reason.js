@@ -1,41 +1,29 @@
 const router = require('express').Router();
-const reason = require('../entity/reason');
+import { getAllReasons, insertReason, updateReason, deleteReason } from '../entity/reason';
 
-router.get('/', (req,res)=>{
-    var p = reason.getAllReasons();
-    p.then((value)=>{
-       res.json(value);
-    });
+router.get('/', (req, res) => {
+   getAllReasons()
+      .then(reasons => res.json(reasons))
+      .catch(error => res.send(500).json(error));
 });
 
-
-router.post('/',(req,res)=>{
-   var p = reason.insertReason(req.body);
-   p.then((value)=>{
-       res.json(value);
-   },(reason)=>{
-       res.json(reason);
-   });
+router.post('/', (req, res) => {
+   insertReason(req.body)
+      .then(success => res.json(success))
+      .catch(error => res.json(error));
 });
 
 router.put('/:id',(req,res)=>{
-   var p = reason.updateReason(req.body,req.params.id);
-   p.then((value)=>{
-      res.json(value);
-   },(reason)=>{
-      res.json(reason);
-   });
+   updateReason(req.body, req.params.id)
+      .then(success => res.json(success))
+      .catch(error => res.json(error));
 });
 
 router.delete('/:id',(req,res)=>{
-   var p = reason.deleteReason(req.params.id);
-   p.then((value)=>{
-      res.json(value);
-   },(reason)=>{
-      res.json(reason);
-   });
-})
+   deleteReason(req.params.id)
+      .then(success => res.json(success))
+      .catch(error => res.json(reason))
+});
    
 
-
-module.exports = router;
+export default router;
