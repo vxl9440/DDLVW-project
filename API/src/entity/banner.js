@@ -1,13 +1,14 @@
-const fs = require('fs');
-const fileLocation = 'C:\\Users\\miaox\\Desktop\\500-node\\banner';
+import fs from 'fs';
 
-function read(){
+const fileLocation = '../../banner.txt';
+
+function read() {
     return fs.readFileSync(fileLocation).toString(); 
 }
 
-function write(content){
+function write(content) {
     try {
-        const data = fs.writeFileSync(fileLocation, content)
+        fs.writeFileSync(fileLocation, content)
     } catch (err) {
         return false;
     }
@@ -15,13 +16,13 @@ function write(content){
 }
 
 
-exports.getBannerInfo = function() {
+export function getBannerInfo() {
     return {
         "bannerInfo": read()
-    };
+    }
 }
 
-exports.insertBannerInfo = function(content) {
+export function insertBannerInfo(content) {
     const returnData = {"message": 'Fail'};
     if (write(content['bannerInfo'])) {
         returnData['message'] = 'Success';
@@ -30,7 +31,7 @@ exports.insertBannerInfo = function(content) {
     return returnData;
 }
 
-exports.updateBannerInfo = function(content) {
+export function updateBannerInfo(content) {
     const returnData = {"message": 'Fail'};
     if (write(content['bannerInfo'])) {
         returnData['message'] = 'Success';
@@ -39,7 +40,7 @@ exports.updateBannerInfo = function(content) {
     return returnData;
 }
 
-exports.deleteBannerInfo = function() {
+export function deleteBannerInfo() {
     const returnData = {"message": 'Fail'};
     if (write('')) {
         returnData['message'] = 'Success';

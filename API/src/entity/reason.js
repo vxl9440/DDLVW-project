@@ -1,28 +1,28 @@
-const crud = require('../database/crud')
+import { select, insert, update, _delete } from '../database/crud.js';
 
-exports.getAllReasons = function() {
+export function getAllReasons() {
     const sql = 'SELECT reason_id as id,reason_name as name, needsAppt as needsAppt ' +
               'FROM reason';
 
-    return crud.select(sql, []);
+    return select(sql, []);
 }
 
-exports.insertReason = function(data) {
+export function insertReason(data) {
     const sql = 'INSERT INTO reason(reason_name,needsAppt) VALUES(?,?)';
     sqlParam = [data['name'], data['needsAppt']];
     
-    return crud.insert(sql, sqlParam);
+    return insert(sql, sqlParam);
 }
 
-exports.updateReason = function(data, targetId) {
+export function updateReason(data, targetId) {
     const sql = 'UPDATE reason SET reason_name = ?,needsAppt = ? WHERE reason_id = ?';
     const sqlParam = [data['name'], data['needsAppt'], parseInt(targetId)];
     
-    return crud.update(sql, sqlParam);
+    return update(sql, sqlParam);
 }
 
-exports.deleteReason = function(targetId) {
+export function deleteReason(targetId) {
     const sql = 'DELETE FROM reason WHERE reason_id = ?';
     
-    return crud.delete(sql, [targetId]);
+    return _delete(sql, [targetId]);
 }

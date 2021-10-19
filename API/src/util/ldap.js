@@ -1,6 +1,6 @@
 // Documentation http://ldapjs.org/client.html
-const ldap   = require('ldapjs');
-const assert = require('assert');
+import ldap from 'ldapjs';
+import assert from 'assert';
 
 // -------------- CONFIG ------------------------------
 const ldap_server = 'ldaps://ldap.rit.edu',
@@ -115,7 +115,7 @@ Attempts to retrieve student data from LDAP server
 - Usage (from within an async func or top-level scope in a module):
     const studentInfo = await getStudentData('xxxxxxxxx');
 */
-async function getStudentData(studentID) {
+export async function getStudentData(studentID) {
 
     if (!studentIDIsValid(studentID)) { return null; }
 
@@ -136,5 +136,3 @@ async function getStudentData(studentID) {
         return null;
     }
 }
-
-module.exports = { getStudentData };

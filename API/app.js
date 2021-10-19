@@ -1,12 +1,12 @@
-import express, { json, urlencoded } from 'express';
-import reasonRouter from './webapp/route/reason';
-import advisorRouter from './webapp/route/advisor';
-import studentRouter from './webapp/route/student';
-import bannerRouter from './webapp/route/banner';
-const jwt = require('express-jwt');
+import express from 'express';
+//import jwt from 'express-jwt';
+import reasonRouter from './src/route/reason.js';
+import meetingHostRouter from './src/route/advisor.js';
+import studentRouter from './src/route/student.js';
+import bannerRouter from './src/route/banner.js';
 
 const port = 8080;
-const app  = express();
+const app = express();
 
 // Add JWT Authorization middleware first
 // app.use(jwt({ secret: 'ischool' }));
@@ -18,11 +18,16 @@ const app  = express();
 //     next();
 // });
 
-app.use(json());
-app.use(urlencoded({ extended: false }));
+//app.use(urlencoded({ extended: false }));
 
+const logger = function(req, res, next) {
+    console.log("Request received: ", req);
+    next(); // Passing the request to the next handler in the stack.
+}
+
+app.use(logger);
 app.use('/reason', reasonRouter);
-app.use('/meetingHost', advisorRouter);
+app.use('/meetingHost', meetingHostRouter);
 app.use('/student', studentRouter);
 app.use('/bannerInfo', bannerRouter);
 

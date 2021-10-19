@@ -1,5 +1,5 @@
-const { exec } = require('child_process');
-const timeUtil = require('../util/timeUtil');
+import { exec } from 'child_process';
+import { getCurrentDay } from '../util/timeUtil.js';
 
 const python_file_location = '../../outlook.py';
 
@@ -34,10 +34,10 @@ function constructReturnData(ldapData, appointment) {
     return ldapData;
 }
 
-exports.getTodayOutlookCalendar = function(ldapData) {
+export function getTodayOutlookCalendar(ldapData) {
     // console.log(timeUtil.getCurrentDay(false));
     // console.log(timeUtil.getCurrentDay(true));
-    const params = `${ python_file_location } ${ timeUtil.getCurrentDay(false) } ${ timeUtil.getCurrentDay(true) }`;
+    const params = `${ python_file_location } ${ getCurrentDay(false) } ${ getCurrentDay(true) }`;
     return new Promise((resolve, reject) => {
         exec(`python ${params}`, (error, stdout, stderr) => {
             if (error) {

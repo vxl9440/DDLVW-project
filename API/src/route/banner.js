@@ -1,12 +1,13 @@
-const router = require('express').Router();
-const banner = require('../entity/banner');
+import { Router } from 'express';
+import * as banner from '../entity/banner.js';
+const router = Router();
 
 router.get('/',(req,res)=>{
      res.json(banner.getBannerInfo());
 });
 
 router.post('/',(req,res)=>{
-     res.json(banner.InsertBannerInfo(req.body));
+     res.json(banner.insertBannerInfo(req.body));
 });
 
 router.put('/',(req,res)=>{

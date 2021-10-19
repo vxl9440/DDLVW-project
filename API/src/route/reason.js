@@ -1,5 +1,8 @@
-const router = require('express').Router();
-import { getAllReasons, insertReason, updateReason, deleteReason } from '../entity/reason';
+import { Router } from 'express';
+import { getAllReasons, insertReason, updateReason, deleteReason } from '../entity/reason.js';
+
+const router = Router();
+
 
 router.get('/', (req, res) => {
    getAllReasons()
@@ -24,6 +27,5 @@ router.delete('/:id',(req,res)=>{
       .then(success => res.json(success))
       .catch(error => res.json(reason))
 });
-   
 
 export default router;

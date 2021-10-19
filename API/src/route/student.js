@@ -1,7 +1,8 @@
-const router = require('express').Router();
-import { getStudentData } from '../util/ldap';
-import { getTodayOutlookCalendar } from '../entity/outlook';
+import { Router } from 'express';
+import { getStudentData } from '../util/ldap.js';
+import { getTodayOutlookCalendar } from '../entity/outlook.js';
 
+const router = Router();
 
 router.get('/:studentUid', async (req, res) => {
     const studentData = await getStudentData(req.params.studentUid);

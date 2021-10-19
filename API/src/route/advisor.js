@@ -1,8 +1,9 @@
-const router = require('express').Router();
-const advisor = require('../entity/advisor');
-const queue = require('../entity/queue');
-const walkInHour = require('../entity/walkInHour');
+import { Router } from 'express';
+import * as advisor from '../entity/advisor.js';
+import * as queue from '../entity/queue.js';
+import { getWalkInHoursByAdvisorId } from '../entity/walkInHour.js';
 
+const router = Router();
 
 router.get('/available', (req, res) => {
     advisor.getAdvisorByWalkInAvailability()
@@ -11,7 +12,7 @@ router.get('/available', (req, res) => {
 
 
 router.get('/:id/walkInHours', (req, res) => {
-    walkInHour.getWorkInHoursByAdvisorId(req.params.id)
+    getWalkInHoursByAdvisorId(req.params.id)
         .then(hours => res.json(hours));
 });
 

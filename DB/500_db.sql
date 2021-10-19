@@ -12,7 +12,7 @@ MySQL - 8.0.18 : Database - iste500
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-CREATE DATABASE /*!32312 IF NOT EXISTS*/`iste500` /*!40100 DEFAULT CHARACTER SET utf8 */ /*!80016 DEFAULT ENCRYPTION='N' */;
+CREATE DATABASE IF NOT EXISTS `iste500` /*!40100 DEFAULT CHARACTER SET utf8 */ /*!80016 DEFAULT ENCRYPTION='N' */;
 
 USE `iste500`;
 
@@ -21,59 +21,54 @@ USE `iste500`;
 DROP TABLE IF EXISTS `advisor`;
 
 CREATE TABLE `advisor` (
-  `advisor_id` int(5) unsigned NOT NULL AUTO_INCREMENT,
-  `first_name` varchar(24) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `middle_name` varchar(24) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `last_name` varchar(24) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `username` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `portrait_url` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'http://www.example.com',
-  PRIMARY KEY (`advisor_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+  `advisor_id` INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+  `first_name` varchar(24) NOT NULL,
+  `middle_name` varchar(24) DEFAULT NULL,
+  `last_name` varchar(24) NOT NULL,
+  `username` varchar(10) NOT NULL,
+  `portrait_url` varchar(128) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 
 /* Data for the table `advisor` */
 
-insert  into `advisor`(`advisor_id`,`first_name`,`middle_name`,`last_name`,`username`,`portrait_url`) values 
-(1,'Melody',NULL,'Jackson','zxc1234','http://www.example.com'),
-(2,'Betty',NULL,'John','qwe1234','http://www.example.com'),
-(3,'Betty',NULL,'Jackson','jkl1234','http://www.example.com'),
-(4,'Melody',NULL,'John','abc1234','http://www.example.com');
+insert  into `advisor`(`first_name`,`last_name`,`username`) values 
+('Melody','Jackson','zxc1234'),
+('Betty','John','qwe1234'),
+('Betty','Jackson','jkl1234'),
+('Melody','John','abc1234');
 
 /* Table structure for table `reason` */
 
 DROP TABLE IF EXISTS `reason`;
 
 CREATE TABLE `reason` (
-  `reason_id` int(4) unsigned NOT NULL AUTO_INCREMENT,
+  `reason_id` INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
   `reason_name` varchar(64) NOT NULL,
-  `needsAppt` boolean NOT NULL DEFAULT 0,
-  PRIMARY KEY (`reason_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+  `needsAppt` boolean NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 
 /* Data for the table `reason` */
 
-insert  into `reason`(`reason_id`,`reason_name`,`needsAppt`) values 
-(1,'reason a',0),
-(2,'reason b',0),
-(3,'reason c',1),
-(4,'reason d',1);
+insert  into `reason`(`reason_name`,`needsAppt`) values 
+('reason a',0),
+('reason b',0),
+('reason c',1),
+('reason d',1);
 
 /* Table structure for table `registration` */
 
 DROP TABLE IF EXISTS `registration`;
 
 CREATE TABLE `registration` (
-  `registration_id` int(8) unsigned NOT NULL AUTO_INCREMENT,
-  `advisor_id` int(5) unsigned NOT NULL,
+  `registration_id` INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+  `advisor_id` INT NOT NULL,
   `check_in_time` timestamp NOT NULL,
-  `check_out_time` timestamp NULL DEFAULT NULL,
-  `registration_reason_id` varchar(128) DEFAULT NULL,
-  `appointment_type` char(1) NOT NULL,
+  `check_out_time` timestamp NULL,
+  `scheduled` boolean NOT NULL,
   `student_username` varchar(10) NOT NULL,
   `student_name` varchar(24) NOT NULL,
-  PRIMARY KEY (`registration_id`),
   KEY `registration_advisor_fk` (`advisor_id`),
-  CONSTRAINT `registration_advisor_fk` FOREIGN KEY (`advisor_id`) REFERENCES `advisor` (`advisor_id`),
-  CONSTRAINT `CHK_appointment_type` CHECK (((`appointment_type` = _utf8mb3'0') or (`appointment_type` = _utf8mb3'1')))
+  CONSTRAINT `registration_advisor_fk` FOREIGN KEY (`advisor_id`) REFERENCES `advisor` (`advisor_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /* Data for the table `registration` */
@@ -83,8 +78,8 @@ CREATE TABLE `registration` (
 DROP TABLE IF EXISTS `registration_reason_assoc`;
 
 CREATE TABLE `registration_reason_assoc` (
-  `registration_id` int(8) unsigned NOT NULL,
-  `reason_id` int(4) unsigned NOT NULL,
+  `registration_id` INT NOT NULL,
+  `reason_id` INT NOT NULL,
   PRIMARY KEY (`registration_id`,`reason_id`),
   KEY `registrationReasonAssoc_reason_fk` (`reason_id`),
   CONSTRAINT `registrationReasonAssoc_reason_fk` FOREIGN KEY (`reason_id`) REFERENCES `reason` (`reason_id`),
@@ -98,7 +93,7 @@ CREATE TABLE `registration_reason_assoc` (
 DROP TABLE IF EXISTS `walk_in_hour`;
 
 CREATE TABLE `walk_in_hour` (
-  `advisor_id` int(5) unsigned NOT NULL,
+  `advisor_id` INT NOT NULL,
   `start_time` time NOT NULL,
   `end_time` time NOT NULL,
   `weekday` char(3) NOT NULL,

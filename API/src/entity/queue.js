@@ -1,4 +1,3 @@
-import { log } from 'console';
 import { readFileSync, writeFileSync } from 'fs';
 const fileLocation = '../../queue.json';
 
