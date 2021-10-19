@@ -1,4 +1,6 @@
-const connection = require('./connection').getConnection();
+import { getConnection } from './connection.js';
+
+const connection = getConnection();
 
 const executeQuery = function doAll(sql, sqlParam) {
     return new Promise((resolve, reject) => {
@@ -15,12 +17,12 @@ const executeQuery = function doAll(sql, sqlParam) {
                 responseData['statusCode'] = -1;
                 reject(responseData);
             }
-        })
+        });
     });
 }
 
 
-exports.select = function(sql,sqlParam) {
+export function select(sql,sqlParam) {
     return new Promise((resolve, reject) => {
         connection.query(sql, sqlParam, function(error, result, field) {
             if (error) {
@@ -33,8 +35,8 @@ exports.select = function(sql,sqlParam) {
     });
 }
 
-exports.insert = executeQuery;
+export const insert = executeQuery;
 
-exports.update = executeQuery;
+export const update = executeQuery;
 
-exports.delete = executeQuery;
+export const _delete = executeQuery;
