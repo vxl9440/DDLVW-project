@@ -1,7 +1,7 @@
 import { select, insert, update, _delete } from '../database/crud.js';
 
 export function getAllReasons() {
-    const sql = 'SELECT reason_id as id,reason_name as name, needsAppt as needsAppt ' +
+    const sql = 'SELECT reason_id as id, reason_name as name, needsAppt as needsAppt ' +
               'FROM reason';
 
     return select(sql, []);
@@ -9,8 +9,7 @@ export function getAllReasons() {
 
 export function insertReason(data) {
     const sql = 'INSERT INTO reason(reason_name,needsAppt) VALUES(?,?)';
-    sqlParam = [data['name'], data['needsAppt']];
-    
+    const sqlParam = [data['name'], data['needsAppt']];
     return insert(sql, sqlParam);
 }
 
