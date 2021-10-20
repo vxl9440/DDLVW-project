@@ -6,7 +6,7 @@ import studentRouter from './src/route/student.js';
 import bannerRouter from './src/route/banner.js';
 
 const port = 8080;
-const app = express();
+const app  = express();
 
 // Add JWT Authorization middleware first
 // app.use(jwt({ secret: 'ischool' }));
@@ -18,14 +18,14 @@ const app = express();
 //     next();
 // });
 
-//app.use(urlencoded({ extended: false }));
+app.use(express.json());
 
-const logger = function(req, res, next) {
-    console.log("Request received: ", req);
-    next(); // Passing the request to the next handler in the stack.
-}
+// const logger = function(req, res, next) {
+//     console.log("Request received: ", req);
+//     next(); // Passing the request to the next handler in the stack.
+// }
 
-app.use(logger);
+// //app.use(logger);
 app.use('/reason', reasonRouter);
 app.use('/meetingHost', meetingHostRouter);
 app.use('/student', studentRouter);

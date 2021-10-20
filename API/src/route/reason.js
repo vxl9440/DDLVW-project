@@ -3,11 +3,10 @@ import { getAllReasons, insertReason, updateReason, deleteReason } from '../enti
 
 const router = Router();
 
-
 router.get('/', (req, res) => {
    getAllReasons()
       .then(reasons => res.json(reasons))
-      .catch(error => res.send(500).json(error));
+      .catch(error => res.sendStatus(500).json(error));
 });
 
 router.post('/', (req, res) => {
