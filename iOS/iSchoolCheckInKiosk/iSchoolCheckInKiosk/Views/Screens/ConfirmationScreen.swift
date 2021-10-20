@@ -69,6 +69,7 @@ struct ConfirmationItem: View {
 	}
 }
 
+
 struct ConfirmationScreen_Previews: PreviewProvider {
     static var previews: some View {
         ConfirmationScreen()

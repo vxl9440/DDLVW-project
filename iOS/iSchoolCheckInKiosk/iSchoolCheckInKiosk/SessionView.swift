@@ -28,9 +28,10 @@ struct SessionView: View {
 	// Used to present alerts
 	@StateObject private var errorManager = ErrorManager.shared
 	
+	
 	var body: some View {
 		VStack {
-			HeaderView()
+			HeaderView(session: sessionManager.currentSession)
 			
 			Spacer()
 			
@@ -54,6 +55,9 @@ struct SessionView: View {
 		.environmentObject(session)
 		.alert(item: $errorManager.alertItem) { alertItem in
 			Alert(title: alertItem.title, message: alertItem.message, dismissButton: alertItem.dismissButton)
+		}
+		.onReceive(sessionManager.currentSession.idleTimer) { _ in
+			sessionManager.tickTime()
 		}
     }
 }

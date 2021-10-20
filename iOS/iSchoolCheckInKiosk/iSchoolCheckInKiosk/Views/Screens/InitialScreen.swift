@@ -11,12 +11,11 @@ import SwiftUI
 // Handles student identification
 struct InitialScreen: View {
 
-	@EnvironmentObject var session: CheckInSession
 	@EnvironmentObject var sessionManager: SessionManager
 	@FocusState private var isFocused: Bool
 	@State private var isLoading = false // TODO: Implement loading indicator
 
-	let timer = Timer.publish(every: 5, tolerance: 5, on: .main, in: .common).autoconnect()
+	let focusCheck = Timer.publish(every: 5, tolerance: 5, on: .main, in: .common).autoconnect()
 	
 	var body: some View {
 		HStack {
@@ -48,7 +47,7 @@ struct InitialScreen: View {
 				}
 			
 				// Every few seconds, check that the listener is still ready (just in case)
-				.onReceive(timer) { _ in
+				.onReceive(focusCheck) { _ in
 					if !isFocused { isFocused = true }
 				}
 			
@@ -67,6 +66,9 @@ struct InitialScreen: View {
 				.bold()
 				.padding()
 			
+			Button("Simulate Card Swipe") {
+				sessionManager.currentSession.proceed()
+			}
 			Button("Disable focus") { isFocused = false }
 			
 			Circle()

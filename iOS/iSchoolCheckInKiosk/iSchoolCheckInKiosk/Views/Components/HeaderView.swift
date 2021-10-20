@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct HeaderView: View {
+	
+	@ObservedObject var session: CheckInSession
+	
     var body: some View {
 		HStack {
 			Image("rit_logo")
@@ -17,12 +20,14 @@ struct HeaderView: View {
 				.padding(.horizontal, 40)
 			
 			Spacer()
+			
+			Text("Resetting in \(session.timeRemaining)").padding()
 		}
     }
 }
 
 struct HeaderView_Previews: PreviewProvider {
     static var previews: some View {
-        HeaderView()
+        HeaderView(session: CheckInSession())
     }
 }

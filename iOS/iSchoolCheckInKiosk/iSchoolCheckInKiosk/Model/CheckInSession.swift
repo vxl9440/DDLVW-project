@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 @MainActor
 final class CheckInSession: ObservableObject {
@@ -14,7 +15,12 @@ final class CheckInSession: ObservableObject {
 	@Published var student: Student?    = nil
 	@Published var advisor: Advisor?    = nil
 	@Published var phase: CheckInPhase  = .identification
+	@Published var timeRemaining: Int   = 20
 	
+	
+	let idleTimer = Timer.publish(every: 1, on: .main, in: .common)
+
+	private var timerSubscription: AnyCancellable? = nil
 	
 	lazy var dateTime = { Date() }()
 	
@@ -29,6 +35,11 @@ final class CheckInSession: ObservableObject {
 	}
 	
 	
+	func startTimer() {
+		timerSubscription = idleTimer.connect() as? AnyCancellable
+	}
+	
+	
 	func addReason(_ reason: Reason) -> Bool {
 		if reasons.contains(reason) {
 			reasons.remove(reason)
@@ -40,13 +51,20 @@ final class CheckInSession: ObservableObject {
 		}
 	}
 	
-	
+
 	func proceed(happyPath: Bool = true) {
-		phase = phase.proceed(happyPath: happyPath)
+		if phase == .identification {
+			startTimer()
+		} else {
+			resetTimeout()
+		}
+		
+		phase = phase.next(happyPath: happyPath)
 	}
 	
 	
 	func goBack() {
+		resetTimeout()
 		phase = phase.back
 	}
 	
@@ -64,5 +82,10 @@ final class CheckInSession: ObservableObject {
 	
 	func reasonIsSelected(_ reason: Reason) -> Bool {
 		return reasons.contains(reason)
+	}
+	
+	
+	func resetTimeout() {
+		timeRemaining = 10
 	}
 }

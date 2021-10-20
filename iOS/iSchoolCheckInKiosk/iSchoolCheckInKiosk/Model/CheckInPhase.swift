@@ -11,7 +11,7 @@ enum CheckInPhase {
 	
 	case identification, appointmentType, reasons, denied, advisors, confirmation
 	
-	func proceed(happyPath: Bool = true) -> CheckInPhase {
+	func next(happyPath: Bool = true) -> CheckInPhase {
 		switch self {
 			case .identification:
 				return .appointmentType
