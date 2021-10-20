@@ -12,9 +12,11 @@
     <div class="student-queue-stuff">
       <div class="student-item" *ngFor="let student of selectedAdvisor.studentQueue; let i = index;">
         <div>
-          <h3>{{student.firstName}} {{student.lastName}}</h3>
+          <h3>{{student.studentName}}</h3>
         </div>
-        <button (click)="deleteStudentFromQueue(selectedAdvisor, i)"><img src="../assets/icons/x_white_36dp.svg"></button>
+        <button class="misc-button" (click)="queueMoveStudentUp(i)"><img src="../assets/icons/arrow_upward_white_36dp.svg"></button>
+        <button class="misc-button" (click)="queueMoveStudentDown(i)"><img src="../assets/icons/arrow_downward_white_36dp.svg"></button>
+        <button class="x-button" (click)="popupDeleteStudent(i)"><img src="../assets/icons/x_white_36dp.svg"></button>
       </div>
       <div *ngIf="!selectedAdvisor.studentQueue[0]" class="none-text-area"><h1>NONE</h1></div>
     </div>
@@ -30,8 +32,9 @@
           <div *ngIf="advisor != selectedAdvisor"> {{advisor.firstName}} {{advisor.lastName}}</div-->
         </div>
       </div>
+      <div class="vertical-line"></div>
       <div class="advisor-info">
-        <img src="{{imgPathStart}}{{selectedAdvisor.img}}" alt="{{imgPathStart}}{{selectedAdvisor.img}}">
+        <img src="{{imgPathStart}}{{selectedAdvisor.portraitURL}}" alt="{{imgPathStart}}{{selectedAdvisor.portraitURL}}">
         <form [formGroup]="advisorInfoForm" (ngSubmit)="saveAdvisorInfo()">
           <div class="form-row">
             <label for="fname">First name: </label>
@@ -41,18 +44,18 @@
             <label for="lname">Last name: </label>
             <input type="text" id="lname" formControlName="lname">
           </div>
-          <div class="form-row">
+          <!--div class="form-row">
             <label for="email">Email: </label>
             <input type="email" id="email" formControlName="email">
-          </div>
+          </div-->
           <!--div class="form-row">
             <label for="photo">Photo ID: </label>
-            <input type="file" id="photo" formControlName="photo">
+            <input type="file" id="portraitURL" formControlName="portraitURL">
           </div-->
-          <div class="checkbox-row">
+          <!--div class="checkbox-row">
             <input type="checkbox" id="meets-with-walk-ins" formControlName="meetsWithWalkIns" value="Meets with walk-ins">
             <label for="meets-with-walk-ins">Meets with walk-ins</label>
-          </div>
+          </div-->
           <input type="submit" value="Save">
         </form>
       </div>
@@ -60,7 +63,26 @@
   </div>
   <div class="banner-info-manager">
     <h2 class="section-label">Banner Info Manager</h2>
-    <img src="">
-    <p></p>
+    <!--img src="">
+    <p></p-->
+    <form [formGroup]="bannerForm" (ngSubmit)="saveBannerText()">
+      <!--div class="form-row"-->
+        <label for="bannerText">Banner Text: </label>
+        <!--input type="text" id="bannerText" formControlName="bannerText"-->
+        <textarea id="bannerText" formControlName="bannerText"></textarea>
+      <!--/div-->
+      <input type="submit" value="Save">
+    </form>
+  </div>
+  <div class="popup-blur">
+    <div class="popup-box">
+      <div class="popup-top-bar">{{popupTitle}}</div>
+      <div class="popup-text-area">{{popupText}}</div>
+      <div class="popup-buttons-area">
+        <button id="popup-button-1" class="popup-button" (click)="button1Action()">{{popupButton1Text}}</button>
+        <button id="popup-button-2" class="popup-button" (click)="button2Action()">{{popupButton2Text}}</button>
+        <button id="popup-button-3" class="popup-button" (click)="button3Action()">{{popupButton3Text}}</button>
+      </div>
+    </div>
   </div>
 </div>

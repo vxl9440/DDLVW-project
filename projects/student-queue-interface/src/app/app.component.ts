@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
   imgPathStart: string = "../assets/";
   maxStudentsInList: number = 14;
   connected: boolean = false;
-  timeSinceUpdate: string = "?";
+  timeUpdated: string = "?";
   bannerText: string = "None";
 
   ngOnInit() {
@@ -88,13 +88,34 @@ export class AppComponent implements OnInit {
     //temp (for testing purposes)
     setTimeout(() => { 
       this.connected = true;
-      this.updateInfo();
+      this.getInfo();
     }, 3000);
   }
 
-  updateInfo() {
-    this.timeSinceUpdate = "0";
+  getInfo() {
+    this.timeUpdated = this.getCurrentTime();
     this.getBannerText();
+  }
+
+  getCurrentTime() {
+    let currDay = new Date();
+    let timeAMPM = "AM";
+    let hours = currDay.getHours();
+    let minutes = currDay.getMinutes();
+
+    if(hours == 0) {
+      timeAMPM = "AM";
+      hours = 12;
+    }
+    else if(hours == 12) {
+      timeAMPM = "PM";
+    }
+    else if(hours > 12) {
+      timeAMPM = "PM";
+      hours -= 12;
+    }
+
+    return `${hours}:${minutes} ${timeAMPM}`;
   }
 
   getBannerText() {

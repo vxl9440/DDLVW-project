@@ -1,20 +1,27 @@
 /* global variables */
 $rit-orange: rgb(230, 113, 45);
-$rit-orange-highlighted: rgb(255, 126, 51);
-$rit-light-orange: rgb(253, 137, 69);
+$rit-orange-light-1: rgb(255, 126, 51);
+$rit-orange-light-2: rgb(253, 137, 69);
+$rit-orange-light-3: rgb(255, 154, 95);
+$rit-orange-light-4: rgb(252, 171, 124);
 $rit-white-orange: rgb(255, 245, 240);
 $light-red: rgb(233, 83, 83);
+$light-red-light-1: rgb(235, 117, 117);
 $light-red-highlighted: rgb(236, 46, 46);
 $light-green: rgb(77, 187, 77);
 $light-green-highlighted: rgb(115, 211, 91);
+$gray: gray;
+$gray-highlighted: rgb(158, 158, 158);
 
 .grid-container {
     display: grid;
     grid-template-rows: 10% auto 10px auto 20px;
-    grid-template-columns: 20px 33% 10px 66% 20px;
-    width: calc(100% - 40px);
-    height: calc(100% - 40px);
-    //padding: 20px;
+    //grid-template-columns: 20px 33% 10px 66% 20px;
+    grid-template-columns: 20px auto 10px 66% 20px;
+    //height: calc(100% - 40px);
+    //width: calc(100% - 40px);
+    height: 100vh;
+    width: 100vw;
 }
 
 h2 {
@@ -42,6 +49,7 @@ button:hover {
     margin: 0;
     padding: 0;
     font-size: 1.5vw;
+    color: $rit-orange;
 }
 
 .top-bar-buttons {
@@ -60,7 +68,6 @@ button:hover {
     justify-content: center;
     align-items: center;
     height: 100%;
-    //width: 300px;
     width: 15vw;
     padding: 10px;
     margin: 0;
@@ -73,7 +80,7 @@ button:hover {
 }
 
 .top-bar-buttons button:hover {
-    background-color: $rit-orange-highlighted;
+    background-color: $rit-orange-light-1;
 }
 
 .top-bar-buttons button:active {
@@ -96,7 +103,6 @@ button:hover {
     flex-direction: column;
     align-items: center;
     padding: 10px;
-    //background-color: white;
     background-color: $rit-white-orange;
     border: 5px solid $rit-orange;
     border-radius: 10px;
@@ -124,17 +130,34 @@ button:hover {
     max-height: 65vh;
     //height: calc(100% - 70px - 100px);
     width: 100%;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
-//.student-queue-stuff div {
+.student-queue-stuff::-webkit-scrollbar {
+    width: 1em;
+}
+ 
+.student-queue-stuff::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.25);
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.25);
+}
+ 
+.student-queue-stuff::-webkit-scrollbar-thumb {
+  background-color: $rit-orange;
+}
+
+.student-queue-stuff::-webkit-scrollbar-thumb:hover {
+    background-color: $rit-orange-light-1;
+    cursor: pointer;
+  }
+
 .student-item {
     display: flex;
-    width: 100%;
+    width: calc(100% - 5px);
     margin-top: 10px;
+    margin-right: 5px;
 }
 
-//.student-queue-stuff div:first-child {
 .student-item:first-child {
     margin-top: 0;
 }
@@ -159,6 +182,7 @@ button:hover {
     justify-content: center;
     width: 10vw;
     margin: 20px;
+    margin-top: auto;
     padding: 10px;
     background-color: $light-green;
     color: white;
@@ -188,28 +212,44 @@ button:hover {
     align-items: center;
     width: calc(100% - 55px);
     //margin-top: 10px;
-    margin-right: 5px;
+    margin-right: 2px;
     padding: 5px;
     padding-left: 10px;
-    background-color: $rit-light-orange;
+    background-color: $rit-orange-light-2;
     color: white;
-    //border: 1px solid black;
-    //border-radius: 5px;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.125);
 }
 
-/*.student-item:first-child {
-    margin-top: 0;
-}*/
-
 .student-item div h3 {
     margin: 0;
 }
 
-.student-item button {
-//.student-queue-stuff div button {
+.misc-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    padding: 0;
+    margin-right: 2px;
+    background-color: $rit-orange-light-3;
+    border: none;
+    //border-top-right-radius: 5px;
+    //border-bottom-right-radius: 5px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.125);
+}
+
+.misc-button:hover {
+    background-color: $rit-orange-light-4;
+}
+
+.misc-button:active {
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25) inset;
+}
+
+.x-button {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -218,18 +258,16 @@ button:hover {
     padding: 0;
     background-color: $light-red;
     border: none;
-    //border-radius: 5px;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.125);
 }
 
-.student-item button:hover {
-//.student-queue-stuff div button:hover {
+.x-button:hover {
     background-color: $light-red-highlighted;
 }
 
-.student-item button:active {
+.x-button:active {
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25) inset;
 }
 
@@ -237,7 +275,6 @@ button:hover {
     grid-row: 2 / 3;
     grid-column: 4 / 5;
     padding: 10px;
-    //background-color: white;
     background-color: $rit-white-orange;
     border: 5px solid $rit-orange;
     border-radius: 10px;
@@ -261,10 +298,12 @@ button:hover {
     display: flex;
     justify-content: space-between;
     gap: 10px;
+    //height: calc(100% - 4.3vh);
 }
 
 .advisor-list {
-    flex-grow: 1;
+    //flex-grow: 1;
+    width: 40%;
 }
 
 .advisor-item {
@@ -285,7 +324,7 @@ button:hover {
 .advisor-item:hover {
     cursor: pointer;
     //background-color: lightgray;
-    background-color: $rit-orange-highlighted;
+    background-color: $rit-orange-light-1;
 }
 
 .advisor-item img {
@@ -296,13 +335,20 @@ button:hover {
 
 .selectedAdvisor {
     //background-color: lightgray;
-    background-color: $rit-orange-highlighted;
+    background-color: $rit-orange-light-1;
     font-weight: bold;
+}
+
+.vertical-line {
+    width: 5px;
+    //height: 100%;
+    background-color: $rit-orange;
 }
 
 .advisor-info {
     display: flex;
-    flex-grow: 1;
+    //flex-grow: 1;
+    //width: 50%;
     font-size: 1vw;
 }
 
@@ -383,4 +429,156 @@ input[type = "checkbox"] {
     color: white;
     border-top-left-radius: 10px;
     border-bottom-right-radius: 10px;
+}
+
+textarea#bannerText {
+    width: 100%;
+    height: 100%;
+}
+
+@keyframes swap-student-up {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(-60px);
+    }
+}
+
+@keyframes swap-student-down {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(60px);
+    }
+}
+
+/* -------------------- POPUP STUFF -------------------- */
+@keyframes display-popup {
+    from {
+        opacity: 0;
+        backdrop-filter: blur(0px);
+    }
+    to {
+        opacity: 1;
+        backdrop-filter: blur(3px);
+    }
+}
+
+.popup-blur {
+    grid-row: 1 / 6;
+    grid-column: 1 / 6;
+    width: 100%;
+    height: 100%;
+    //display: flex;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+    //filter: blur(5px);
+    backdrop-filter: blur(3px);
+    //background-color: red;
+    animation: display-popup;
+    animation-duration: 0.25s;
+}
+
+.popup-box {
+    display: flex;
+    flex-direction: column;
+    height: 20vh;
+    width: 20vw;;
+    //margin: 40%;
+    background-color: $rit-white-orange;
+    border: 5px solid $rit-orange;
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
+}
+
+.popup-top-bar {
+    display: flex;
+    align-items: center;
+    height: 15%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 15px;
+    margin-top: -5px;
+    margin-left: -5px;
+    margin-right: -5px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background-color: $rit-orange;
+    color: white;
+    font-size: 1vw;
+}
+
+.popup-text-area {
+    margin: 10px;
+    font-size: 0.80vw;
+}
+
+.popup-buttons-area {
+    //width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    margin-top: auto;
+}
+
+.popup-button {
+    display: none;
+    width: 5vw;
+    height: 4vh;
+    margin-left: 5px;
+    margin-right: 5px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
+    font-size: 1.25vw;
+}
+
+.popup-button:active {
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25) inset;
+}
+
+.popup-green-button {
+    display: block;
+    background-color: $light-green;
+    color: white;
+}
+
+.popup-green-button:hover {
+    background-color: $light-green-highlighted;
+}
+
+.popup-red-button {
+    display: block;
+    background-color: $light-red;
+    color: white;
+}
+
+.popup-red-button:hover {
+    //background-color: $light-red-highlighted;
+    background-color: $light-red-light-1;
+}
+
+.popup-orange-button {
+    display: block;
+    background-color: $rit-orange-light-2;
+    color: white;
+}
+
+.popup-green-button:hover {
+    background-color: $rit-orange-light-3;
+}
+
+.popup-gray-button {
+    display: block;
+    background-color: gray;
+    color: white;
+}
+
+.popup-gray-button:hover {
+    background-color: $gray-highlighted;
 }
