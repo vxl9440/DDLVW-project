@@ -1,17 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-
-interface Student {
-  studentName: string,
-  username: string,
-  timeIn: string
-}
-
-interface Advisor {
-  firstName: string,
-  lastName: string,
-  portraitURL: string,
-  studentQueue: Student[]
-}
+import { ActivatedRoute } from '@angular/router';
+import { AuthService } from '../../services/auth-service.service';
+import { Advisor } from '../../models/advisor';
+import { Student } from '../../models/student';
 
 @Component({
   selector: 'app-advisor-interface',
@@ -22,11 +13,18 @@ export class AdvisorInterfaceComponent implements OnInit {
   title = 'advisor-interface';
   
   //advisorID: number = 1;
-  selectedAdvisor: Advisor = {firstName: "John", lastName: "Doe", /*email: "jnd1234@rit.edu", meetsWithWalkIns: false, */portraitURL: "person2.jpg", studentQueue: [
-    {studentName: "Jack Smith", username: "jms1111", timeIn: "2021-09-19T19:57:55+00:00"}, 
-    {studentName: "Jane Doe", username: "jwd2222", timeIn: "2021-09-19T19:57:55+00:00"}, 
-    {studentName: "Jill Smith", username: "jos3333", timeIn: "2021-09-19T19:57:55+00:00"}
-  ]};
+  advisor: Advisor
+
+  selectedAdvisor: Advisor = {
+    firstName: "John", lastName: "Doe", portraitURL: "person2.jpg", studentQueue: [
+      new Student('Jack Smith', 'jms1111', '2021-09-19T19:57:55+00:00'),
+      new Student('Jane Doe', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Jill Smith', 'jos3333', '2021-09-19T19:57:55+00:00')
+    ],
+    id: 0,
+    middleName: '',
+    username: ''
+  };
   selectedStudent: Student = this.selectedAdvisor.studentQueue[0];
 
   selectedStudentApptStartTime: string = "";
@@ -42,12 +40,22 @@ export class AdvisorInterfaceComponent implements OnInit {
   popupButton2Text: string = "";
   popupButton3Text: string = "";
 
+  constructor(private activatedRoute: ActivatedRoute, private authService: AuthService) {}
+
   ngOnInit() {
-    
+    this.activatedRoute.data.subscribe((response: any) => {
+      console.log('FETCHING ADVISOR ', response);
+      this.advisor = response.advisor;
+    })
   }
 
   ngAfterViewInit() {
     (document.getElementsByClassName("student-item-bar")[0] as HTMLDivElement).classList.add("selected-student");
+  }
+
+  logout() {
+    console.log("logout");
+    this.authService.logout();
   }
 
   updateWalkInInfo() {
