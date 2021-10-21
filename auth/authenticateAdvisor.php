@@ -4,6 +4,7 @@ require 'jwtGenerator.php';
 
 $jwt = new JwtGenerator();
 
+
 $payload = [
     "fname" => "{$_SERVER['givenName']}",
     "lname" => "{$_SERVER['sn']}",
@@ -12,10 +13,8 @@ $payload = [
 
 $token = $jwt->jwt_encode_data($payload);
 
-setcookie('jwt', $token, time() + 86400, "/", "", null, true);
-
-// header('Content-Type: application/json; charset=utf-8');
-// echo json_encode(["token" => $token]);
+// redirect back to angular app with token in param
+header("Location: http://localhost:4200/?token=$token");
 
 exit();
 ?>
