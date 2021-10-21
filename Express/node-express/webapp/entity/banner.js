@@ -1,46 +1,61 @@
 const fs = require('fs');
+const msgUtil = require('../util/messageUtil');
 const fileLocation = 'C:\\Users\\miaox\\Desktop\\500-node\\banner';
 
+/**
+ * 
+ * @returns string content of the file
+ */
 function read(){
     return fs.readFileSync(fileLocation).toString(); 
 }
 
+/**
+ * 
+ * @param {*} content new content that to be wrote into DB
+ * @returns true or false, true for success false for fail
+ */
 function write(content){
     try {
         const data = fs.writeFileSync(fileLocation, content)
     } catch (err) {
-        return false;
+        return msgUtil.getFailDataSet();
     }
-    return true;
+    return msgUtil.getSuccessDataSet();
 }
 
-
+/**
+ * 
+ * @returns banner information
+ */
 exports.getBannerInfo = function () {
     return {
         "bannerInfo": read()
     };
 }
 
+/**
+ * 
+ * @param {*} content insert new banner information
+ * @returns SUCCESS or FAIL
+ */
 exports.InsertBannerInfo = function (content) {
-    var returnData = {"message": 'Fail'};
-    if(write(content['bannerInfo'])){
-        returnData['message'] = 'Success';
-    }
-    return returnData;
+    return write(content['bannerInfo']);
 }
 
+/**
+ * 
+ * @param {*} content the content of banner that to be updated
+ * @returns SUCCESS or FAIL
+ */
 exports.updateBannerInfo = function (content) {
-    var returnData = {"message": 'Fail'};
-    if(write(content['bannerInfo'])){
-        returnData['message'] = 'Success';
-    }
-    return returnData;
+    return write(content['bannerInfo']);
 }
 
+/**
+ * delete banner 
+ * @returns SUCCESS or FAIL
+ */
 exports.deleteBannerInfo = function () {
-    var returnData = {"message": 'Fail'};
-    if(write('')){
-        returnData['message'] = 'Success';
-    }
-    return returnData;
+    return write('');
 }

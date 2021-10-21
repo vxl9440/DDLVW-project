@@ -6,7 +6,7 @@ const assert = require('assert');
 const ldap_server = 'ldaps://ldap.rit.edu',
       ldap_user   = 'iSchoolCheckIn',
       ldap_pass   = 'Iste501SeniorDev',
-      attributes  = ['uid', 'cn','distinguishedName'],
+      attributes  = ['uid', 'cn'],
       search_dn   = 'ou=people,dc=rit,dc=edu',
       bind_dn     = `uid=${ ldap_user },${ search_dn }`;
 // ----------------------------------------------------

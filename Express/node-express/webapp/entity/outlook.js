@@ -3,6 +3,12 @@ const timeUtil = require('../util/timeUtil');
 
 const python_file_location = 'C:\\Users\\miaox\\Desktop\\500-node\\outlook.py';
 
+/**
+ * 
+ * @param {*} stdout the content of standard output after python ran
+ * @param {*} studentUsername username of a student
+ * @returns appoinemtn data
+ */
 function checkAndConstructDateset(stdout,studentUsername){
     var appointment = {};
     var events = JSON.parse(stdout.replace(/'/g, '\"'));
@@ -25,6 +31,12 @@ function checkAndConstructDateset(stdout,studentUsername){
     return appointment;
 }
 
+/**
+ * 
+ * @param {*} ldapData data regrad a student from ldap
+ * @param {*} appointment appointment data of a student
+ * @returns changed ldap data
+ */
 function constrctReturnData(ldapData,appointment){
     ldapData['hasAppt'] = false;
     if(appointment['advisorName'] !== undefined){
@@ -34,9 +46,12 @@ function constrctReturnData(ldapData,appointment){
     return ldapData;
 }
 
+/**
+ * 
+ * @param {*} ldapData data regrad a student from ldap
+ * @returns a promise object
+ */
 exports.getTodayOutlookCalendar = function(ldapData){
-    // console.log(timeUtil.getCurrentDay(false));
-    // console.log(timeUtil.getCurrentDay(true));
     var params = `${python_file_location} ${timeUtil.getCurrentDay(false)} ${timeUtil.getCurrentDay(true)}`
     return new Promise((resolve,reject)=>{
         exec(`python ${params}`,(error, stdout, stderr) => {
