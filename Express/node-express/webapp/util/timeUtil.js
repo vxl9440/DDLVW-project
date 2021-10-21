@@ -26,3 +26,9 @@ exports.getCurrentDay = function (plusOne) {
     }
     return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
 }
+
+
+exports.getTimeStamp = function (d) {
+    return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()} `+
+           `${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`;
+}
