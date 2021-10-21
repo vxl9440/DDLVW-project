@@ -29,10 +29,13 @@ router.post('/:id/queue',(req,res)=>{
 
 router.put('/:id/queue',(req,res)=>{
     res.json(queue.adjustStudentPositionByAdvisorId(req.params.id,req.body)); 
-}); 
+});
 
 router.delete('/:id/queue',(req,res)=>{
-    res.json(queue.deleteStudentByAdvisorId(req.params.id,req.body)); 
+    var p = queue.deleteStudentByAdvisorId(req.params.id,req.body)
+    p.then((value)=>{
+        res.json(value);
+    });
 }); 
 
 //select all advisors
