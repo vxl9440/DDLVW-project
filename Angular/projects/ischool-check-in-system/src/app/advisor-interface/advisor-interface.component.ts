@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 interface Student {
   studentName: string,
   username: string,
-  checkInTime: string
+  timeIn: string
 }
 
 interface Advisor {
@@ -23,9 +23,9 @@ export class AdvisorInterfaceComponent implements OnInit {
   
   //advisorID: number = 1;
   selectedAdvisor: Advisor = {firstName: "John", lastName: "Doe", /*email: "jnd1234@rit.edu", meetsWithWalkIns: false, */portraitURL: "person2.jpg", studentQueue: [
-    {studentName: "Jack Smith", username: "jms1111", checkInTime: "2021-09-19T19:57:55+00:00"}, 
-    {studentName: "Jane Doe", username: "jwd2222", checkInTime: "2021-09-19T19:57:55+00:00"}, 
-    {studentName: "Jill Smith", username: "jos3333", checkInTime: "2021-09-19T19:57:55+00:00"}
+    {studentName: "Jack Smith", username: "jms1111", timeIn: "2021-09-19T19:57:55+00:00"}, 
+    {studentName: "Jane Doe", username: "jwd2222", timeIn: "2021-09-19T19:57:55+00:00"}, 
+    {studentName: "Jill Smith", username: "jos3333", timeIn: "2021-09-19T19:57:55+00:00"}
   ]};
   selectedStudent: Student = this.selectedAdvisor.studentQueue[0];
 
@@ -42,7 +42,9 @@ export class AdvisorInterfaceComponent implements OnInit {
   popupButton2Text: string = "";
   popupButton3Text: string = "";
 
-  ngOnInit() {}
+  ngOnInit() {
+    
+  }
 
   ngAfterViewInit() {
     (document.getElementsByClassName("student-item-bar")[0] as HTMLDivElement).classList.add("selected-student");

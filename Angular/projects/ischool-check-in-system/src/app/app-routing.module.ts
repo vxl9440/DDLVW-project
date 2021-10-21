@@ -5,13 +5,15 @@ import { InterfacePickerComponent } from './interface-picker/interface-picker.co
 import { StudentQueueInterfaceComponent } from './student-queue-interface/student-queue-interface.component';
 import { FrontDeskInterfaceComponent } from './front-desk-interface/front-desk-interface.component';
 import { AdvisorInterfaceComponent } from './advisor-interface/advisor-interface.component';
+import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
   //{ path: 'interface-picker', component: InterfacePickerComponent },
-  { path: 'student-queue-interface', component: StudentQueueInterfaceComponent },
-  { path: 'front-desk-interface', component: FrontDeskInterfaceComponent },
-  { path: 'advisor-interface', component: AdvisorInterfaceComponent },
+  { path: 'queue', component: StudentQueueInterfaceComponent },
+  { path: 'management', component: FrontDeskInterfaceComponent },
+  { path: 'advisor', component: AdvisorInterfaceComponent },
   { path: '**', component: InterfacePickerComponent },
+  { path: 'login', component: LoginComponent }
 ];
 
 @NgModule({
