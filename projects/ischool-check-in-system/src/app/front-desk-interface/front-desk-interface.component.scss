@@ -15,11 +15,8 @@ $gray-highlighted: rgb(158, 158, 158);
 
 .grid-container {
     display: grid;
-    grid-template-rows: 10% auto 10px auto 20px;
-    //grid-template-columns: 20px 33% 10px 66% 20px;
+    grid-template-rows: 10% 48.5% 10px auto 20px;
     grid-template-columns: 20px auto 10px 66% 20px;
-    //height: calc(100% - 40px);
-    //width: calc(100% - 40px);
     height: 100vh;
     width: 100vw;
 }
@@ -37,6 +34,38 @@ button:hover {
     cursor: pointer;
 }
 
+// general styling for any sort of Add buttons
+.add-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 10vw;
+    margin: 20px;
+    padding: 10px;
+    background-color: $light-green;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
+    font-size: 1vw;
+}
+
+.add-button:hover {
+    background-color: $light-green-highlighted;
+}
+
+.add-button:active {
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25) inset;
+}
+
+// the SVG image used by the Add button
+.add-button img {
+    height: 75%;
+    margin-right: 5px;
+}
+
+/* -------------------- TOP BAR STUFF -------------------- */
+// contains page title and buttons
 .top-bar {
     grid-row: 1 / 2;
     grid-column: 2 / 5;
@@ -45,6 +74,7 @@ button:hover {
     align-items: center;
 }
 
+// page title
 .top-bar h1 {
     margin: 0;
     padding: 0;
@@ -52,24 +82,22 @@ button:hover {
     color: $rit-orange;
 }
 
+// the buttons area of the top bar
 .top-bar-buttons {
     display: flex;
     gap: 20px;
     height: calc(100% - 40px);
     margin-top: 20px;
     margin-bottom: 20px;
-    //height: calc(100% - 4vh);
-    //margin-top: 2vh;
-    //margin-bottom: 2vh;
 }
 
+// each button in the top bar buttons area
 .top-bar-buttons button {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100%;
     width: 15vw;
-    padding: 10px;
     margin: 0;
     background-color: $rit-orange;
     color: white;
@@ -87,15 +115,51 @@ button:hover {
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25) inset;
 }
 
+// the SVG image that each top bar button uses
 .top-bar-buttons button img {
-    height: 75%;
+    height: 70%;
     margin-right: 5px;
 }
 
+// the actual link area used by each top bar button
+.top-bar-buttons button a {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: white;
+}
+
+/* -------------------- SECTION STUFF -------------------- */
+// general section label styling
 .section-label {
     font-size: 1.1vw;
 }
 
+/* -------------------- STUDENT QUEUE MANAGER STUFF -------------------- */
+// animation for swapping student up in the queue
+@keyframes swap-student-up {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(-60px);
+    }
+}
+
+// animation for swapping student down in the queue
+@keyframes swap-student-down {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(60px);
+    }
+}
+
+// the left-most area of the screen (the student queue manager)
 .student-queue-manager {
     grid-row: 2 / 5;
     grid-column: 2 / 3;
@@ -109,13 +173,10 @@ button:hover {
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
 }
 
+// the section label used by the student queue manager
 .student-queue-manager h2 {
-    //width: 90%;
-    //height: 5vh;
-    //width:calc(100% - 30px);
     height: auto;
     margin-top: -15px;
-    //margin-left: -15px;
     padding: 15px;
     background-color: $rit-orange;
     color: white;
@@ -123,16 +184,17 @@ button:hover {
     border-top-right-radius: 10px;
 }
 
+// contains the student queue - without the section label and Add Student button
 .student-queue-stuff {
     display: flex;
     flex-direction: column;
     align-items: center;
-    max-height: 65vh;
-    //height: calc(100% - 70px - 100px);
+    height: 65vh;
     width: 100%;
     overflow-y: auto;
 }
 
+// scrollbar styling for the student queue
 .student-queue-stuff::-webkit-scrollbar {
     width: 1em;
 }
@@ -149,8 +211,9 @@ button:hover {
 .student-queue-stuff::-webkit-scrollbar-thumb:hover {
     background-color: $rit-orange-light-1;
     cursor: pointer;
-  }
+}
 
+// each student item container in the student queue - including all student item buttons
 .student-item {
     display: flex;
     width: calc(100% - 5px);
@@ -158,60 +221,18 @@ button:hover {
     margin-right: 5px;
 }
 
+// the first student item container does not need any top margins, as it is the first in the list
 .student-item:first-child {
     margin-top: 0;
 }
 
-.none-text-area {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-// the 'NONE' text that appears when there are no students
-.student-queue-stuff h1 {
-    font-size: 8vw;
-    color: lightgray;
-}
-
-.add-student-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 10vw;
-    margin: 20px;
-    margin-top: auto;
-    padding: 10px;
-    background-color: $light-green;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
-    font-size: 1vw;
-}
-
-.add-student-button:hover {
-    background-color: $light-green-highlighted;
-}
-
-.add-student-button:active {
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25) inset;
-}
-
-.add-student-button img {
-    height: 75%;
-    margin-right: 5px;
-}
-
+// the area of each student item containing the text (essentially the student-item container without any of the buttons)
 .student-item div {
     box-sizing: border-box;
     display: flex;
-    //justify-content: space-between;
     align-items: center;
-    width: calc(100% - 55px);
-    //margin-top: 10px;
+    //width: calc(100% - 55px);
+    width: calc(100% - 156px);
     margin-right: 2px;
     padding: 5px;
     padding-left: 10px;
@@ -222,10 +243,12 @@ button:hover {
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.125);
 }
 
+// the text used in each student item
 .student-item div h3 {
     margin: 0;
 }
 
+// student item miscellaneous button styling (currently used by the arrow buttons for swapping students in the queue)
 .misc-button {
     display: flex;
     justify-content: center;
@@ -236,8 +259,6 @@ button:hover {
     margin-right: 2px;
     background-color: $rit-orange-light-3;
     border: none;
-    //border-top-right-radius: 5px;
-    //border-bottom-right-radius: 5px;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.125);
 }
 
@@ -249,6 +270,7 @@ button:hover {
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25) inset;
 }
 
+// student item X button styling
 .x-button {
     display: flex;
     justify-content: center;
@@ -271,9 +293,65 @@ button:hover {
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25) inset;
 }
 
+// this area is used if there are no students in the student queue
+.none-text-area {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+// the 'NONE' text that appears when there are no students
+.none-text-area h1 {
+    font-size: 6vw;
+    color: lightgray;
+}
+
+// the student queue Add Student button
+.add-student-button {
+    /*display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 10vw;
+    margin: 20px;
+    margin-top: auto;
+    padding: 10px;
+    background-color: $light-green;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
+    font-size: 1vw;*/
+    margin-top: auto;
+}
+
+/* -------------------- ADVISOR LIST MANAGER STUFF -------------------- */
+// animation for swapping advisor up in the list
+@keyframes swap-advisor-up {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(-55px);
+    }
+}
+
+// animation for swapping advisor down in the list
+@keyframes swap-advisor-down {
+    from {
+        transform: translateY(0);
+    }
+    to {
+        transform: translateY(55px);
+    }
+}
+
+// the top right area of the screen (the advisor list manager)
 .advisor-list-manager {
     grid-row: 2 / 3;
     grid-column: 4 / 5;
+    max-height: 48vh;
     padding: 10px;
     background-color: $rit-white-orange;
     border: 5px solid $rit-orange;
@@ -281,6 +359,7 @@ button:hover {
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
 }
 
+// the section label used by the advisor list manager
 .advisor-list-manager h2 {
     width: 20%;
     //height: 5vh;
@@ -294,26 +373,58 @@ button:hover {
     border-bottom-right-radius: 10px;
 }
 
+// contains all advisor list stuff - without the section label
 .advisor-stuff {
     display: flex;
-    justify-content: space-between;
-    gap: 10px;
+    //justify-content: space-between;
+    //gap: 10px;
     //height: calc(100% - 4.3vh);
+    height: 90%;
 }
 
+// contains only the advisor list itself (not counting the advisor info area)
 .advisor-list {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     //flex-grow: 1;
-    width: 40%;
+    width: 50%;
+    //width: calc(50% - 5px);
+    height: 100%;
+    margin-right: 10px;
+    overflow-y: auto;
 }
 
+// scrollbar styling for the advisor list
+.advisor-list::-webkit-scrollbar {
+    width: 1em;
+}
+ 
+.advisor-list::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.25);
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.25);
+}
+ 
+.advisor-list::-webkit-scrollbar-thumb {
+  background-color: $rit-orange;
+}
+
+.advisor-list::-webkit-scrollbar-thumb:hover {
+    background-color: $rit-orange-light-1;
+    cursor: pointer;
+}
+
+// each advisor item container in the advisor list - including all advisor item buttons
 .advisor-item {
     display: flex;
     align-items: center;
+    width: calc(100% - 10px);
     margin-top: 5px;
-    padding: 10px;
-    background-color: $rit-orange;
-    color: white;
-    //border: 1px solid black;
+    margin-right: 5px;
+    //padding: 10px;
+    //background-color: $rit-orange;
+    //color: white;
     border-radius: 5px;
 }
 
@@ -321,34 +432,64 @@ button:hover {
     margin-top: 0;
 }
 
-.advisor-item:hover {
-    cursor: pointer;
-    //background-color: lightgray;
-    background-color: $rit-orange-light-1;
-}
-
-.advisor-item img {
+.selected-advisor-arrow {
     height: 1.8vh;
     //margin-bottom: 2px;
     margin-right: 5px;
 }
 
-.selectedAdvisor {
-    //background-color: lightgray;
-    background-color: $rit-orange-light-1;
-    font-weight: bold;
+.advisor-item-info {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    height: 50px;
+    //width: calc(100% - 55px);
+    width: calc(100% - 156px);
+    margin-right: 2px;
+    padding: 5px;
+    padding-left: 10px;
+    background-color: $rit-orange-light-2;
+    color: white;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.125);
 }
 
+.advisor-item-info:hover {
+    cursor: pointer;
+    background-color: $rit-orange-light-3;
+}
+
+.add-advisor-button {
+    margin-top: auto;
+    margin-right: 10px;
+}
+
+/*.selectedAdvisor {
+    background-color: $rit-orange-light-3;
+    font-weight: bold;
+}*/
+
 .vertical-line {
+    grid-row: 2 / 3;
+    grid-column: 4 / 5;
     width: 5px;
     //height: 100%;
+    max-height: calc(48vh + 30px);
+    margin-left: auto;
+    margin-right: auto;
     background-color: $rit-orange;
 }
 
 .advisor-info {
+    box-sizing: border-box;
     display: flex;
+    //width: calc(50% - 15px);
+    //margin-left: 10px;
     //flex-grow: 1;
     //width: 50%;
+    width: 50%;
+    margin-left: 10px;
     font-size: 1vw;
 }
 
@@ -395,19 +536,20 @@ input[type="text"] {
     padding: 3px;
 }
 
-input[type="email"] {
+/*input[type="email"] {
     flex-grow: 1;
     margin-left: 10px;
     font-size: 1vw;
     background-color: lightgray;
     border: none;
     padding: 3px;
-}
+}*/
 
-input[type = "checkbox"] {
+/*input[type = "checkbox"] {
     margin-left: 0;
-}
+}*/
 
+/* -------------------- BANNER INFO MANAGER STUFF -------------------- */
 .banner-info-manager {
     grid-row: 4 / 5;
     grid-column: 4 / 5;
@@ -436,24 +578,6 @@ textarea#bannerText {
     height: 100%;
 }
 
-@keyframes swap-student-up {
-    from {
-        transform: translateY(0);
-    }
-    to {
-        transform: translateY(-60px);
-    }
-}
-
-@keyframes swap-student-down {
-    from {
-        transform: translateY(0);
-    }
-    to {
-        transform: translateY(60px);
-    }
-}
-
 /* -------------------- POPUP STUFF -------------------- */
 @keyframes display-popup {
     from {
@@ -471,14 +595,12 @@ textarea#bannerText {
     grid-column: 1 / 6;
     width: 100%;
     height: 100%;
-    //display: flex;
     display: none;
     justify-content: center;
     align-items: center;
     opacity: 1;
     //filter: blur(5px);
     backdrop-filter: blur(3px);
-    //background-color: red;
     animation: display-popup;
     animation-duration: 0.25s;
 }

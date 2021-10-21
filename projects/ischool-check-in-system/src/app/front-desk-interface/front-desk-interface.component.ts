@@ -77,6 +77,46 @@ export class FrontDeskInterfaceComponent implements OnInit {
       {studentName: "Gus Juss", username: "abc1234"}
     ]});
     this.advisors.push({firstName: "Sabrina", lastName: "Quazz", /*email: "stq2413@rit.edu", meetsWithWalkIns: false, */portraitURL: "person3.jpg", studentQueue: []});
+    /*this.advisors.push({firstName: "John", lastName: "Doe", portraitURL: "person2.jpg", studentQueue: [
+      {studentName: "Jack Smith", username: "abc1234"}, 
+      {studentName: "Jane Doe", username: "abc1234"}, 
+      {studentName: "Jill Smith", username: "abc1234"}
+    ]});
+    this.advisors.push({firstName: "Jon", lastName: "Doe", portraitURL: "person2.jpg", studentQueue: [
+      {studentName: "Jack Smith", username: "abc1234"}, 
+      {studentName: "Jane Doe", username: "abc1234"}, 
+      {studentName: "Jill Smith", username: "abc1234"}
+    ]});
+    this.advisors.push({firstName: "Jo", lastName: "Doe", portraitURL: "person2.jpg", studentQueue: [
+      {studentName: "Jack Smith", username: "abc1234"}, 
+      {studentName: "Jane Doe", username: "abc1234"}, 
+      {studentName: "Jill Smith", username: "abc1234"}
+    ]});
+    this.advisors.push({firstName: "Jeff", lastName: "Doe", portraitURL: "person2.jpg", studentQueue: [
+      {studentName: "Jack Smith", username: "abc1234"}, 
+      {studentName: "Jane Doe", username: "abc1234"}, 
+      {studentName: "Jill Smith", username: "abc1234"}
+    ]});
+    this.advisors.push({firstName: "Geoff", lastName: "Doe", portraitURL: "person2.jpg", studentQueue: [
+      {studentName: "Jack Smith", username: "abc1234"}, 
+      {studentName: "Jane Doe", username: "abc1234"}, 
+      {studentName: "Jill Smith", username: "abc1234"}
+    ]});
+    this.advisors.push({firstName: "Geff", lastName: "Doe", portraitURL: "person2.jpg", studentQueue: [
+      {studentName: "Jack Smith", username: "abc1234"}, 
+      {studentName: "Jane Doe", username: "abc1234"}, 
+      {studentName: "Jill Smith", username: "abc1234"}
+    ]});
+    this.advisors.push({firstName: "Jef", lastName: "Doe", portraitURL: "person2.jpg", studentQueue: [
+      {studentName: "Jack Smith", username: "abc1234"}, 
+      {studentName: "Jane Doe", username: "abc1234"}, 
+      {studentName: "Jill Smith", username: "abc1234"}
+    ]});
+    this.advisors.push({firstName: "Jiff", lastName: "Doe", portraitURL: "person2.jpg", studentQueue: [
+      {studentName: "Jack Smith", username: "abc1234"}, 
+      {studentName: "Jane Doe", username: "abc1234"}, 
+      {studentName: "Jill Smith", username: "abc1234"}
+    ]});*/
 
     this.selectedAdvisor = this.advisors[0];
 
@@ -87,34 +127,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
     this.updateBannerTextForm();
   }
 
-  select(advisor: Advisor, i: number) {
-    this.selectedAdvisor = advisor;
-
-    let selectedAdvisor = document.getElementsByClassName("selectedAdvisor")[0];
-    if(selectedAdvisor) {
-      selectedAdvisor.classList.remove("selectedAdvisor");
-    }
-
-    let allAdvisors = document.getElementsByClassName("advisor-item");
-    allAdvisors[i].classList.add("selectedAdvisor");
-
-    this.updateAdvisorInfoForm();
-  }
-
-  updateAdvisorInfoForm() {
-    this.advisorInfoForm = this.formBuilder.group({
-      fname: this.selectedAdvisor.firstName,
-      lname: this.selectedAdvisor.lastName,
-      //email: this.selectedAdvisor.email,
-      //portraitURL: '',
-      //meetsWithWalkIns: this.selectedAdvisor.meetsWithWalkIns
-    });
-  }
-
-  saveAdvisorInfo() {
-
-  }
-
+  /* -------------------- STUDENT QUEUE STUFF -------------------- */
   queueMoveStudentUp(i: number) {
     if(this.selectedAdvisor.studentQueue[i - 1]) {
       let studentItem = (document.getElementsByClassName("student-item")[i] as HTMLDivElement);
@@ -175,6 +188,139 @@ export class FrontDeskInterfaceComponent implements OnInit {
     this.deletePopup();
   }
 
+  /* -------------------- ADVISOR LIST STUFF -------------------- */
+  select(advisor: Advisor, i: number) {
+    this.selectedAdvisor = advisor;
+
+    /*let selectedAdvisor = document.getElementsByClassName("selectedAdvisor")[0];
+    if(selectedAdvisor) {
+      selectedAdvisor.classList.remove("selectedAdvisor");
+    }
+
+    let allAdvisors = document.getElementsByClassName("advisor-item-info");
+    allAdvisors[i].classList.add("selectedAdvisor");*/
+
+    this.updateAdvisorInfoForm();
+  }
+
+  updateAdvisorInfoForm() {
+    this.advisorInfoForm = this.formBuilder.group({
+      fname: this.selectedAdvisor.firstName,
+      lname: this.selectedAdvisor.lastName,
+      //email: this.selectedAdvisor.email,
+      //portraitURL: '',
+      //meetsWithWalkIns: this.selectedAdvisor.meetsWithWalkIns
+    });
+  }
+
+  saveAdvisorInfo() {
+
+  }
+
+  listMoveAdvisorUp(i: number) {
+    if(this.advisors[i - 1]) {
+      let advisorItem = (document.getElementsByClassName("advisor-item")[i] as HTMLDivElement);
+      advisorItem.style.animation = "swap-advisor-up";
+      advisorItem.style.animationDuration = "0.25s";
+
+      let aboveAdvisorItem = (document.getElementsByClassName("advisor-item")[i - 1] as HTMLDivElement);
+      aboveAdvisorItem.style.animation = "swap-advisor-down";
+      aboveAdvisorItem.style.animationDuration = "0.25s";
+
+      setTimeout(() => {
+        advisorItem.style.animation = "none";
+        aboveAdvisorItem.style.animation = "none";
+
+        let tempSwapAdvisor = this.advisors[i - 1];
+        this.advisors[i - 1] = this.advisors[i];
+        this.advisors[i] = tempSwapAdvisor;
+
+        /*setTimeout(() => {
+          if((i == 1) && document.getElementsByClassName("advisor-item")[0].firstElementChild?.classList.contains("selectedAdvisor")) {
+            document.getElementsByClassName("advisor-item")[0].firstElementChild?.classList.remove("selectedAdvisor");
+            document.getElementsByClassName("advisor-item")[1].firstElementChild?.classList.add("selectedAdvisor");
+          }
+        }, 50);*/
+      }, 250);
+    }
+  }
+
+  listMoveAdvisorDown(i: number) {
+    if(this.advisors[i + 1]) {
+      let advisorItem = (document.getElementsByClassName("advisor-item")[i] as HTMLDivElement);
+      advisorItem.style.animation = "swap-advisor-down";
+      advisorItem.style.animationDuration = "0.25s";
+
+      let belowAdvisorItem = (document.getElementsByClassName("advisor-item")[i + 1] as HTMLDivElement);
+      belowAdvisorItem.style.animation = "swap-advisor-up";
+      belowAdvisorItem.style.animationDuration = "0.25s";
+
+      setTimeout(() => {
+        /*if(advisorItem.classList.contains("selectedAdvisor")) {
+          advisorItem.classList.remove("selectedAdvisor");
+          belowAdvisorItem.classList.add("selectedAdvisor");
+        }
+        else if(belowAdvisorItem.classList.contains("selectedAdvisor")) {
+          belowAdvisorItem.classList.remove("selectedAdvisor");
+          advisorItem.classList.add("selectedAdvisor");
+        }*/
+
+        advisorItem.style.animation = "none";
+        belowAdvisorItem.style.animation = "none";
+
+        let tempSwapAdvisor = this.advisors[i + 1];
+        this.advisors[i + 1] = this.advisors[i];
+        this.advisors[i] = tempSwapAdvisor;
+
+        /*if((i - 1 == 0) && document.getElementsByClassName("advisor-item")[0].firstElementChild?.classList.contains("selectedAdvisor")) {
+          document.getElementsByClassName("advisor-item")[0].firstElementChild?.classList.remove("selectedAdvisor");
+          document.getElementsByClassName("advisor-item")[1].firstElementChild?.classList.add("selectedAdvisor");
+        }*/
+
+        /*setTimeout(() => {
+          if((i + 1 == 0) && document.getElementsByClassName("advisor-item")[0].firstElementChild?.classList.contains("selectedAdvisor")) {
+            document.getElementsByClassName("advisor-item")[0].firstElementChild?.classList.remove("selectedAdvisor");
+            document.getElementsByClassName("advisor-item")[1].firstElementChild?.classList.add("selectedAdvisor");
+          }
+        }, 50);*/
+      }, 250);
+    }
+  }
+
+  popupDeleteAdvisor(i: number) {
+    let advisorName = `${this.advisors[i].firstName} ${this.advisors[i].lastName}`;
+
+    this.createPopup(
+      "Are You Sure?", 
+      `Are you sure you want to delete ${advisorName}?`, 
+      [
+        ["YES", `queueDeleteAdvisor(${i})`, "red"], 
+        ["NO", "deletePopup()", "gray"]
+      ]
+    );
+  }
+  
+  queueDeleteAdvisor(i: number) {
+    if(this.advisors.length == 1) {
+      this.selectedAdvisor = {
+        firstName: "",
+        lastName: "",
+        portraitURL: "",
+        studentQueue: []
+      };
+    }
+    else if(this.advisors[i] == this.selectedAdvisor && this.advisors[i + 1]) {
+      this.selectedAdvisor = this.advisors[i + 1];
+    }
+    else {
+      this.selectedAdvisor = this.advisors[0];
+    }
+
+    this.advisors.splice(i, 1);
+    this.deletePopup();
+  }
+
+  /* -------------------- BANNER INFO STUFF -------------------- */
   updateBannerTextForm() {
     this.bannerForm = this.formBuilder.group({ bannerText: this.bannerText });
   }
@@ -183,6 +329,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
 
   }
 
+  /* -------------------- POPUP STUFF -------------------- */
   createPopup(popupTitle: string, popupText: string, buttons: any) {
     (document.getElementsByClassName("popup-blur")[0] as HTMLDivElement).style.display = "flex";
     this.popupTitle = popupTitle;
@@ -223,7 +370,6 @@ export class FrontDeskInterfaceComponent implements OnInit {
     this.popupTitle = "";
     this.popupText = "";
     (document.getElementsByClassName("popup-blur")[0] as HTMLDivElement).style.display = "none";
-    //this.isBackgroundBlurred = false;
   }
 
   button1Action() {

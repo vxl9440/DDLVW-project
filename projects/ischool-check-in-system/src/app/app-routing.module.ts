@@ -7,10 +7,11 @@ import { FrontDeskInterfaceComponent } from './front-desk-interface/front-desk-i
 import { AdvisorInterfaceComponent } from './advisor-interface/advisor-interface.component';
 
 const routes: Routes = [
-  { path: 'interface-picker', component: InterfacePickerComponent },
+  //{ path: 'interface-picker', component: InterfacePickerComponent },
   { path: 'student-queue-interface', component: StudentQueueInterfaceComponent },
   { path: 'front-desk-interface', component: FrontDeskInterfaceComponent },
   { path: 'advisor-interface', component: AdvisorInterfaceComponent },
+  { path: '**', component: InterfacePickerComponent },
 ];
 
 @NgModule({
