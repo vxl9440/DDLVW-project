@@ -4,6 +4,7 @@ import reasonRouter from './src/route/reason.js';
 import meetingHostRouter from './src/route/advisor.js';
 import studentRouter from './src/route/student.js';
 import bannerRouter from './src/route/banner.js';
+import proxy from 'express-http-proxy';
 
 const port = 8080;
 const app  = express();
@@ -17,6 +18,19 @@ const app  = express();
 //     }
 //     next();
 // });
+
+// forward request to the PHP script which will redirect to Shib auth
+// then it will return a JWT
+// Replace this url with Shibboleth authentication request if deploying
+
+// https://stackoverflow.com/questions/61113507/grabbing-the-oauth-token-from-url-after-redirect-uri-callback-using-angular
+
+app.use('/login', proxy('https://people.rit.edu', {
+    // proxy configuration
+    https: true,
+    proxyReqPathResolver: () => '/~lxp3901/ISTE501/authenticateAdvisor.php'
+}));
+
 
 app.use(express.json());
 

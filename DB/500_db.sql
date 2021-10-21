@@ -25,8 +25,9 @@ CREATE TABLE `advisor` (
   `first_name` varchar(24) NOT NULL,
   `middle_name` varchar(24) DEFAULT NULL,
   `last_name` varchar(24) NOT NULL,
-  `username` varchar(10) NOT NULL,
-  `portrait_url` varchar(128) DEFAULT NULL
+  `username` varchar(10) NOT NULL UNIQUE,
+  `portrait_url` varchar(128) DEFAULT NULL,
+  `enabled` boolean NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 
 /* Data for the table `advisor` */

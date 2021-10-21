@@ -1,9 +1,12 @@
 import { readFileSync, writeFileSync } from 'fs';
-const fileLocation = '../../queue.json';
+import path from 'path';
+
+const __dirname = new URL('.', import.meta.url).pathname;
+const fileLocation = path.resolve(__dirname, '../../queue.json');
 
 
 function read() {
-    return JSON.parse(readFileSync(fileLocation));
+    return JSON.parse(require(fileLocation));
 }
 
 function write(queue) {
@@ -12,7 +15,7 @@ function write(queue) {
     };
 
     try {
-        writeFileSync(fileLocation, JSON.stringify(queue));
+        writeFileSync(fileLocation, JSON.stringify(queue, null, 2));
     } catch (err) {
         returnData['message'] = 'Fail';
         return returnData;
@@ -41,21 +44,26 @@ function findStudentPositionByAdvisorId(queue,advisorIndex,studentUsername){
     return -1;
 }
 
-function insertAdvisor(queue,advisorId) {
-    var advisorObj = {
+function insertAdvisor(queue, advisorId) {
+    const advisorObj = {
         "meetingHost": advisorId,
-        "queue":[]
+        "queue": []
     }
     queue.push(advisorObj);
 }
 
 export function getAdvisorQueueByIds(data) {
-    var idList = data['id'];
-    var queue = read();
-    var selectedList = [];
-    for(var i = 0;i < idList.length;i++){
-        selectedList.push(queue[findAdvisorByObjIndex(queue, idList[i])]); 
+    const idList = data['id'];
+    const queue = read();
+    const selectedList = [];
+
+    for (var i = 0; i < idList.length; i++) {
+        const advisorQueue = queue[findAdvisorByObjIndex(queue, idList[i])];
+        if (advisorQueue) {
+            selectedList.push(advisorQueue);
+        }
     } 
+
     return selectedList;
 }
 

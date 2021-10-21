@@ -60,7 +60,7 @@ router.post('/', (req, res) => {
 
 //update advisor
 router.put('/:id', (req, res) => {
-    advisor.updateAdvisor(req.body,req.params.id)
+    advisor.updateAdvisor(req.body, req.params.id)
         .then(success => res.json(success))
         .catch(error => res.json(error));
 });

@@ -4,7 +4,7 @@ import { getCurrentWeekDay, getCurrentTime } from '../util/timeUtil.js';
 export function getAllAdvisors() {
     const sql = 'SELECT advisor_id as id,first_name as firstName,' +
                       'middle_name as middleName,last_name as lastName,' +
-                      'username as username,portrait_url as portraitURL '+
+                      'username as username,portrait_url as portraitURL, enabled '+
                       'FROM advisor';
 
     return select(sql, []);
@@ -13,8 +13,8 @@ export function getAllAdvisors() {
 export function getAdvisorById(targetId) {
     const sql = 'SELECT advisor_id as id,first_name as firstName,' +
                      'middle_name as middleName,last_name as lastName,' +
-                     'username as username,portrait_url as portraitURL '+
-                     'FROM advisor '+
+                     'username as username,portrait_url as portraitURL, '+
+                     'enabled FROM advisor '+
                      'WHERE advisor_id = ?';
 
     return select(sql, [parseInt(targetId)]);
@@ -26,10 +26,10 @@ export function getAdvisorByWalkInAvailability() {
                      'a.middle_name as middleName,a.last_name as lastName,' +
                      'a.username as username,a.portrait_url as portraitURL '+
                      'FROM advisor a, walk_in_hour w '+
-                     'WHERE a.advisor_id = w.advisor_id AND a.is_available = ? AND '+ 
+                     'WHERE a.advisor_id = w.advisor_id AND a.enabled = ? AND '+ 
                      'w.weekday = ? AND (? between w.start_time AND w.end_time)';
 
-    return select(sql, ['Y', getCurrentWeekDay(), getCurrentTime()]);
+    return select(sql, [true, getCurrentWeekDay(), getCurrentTime()]);
 }
 
 
@@ -45,10 +45,10 @@ export function insertAdvisor(data) {
 
 export function updateAdvisor(data, targetId) {
     const sql = 'UPDATE advisor SET first_name = ?,middle_name = ?,last_name = ?,'+
-                                  'username = ?,portrait_url = ? '+
+                                  'username = ?,portrait_url = ?, enabled = ? '+
                                   'WHERE advisor_id = ?';
     const sqlParam = [data['firstName'], data['middle'] === '' ? null : data['middle'],
-                    data['lastName'], data['username'], data['portraitURL'], parseInt(targetId)];
+            data['lastName'], data['username'], data['portraitURL'], data['enabled'], parseInt(targetId)];
 
     return update(sql, sqlParam);
 }

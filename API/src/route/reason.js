@@ -15,13 +15,13 @@ router.post('/', (req, res) => {
       .catch(error => res.json(error));
 });
 
-router.put('/:id',(req,res)=>{
+router.put('/:id',(req,res) => {
    updateReason(req.body, req.params.id)
       .then(success => res.json(success))
       .catch(error => res.json(error));
 });
 
-router.delete('/:id',(req,res)=>{
+router.delete('/:id',(req,res) => {
    deleteReason(req.params.id)
       .then(success => res.json(success))
       .catch(error => res.json(reason))
