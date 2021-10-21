@@ -1,0 +1,127 @@
+/* global variables */
+$rit-orange: rgb(230, 113, 45);
+$rit-orange-light-1: rgb(255, 126, 51);
+$rit-orange-light-2: rgb(253, 137, 69);
+$rit-orange-light-3: rgb(255, 154, 95);
+$rit-orange-light-4: rgb(252, 171, 124);
+$rit-white-orange: rgb(255, 245, 240);
+$light-red: rgb(233, 83, 83);
+$light-red-light-1: rgb(235, 117, 117);
+$light-red-highlighted: rgb(236, 46, 46);
+$light-green: rgb(77, 187, 77);
+$light-green-highlighted: rgb(115, 211, 91);
+$gray: gray;
+$gray-highlighted: rgb(158, 158, 158);
+
+.grid-container {
+    display: grid;
+    grid-template-rows: 15% auto 15%;
+    grid-template-columns: 20px auto 20px;
+    width: 100%;
+    height: 100%;
+}
+
+.top-bar {
+    grid-row: 1 / 2;
+    grid-column: 1 / 4;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: $rit-orange;
+    //padding-bottom: 1.3vw;
+}
+
+.top-bar img {
+    height: 8vw;
+    width: 8vw;
+    margin-left: 40px;
+}
+
+.top-bar .center-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.center-info h1 {
+    margin: 0;
+    padding: 0;
+    font-size: 2vw;
+    margin-bottom: 5px;
+}
+
+.center-info h2 {
+    margin: 0;
+    padding: 0;
+    font-size: 1vw;
+}
+
+.blank-div {
+    width: 8vw;
+}
+
+.picker-text {
+    grid-row: 2 / 3;
+    grid-column: 2 / 3;
+    display: flex;
+    justify-content: center;
+    margin-top: 5vh;
+}
+
+.picker {
+    grid-row: 2 / 3;
+    grid-column: 2 / 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.interface-button {
+    width: 30vw;
+    height: 10vh;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 10px;
+    margin: 5px;
+    background-color: $rit-orange-light-2;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
+    font-size: 1.5vw;
+}
+
+.interface-button:hover {
+    background-color: $rit-orange-light-3;
+    cursor: pointer;
+}
+
+.interface-button:active {
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25) inset;
+}
+
+.interface-button a {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    text-decoration: none;
+    color: white;
+}
+
+.interface-button img {
+    height: 80%;
+    width: auto;
+    margin-right: 10px;
+}
+
+.bottom-bar {
+    grid-row: 3 / 4;
+    grid-column: 1 / 4;
+    background-color: $rit-orange;
+}

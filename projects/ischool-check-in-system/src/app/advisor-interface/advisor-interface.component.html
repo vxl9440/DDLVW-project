@@ -1,0 +1,51 @@
+<div class="grid-container">
+    <div class="top-bar">
+      <div>
+        <img src="../assets/icons/RIT_RGB_hor.svg">
+        <h1>iSchool Check In System: Advisor Interface</h1>
+      </div>
+      <button><img src="../assets/icons/logout_white_36dp.svg">Sign Out</button>
+    </div>
+    <div class="student-queue-manager">
+      <h2>Students Checked In</h2>
+      <div class="student-queue-stuff">
+        <div class="student-item" *ngFor="let student of selectedAdvisor.studentQueue; let i = index;">
+          <div class="student-item-bar" (click)="setSelectedStudent(i)">
+            <h3>{{student.studentName}}</h3>
+          </div>
+          <button class="misc-button" (click)="queueMoveStudentUp(i)"><img src="../assets/icons/arrow_upward_white_36dp.svg"></button>
+          <button class="misc-button" (click)="queueMoveStudentDown(i)"><img src="../assets/icons/arrow_downward_white_36dp.svg"></button>
+          <button class="x-button" (click)="popupDeleteStudent(i)"><img src="../assets/icons/x_white_36dp.svg"></button>
+        </div>
+        <div *ngIf="!selectedAdvisor.studentQueue[0]" class="none-text-area"><h1>NONE</h1></div>
+      </div>
+    </div>
+    <div class="student-info-manager">
+      <h2>{{selectedStudent.studentName}}</h2>
+      <div>{{selectedStudent.username}}@rit.edu</div>
+      <br>
+      <div>Checked in at {{selectedStudent.checkInTime}}</div>
+      <br>
+      <div class="appointment-info" *ngIf="!selectedStudentWalkIn">
+        <h2>Appointment</h2>
+        <div>{{selectedStudentApptStartTime}} - {{selectedStudentApptEndTime}}</div>
+      </div>
+      <button class="start-meeting-button" *ngIf="!meetingInProgress">Start Meeting</button>
+      <button class="end-meeting-button" *ngIf="meetingInProgress">End Meeting</button>
+    </div>
+    <div class="walk-in-hours-manager">
+      <h2>My Walk-In Hours</h2>
+      <button class="save-button" (click)="updateWalkInInfo()">Save</button>
+    </div>
+    <div class="popup-blur">
+      <div class="popup-box">
+        <div class="popup-top-bar">{{popupTitle}}</div>
+        <div class="popup-text-area">{{popupText}}</div>
+        <div class="popup-buttons-area">
+          <button id="popup-button-1" class="popup-button" (click)="button1Action()">{{popupButton1Text}}</button>
+          <button id="popup-button-2" class="popup-button" (click)="button2Action()">{{popupButton2Text}}</button>
+          <button id="popup-button-3" class="popup-button" (click)="button3Action()">{{popupButton3Text}}</button>
+        </div>
+      </div>
+    </div>
+  </div>

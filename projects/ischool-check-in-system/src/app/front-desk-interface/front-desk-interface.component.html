@@ -1,0 +1,88 @@
+<div class="grid-container">
+    <div class="top-bar">
+      <h1>iSchool Check In System: Front Desk Interface</h1>
+      <div class="top-bar-buttons">
+        <button><img src="../assets/icons/home_white_36dp.svg">Home</button>
+        <button><img src="../assets/icons/list_alt_white_36dp.svg">Manage Reason Codes</button>
+        <button><img src="../assets/icons/logout_white_36dp.svg">Sign Out</button>
+      </div>
+    </div>
+    <div class="student-queue-manager">
+      <h2 class="section-label">Student Queue Manager - {{selectedAdvisor.firstName}} {{selectedAdvisor.lastName}}</h2>
+      <div class="student-queue-stuff">
+        <div class="student-item" *ngFor="let student of selectedAdvisor.studentQueue; let i = index;">
+          <div>
+            <h3>{{student.studentName}}</h3>
+          </div>
+          <button class="misc-button" (click)="queueMoveStudentUp(i)"><img src="../assets/icons/arrow_upward_white_36dp.svg"></button>
+          <button class="misc-button" (click)="queueMoveStudentDown(i)"><img src="../assets/icons/arrow_downward_white_36dp.svg"></button>
+          <button class="x-button" (click)="popupDeleteStudent(i)"><img src="../assets/icons/x_white_36dp.svg"></button>
+        </div>
+        <div *ngIf="!selectedAdvisor.studentQueue[0]" class="none-text-area"><h1>NONE</h1></div>
+      </div>
+      <button class="add-student-button"><img src="../assets/icons/add_box_white_36dp.svg">Add Student</button>
+    </div>
+    <div class="advisor-list-manager">
+      <h2 class="section-label">Advisor List Manager</h2>
+      <div class="advisor-stuff">
+        <div class="advisor-list">
+          <div class="advisor-item" *ngFor="let advisor of advisors; let i = index; let first = first" [ngClass]="{selectedAdvisor: first}" (click)="select(advisor, i)">
+            <img *ngIf="advisor == selectedAdvisor" src="../assets/icons/arrow_forward_ios_white_36dp.svg">{{advisor.firstName}} {{advisor.lastName}}
+            <!--div *ngIf="advisor == selectedAdvisor">&rsaquo; {{advisor.firstName}} {{advisor.lastName}}</div>
+            <div *ngIf="advisor != selectedAdvisor"> {{advisor.firstName}} {{advisor.lastName}}</div-->
+          </div>
+        </div>
+        <div class="vertical-line"></div>
+        <div class="advisor-info">
+          <img src="{{imgPathStart}}{{selectedAdvisor.portraitURL}}" alt="{{imgPathStart}}{{selectedAdvisor.portraitURL}}">
+          <form [formGroup]="advisorInfoForm" (ngSubmit)="saveAdvisorInfo()">
+            <div class="form-row">
+              <label for="fname">First name: </label>
+              <input type="text" id="fname" formControlName="fname">
+            </div>
+            <div class="form-row">
+              <label for="lname">Last name: </label>
+              <input type="text" id="lname" formControlName="lname">
+            </div>
+            <!--div class="form-row">
+              <label for="email">Email: </label>
+              <input type="email" id="email" formControlName="email">
+            </div-->
+            <!--div class="form-row">
+              <label for="photo">Photo ID: </label>
+              <input type="file" id="portraitURL" formControlName="portraitURL">
+            </div-->
+            <!--div class="checkbox-row">
+              <input type="checkbox" id="meets-with-walk-ins" formControlName="meetsWithWalkIns" value="Meets with walk-ins">
+              <label for="meets-with-walk-ins">Meets with walk-ins</label>
+            </div-->
+            <input type="submit" value="Save">
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="banner-info-manager">
+      <h2 class="section-label">Banner Info Manager</h2>
+      <!--img src="">
+      <p></p-->
+      <form [formGroup]="bannerForm" (ngSubmit)="saveBannerText()">
+        <!--div class="form-row"-->
+          <label for="bannerText">Banner Text: </label>
+          <!--input type="text" id="bannerText" formControlName="bannerText"-->
+          <textarea id="bannerText" formControlName="bannerText"></textarea>
+        <!--/div-->
+        <input type="submit" value="Save">
+      </form>
+    </div>
+    <div class="popup-blur">
+      <div class="popup-box">
+        <div class="popup-top-bar">{{popupTitle}}</div>
+        <div class="popup-text-area">{{popupText}}</div>
+        <div class="popup-buttons-area">
+          <button id="popup-button-1" class="popup-button" (click)="button1Action()">{{popupButton1Text}}</button>
+          <button id="popup-button-2" class="popup-button" (click)="button2Action()">{{popupButton2Text}}</button>
+          <button id="popup-button-3" class="popup-button" (click)="button3Action()">{{popupButton3Text}}</button>
+        </div>
+      </div>
+    </div>
+  </div>

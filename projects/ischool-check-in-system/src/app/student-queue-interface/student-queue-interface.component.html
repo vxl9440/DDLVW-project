@@ -1,0 +1,35 @@
+<div class="grid-container">
+    <div class="top-bar">
+      <img src="{{imgPathStart}}icons/RIT_hor_w.svg">
+      <div class="center-info">
+        <h1>School of Information</h1>
+        <h2>Advisor Meeting Queue</h2>
+      </div>
+      <div class="last-updated-info">
+        <span>Last Updated at {{timeUpdated}}</span>
+        <!--img *ngIf="connected" src="{{imgPathStart}}green_dot.png">
+        <img *ngIf="!connected" src="{{imgPathStart}}red_dot.png"-->
+        <div class="dot green-dot" *ngIf="connected"></div>
+        <div class="dot red-dot" *ngIf="!connected"></div>
+      </div>
+    </div>
+    <div class="advisor-area">
+      <div class="advisor-box" *ngFor="let advisor of advisors">
+        <div class="advisor-info">
+          <div class="advisor-img-background">
+            <img class="advisor-img" src="{{imgPathStart}}{{advisor.img}}" alt="{{imgPathStart}}{{advisor.img}}">
+          </div>
+          <h2>{{advisor.firstName}} {{advisor.lastName}}</h2>
+        </div>
+        <div class="student-box" *ngFor="let student of advisor.studentQueue | slice:0:maxStudentsInList; index as i">
+          <!--img class="student-img" src="{{imgPathStart}}{{student.img}}" alt="{{imgPathStart}}{{student.img}}"-->
+          <h3>{{student.firstName}} {{student.lastName[0]}}.</h3>
+          <h3 *ngIf="i == maxStudentsInList - 1">...</h3>
+        </div>
+      </div>
+    </div>
+    <div class="banner-area">
+      <!--div *ngIf=""><img src=""></div-->
+      <div *ngIf="bannerText">{{bannerText}}</div>
+    </div>
+  </div>
