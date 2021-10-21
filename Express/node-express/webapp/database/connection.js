@@ -10,3 +10,11 @@ exports.getConnection = function(){
     });
 }
 
+// var pool      =    sql.createPool({
+//     connectionLimit : 5,
+//     host     : '127.0.0.1',
+//     user     : 'root',
+//     password : 'Qq1196726420',
+//     database : 'iste500',
+// });    
+// module.exports = pool;
