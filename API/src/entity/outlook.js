@@ -3,6 +3,12 @@ import { getCurrentDay } from '../util/timeUtil.js';
 
 const python_file_location = '../../outlook.py';
 
+/**
+ * 
+ * @param {*} stdout the content of standard output after python ran
+ * @param {*} studentUsername username of a student
+ * @returns appointment data
+ */
 function checkAndConstructDateset(stdout, studentUsername) {
     const appointment = {};
     const events = JSON.parse(stdout.replace(/'/g, '\"'));
@@ -25,6 +31,12 @@ function checkAndConstructDateset(stdout, studentUsername) {
     return appointment;
 }
 
+/**
+ * 
+ * @param {*} ldapData data regrad a student from ldap
+ * @param {*} appointment appointment data of a student
+ * @returns changed ldap data
+ */
 function constructReturnData(ldapData, appointment) {
     ldapData['hasAppt'] = false;
     if (appointment['advisorName'] !== undefined) {
@@ -34,6 +46,11 @@ function constructReturnData(ldapData, appointment) {
     return ldapData;
 }
 
+/**
+ * 
+ * @param {*} ldapData data regrad a student from ldap
+ * @returns a promise object
+ */
 export function getTodayOutlookCalendar(ldapData) {
     // console.log(timeUtil.getCurrentDay(false));
     // console.log(timeUtil.getCurrentDay(true));

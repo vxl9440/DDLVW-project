@@ -4,11 +4,19 @@ import path from 'path';
 const __dirname = new URL('.', import.meta.url).pathname;
 const fileLocation = path.resolve(__dirname, '../../queue.json');
 
-
+/**
+ * 
+ * @returns string content of a file
+ */
 function read() {
-    return JSON.parse(require(fileLocation));
+    return JSON.parse(readFileSync(fileLocation));
 }
 
+/**
+ * 
+ * @param {*} queue queue object
+ * @returns SUCCESS or FAIL
+ */
 function write(queue) {
     const returnData = {
         "message": "Success"
@@ -24,6 +32,12 @@ function write(queue) {
     return returnData;
 }
 
+/**
+ * 
+ * @param {*} queue queue object
+ * @param {*} advisorId advisor id
+ * @returns index of targeted advisor in queue list
+ */
 function findAdvisorByObjIndex(queue, advisorId) {
     for (var i = 0; i < queue.length; i++) {
         if (queue[i]['meetingHost'] === advisorId) {
@@ -34,6 +48,13 @@ function findAdvisorByObjIndex(queue, advisorId) {
     return -1;
 }
 
+/**
+ * 
+ * @param {*} queue queue object
+ * @param {*} advisorIndex index of a advisor in queue list
+ * @param {*} studentUsername username of a student
+ * @returns index of targeted student in targeted advisor's index in queue list
+ */
 function findStudentPositionByAdvisorId(queue,advisorIndex,studentUsername){
     for (var k = 0; k < queue[advisorIndex]['queue'].length; k++) {
         if(queue[advisorIndex]['queue'][k]['username'] === studentUsername) {
@@ -44,6 +65,11 @@ function findStudentPositionByAdvisorId(queue,advisorIndex,studentUsername){
     return -1;
 }
 
+/**
+ * insert a advisor in the queue
+ * @param {*} queue queue object
+ * @param {*} advisorId advisor id
+ */
 function insertAdvisor(queue, advisorId) {
     const advisorObj = {
         "meetingHost": advisorId,
@@ -52,6 +78,11 @@ function insertAdvisor(queue, advisorId) {
     queue.push(advisorObj);
 }
 
+/**
+ * Get multiple advisors from queue
+ * @param {*} data a list of advisor id
+ * @returns a list that contains advisors' object
+ */
 export function getAdvisorQueueByIds(data) {
     const idList = data['id'];
     const queue = read();
@@ -67,16 +98,34 @@ export function getAdvisorQueueByIds(data) {
     return selectedList;
 }
 
-export function insertStudentByAdvisorId (targetId,data) {
-    var queue = read();
-    var targetIndex = findAdvisorByObjIndex(queue,parseInt(targetId));
-    if(targetIndex === -1){
+/**
+ * 
+ * @param {*} targetId advisor id
+ * @param {*} data student information
+ * @returns SUCCESS or FAIL
+ */
+export function insertStudentByAdvisorId (targetId, data) {
+    const queue = read();
+    const targetIndex = findAdvisorByObjIndex(queue, parseInt(targetId));
+    if (findStudentPositionByAdvisorId(queue, targetIndex, data['username']) !== -1) {
+        return { 'message': 'Student already in queue' };
+    } 
+    if (targetIndex === -1) {
         insertAdvisor(queue,targetId);
+        queue[queue.length - 1]['queue'].push(data);
+    } else {
+        queue[queue.length - 1]['queue'].push(data);
     }
-    queue[queue.length - 1]['queue'].push(data);
+    
     return write(queue);
 }
 
+/**
+ * 
+ * @param {*} targetId advisor id
+ * @param {*} data contains student's username and desire position
+ * @returns SUCCESS or FAIL
+ */
 export function adjustStudentPositionByAdvisorId(targetId,data){
     var queue = read();
     var advisorIndex = findAdvisorByObjIndex(queue,parseInt(targetId));
@@ -87,12 +136,27 @@ export function adjustStudentPositionByAdvisorId(targetId,data){
     return write(queue);
 }
 
+/**
+ * 
+ * @param {*} targetId advisor id
+ * @param {*} data contains student's username
+ * @returns SUCCESS or FAIL
+ */
 export function deleteStudentByAdvisorId(targetId, data) {
     const queue = read();
-    const advisorIndex = findAdvisorByObjIndex(queue, parseInt(targetId));
-    const currentPosition = findStudentPositionByAdvisorId(queue, advisorIndex, data['username']);
+    const advisorIndex = findAdvisorByObjIndex(queue,parseInt(targetId));
+    const currentPosition = findStudentPositionByAdvisorId(queue,advisorIndex,data['username']);
+    const checkInTime = queue[advisorIndex]['queue'][currentPosition]['timeIn'];
     
-    queue[advisorIndex]['queue'].splice(currentPosition,1);
+    queue[advisorIndex]['queue'].splice(currentPosition,1); 
+    write(queue);
     
-    return write(queue);
+    const sql = 'UPDATE registration SET check_out_time = ? WHERE check_in_time = ?';
+    const sqlParam = [timeUtil.getTimeStamp(new Date()),timeUtil.getTimeStamp(new Date(checkInTime))];
+
+    try {
+       return await crud.update(sql,sqlParam);
+    } catch(err) {
+        console.log(err);
+    }
 }

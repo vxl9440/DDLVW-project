@@ -33,14 +33,22 @@ router.put('/:id/queue', (req, res) => {
 
 
 router.delete('/:id/queue', (req, res) => {
-    res.json(queue.deleteStudentByAdvisorId(req.params.id,req.body)); 
+    queue.deleteStudentByAdvisorId(req.params.id, req.body)
+        .then(result => res.json(result));
 }); 
 
 
 //select all advisors
 router.get('/', (req, res) => {
-    advisor.getAllAdvisors()
-        .then(advisors => res.json(advisors));
+    const user = req.query.user;
+    if (user) {
+        advisor.getAdvisorByEmail(user)
+            .then(advisor => res.json(advisor[0]));
+    } else {
+        advisor.getAllAdvisors()
+            .then(advisors => res.json(advisors));
+    }
+    
 });
 
 

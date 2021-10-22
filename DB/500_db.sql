@@ -25,18 +25,18 @@ CREATE TABLE `advisor` (
   `first_name` varchar(24) NOT NULL,
   `middle_name` varchar(24) DEFAULT NULL,
   `last_name` varchar(24) NOT NULL,
-  `username` varchar(10) NOT NULL UNIQUE,
+  `ritEmail` varchar(30) NOT NULL UNIQUE,
   `portrait_url` varchar(128) DEFAULT NULL,
   `enabled` boolean NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_general_ci;
 
 /* Data for the table `advisor` */
 
-insert  into `advisor`(`first_name`,`last_name`,`username`) values 
-('Melody','Jackson','zxc1234'),
-('Betty','John','qwe1234'),
-('Betty','Jackson','jkl1234'),
-('Melody','John','abc1234');
+insert  into `advisor`(`first_name`,`last_name`,`ritEmail`) values 
+('Melody','Jackson','zxc1234@rit.edu'),
+('Betty','John','qwe1234@rit.edu'),
+('Betty','Jackson','jkl1234@rit.edu'),
+('Melody','John','abc1234@rit.edu');
 
 /* Table structure for table `reason` */
 
