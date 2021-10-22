@@ -1,13 +1,16 @@
-import fs from 'fs';
+import { readFileSync, writeFileSync } from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-const fileLocation = '../../banner.txt';
+const __dirname = fileURLToPath(import.meta.url);
+const fileLocation = path.resolve(__dirname, '../../../banner.txt');
 
 /**
  * 
  * @returns string content of the file
  */
 function read() {
-    return fs.readFileSync(fileLocation).toString(); 
+    return readFileSync(fileLocation).toString(); 
 }
 
 
@@ -18,7 +21,7 @@ function read() {
  */
 function write(content) {
     try {
-        fs.writeFileSync(fileLocation, content)
+        writeFileSync(fileLocation, content)
     } catch (err) {
         return false;
     }
@@ -42,37 +45,10 @@ export function getBannerInfo() {
  * @returns SUCCESS or FAIL
  */
 export function insertBannerInfo(content) {
-    const returnData = {"message": 'Fail'};
+    const returnData = { 'message': 'Fail' };
     if (write(content['bannerInfo'])) {
         returnData['message'] = 'Success';
     }
 
-    return returnData;
-}
-
-/**
- * 
- * @param {*} content the content of banner that to be updated
- * @returns SUCCESS or FAIL
- */
-export function updateBannerInfo(content) {
-    const returnData = {"message": 'Fail'};
-    if (write(content['bannerInfo'])) {
-        returnData['message'] = 'Success';
-    }
-
-    return returnData;
-}
-
-/**
- * delete banner 
- * @returns SUCCESS or FAIL
- */
-export function deleteBannerInfo() {
-    const returnData = {"message": 'Fail'};
-    if (write('')) {
-        returnData['message'] = 'Success';
-    }
-    
     return returnData;
 }

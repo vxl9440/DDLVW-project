@@ -1,1 +1,20 @@
-{}
+[
+  {
+    "meetingHost": "1",
+    "queue": [
+      {
+        "studentName": "Lowell P",
+        "username": "lxp3901",
+        "timeIn": "2021-09-19T19:57:55+00:00"
+      }
+    ]
+  },
+  {
+    "meetingHost": "2",
+    "queue": [
+      {
+        "test": 1
+      }
+    ]
+  }
+]

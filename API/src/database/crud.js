@@ -23,34 +23,30 @@ const executeQuery = function doAll(sql, sqlParam) {
 
 
 export function transaction(queries, sqlParams) {
-    connection.beginTransaction((err) => {
-        if (err) { throw err; }
-        try {
-            const res = await doAll(queries[0], sqlParams[0]);
-            
-            for (var i = 1; i < queries.length; i++) {
-                sqlParams[i].unshift(res.insertId);
-                await doAll(queries[i], sqlParams[i]);
-            }
-    
-            connection.commit((err) => {
-                if (err) {
-                    return connection.rollback(() => {
-                        return { 'Transaction error while committing': err }; 
-                    });
+    return new Promise((resolve, reject) => {
+        connection.beginTransaction(async (err) => {
+            if (err) { reject(err); }
+            try {
+                const res = await doAll(queries[0], sqlParams[0]);
+                
+                for (var i = 1; i < queries.length; i++) {
+                    sqlParams[i].unshift(res.insertId);
+                    await doAll(queries[i], sqlParams[i]);
                 }
-            })
-        } catch(err) { 
-            return connection.rollback(() => {
-                return { 'Transaction error': err };
-            });
-        }
-    });
+        
+                connection.commit((err) => {
+                    if (err) {
+                        connection.rollback(() => reject(err));
+                    } else {
+                        resolve();
+                    }
+                });
 
-    return {
-        'message':'SUCCESS',
-        'statusCode': 1
-    }
+            } catch(err) { 
+                connection.rollback(() => reject(err));
+            }
+        });
+    });
 }
 
 

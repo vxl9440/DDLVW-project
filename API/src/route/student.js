@@ -5,14 +5,15 @@ import { getTodayOutlookCalendar } from '../entity/outlook.js';
 const router = Router();
 
 router.get('/:studentUid', async (req, res) => {
+    
     const studentData = await getStudentData(req.params.studentUid);
 
     if (studentData) {
-        const result = await getTodayOutlookCalendar(studentData);
-
-        res.json(result);
+        //const result = await getTodayOutlookCalendar(studentData);
+        //res.json(result);
+        res.json(studentData);
     } else {
-        res.send(404);
+        res.sendStatus(404);
     }
 });
 

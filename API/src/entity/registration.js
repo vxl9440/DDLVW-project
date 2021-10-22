@@ -1,6 +1,5 @@
-import { select, insert, update, _delete, transaction } from '../database/crud.js';
-import timeUtil from '../util/timeUtil.js';
-
+import { transaction } from '../database/crud.js';
+import { getTimeStamp } from '../util/timeUtil.js';
 
 function constructReasonAssoc(sqls, sqlParams, reasons) {
     for (const reason of reasons) {
@@ -15,7 +14,7 @@ export function insertRegistration(data) {
               '(?,?,?,?,?)';
 
     const advisorId   = parseInt(data['meetingHost']);
-    const timeIn      = timeUtil.getTimeStamp(new Date(data['timeIn']));
+    const timeIn      = getTimeStamp(new Date(data['timeIn']));
     const scheduled   = data['hasAppt'];
     const stuUsername = data['studentUsername'];
     const stuName     = data['studentName'];
@@ -24,6 +23,6 @@ export function insertRegistration(data) {
     let sqlParams = [[advisorId, timeIn, scheduled, stuUsername, stuName]];
     
     constructReasonAssoc(queries, sqlParams, data['reasons']);
-    
-    return transcation(queries, sqlParams); 
+
+    return transaction(queries, sqlParams); 
 }

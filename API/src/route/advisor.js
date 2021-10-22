@@ -23,7 +23,7 @@ router.get('/queue', (req, res) => {
 
 
 router.post('/:id/queue', (req, res) => {
-    res.json(queue.insertStudentByAdvisorId(req.params.id,req.body));
+    res.json(queue.insertStudentByAdvisorId(req.params.id, req.body));
 });
 
 

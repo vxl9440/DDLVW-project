@@ -59,14 +59,14 @@ export function getTodayOutlookCalendar(ldapData) {
         exec(`python ${params}`, (error, stdout, stderr) => {
             if (error) {
                 console.log(`error: ${error.message}`);
-                return;
+                reject(error);
             }
             if (stderr) {
                 console.log(`stderr: ${stderr}`);
-                return;
+                reject(error);
             }
-            const appointment = checkAndConstructDateset(stdout,ldapData['studentUsername']);
-            resolve(constructReturnData(ldapData,appointment));
+            const appointment = checkAndConstructDateset(stdout, ldapData['studentUsername']);
+            resolve(constructReturnData(ldapData, appointment));
         });
     });
 }
