@@ -4,10 +4,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { StudentQueueInterfaceComponent } from './student-queue-interface/student-queue-interface.component';
-import { FrontDeskInterfaceComponent } from './front-desk-interface/front-desk-interface.component';
-import { AdvisorInterfaceComponent } from './advisor-interface/advisor-interface.component';
-import { InterfacePickerComponent } from './interface-picker/interface-picker.component';
+import { StudentQueueInterfaceComponent } from './components/student-queue-interface/student-queue-interface.component';
+import { FrontDeskInterfaceComponent } from './components/front-desk-interface/front-desk-interface.component';
+import { AdvisorInterfaceComponent } from './components/advisor-interface/advisor-interface.component';
+import { InterfacePickerComponent } from './components/interface-picker/interface-picker.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { InterfacePickerComponent } from './interface-picker/interface-picker.co
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
