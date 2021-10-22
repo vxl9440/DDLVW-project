@@ -10,6 +10,8 @@ $light-red-light-1: rgb(235, 117, 117);
 $light-red-highlighted: rgb(236, 46, 46);
 $light-green: rgb(77, 187, 77);
 $light-green-highlighted: rgb(115, 211, 91);
+$light-green-highlighted-light-1: rgb(140, 224, 119);
+$white-green: rgb(207, 243, 198);
 $gray: gray;
 $gray-light-1: rgb(158, 158, 158);
 $gray-light-1: rgb(177, 177, 177);
@@ -145,7 +147,7 @@ button:hover {
     box-sizing: border-box;
     display: flex;
     align-items: center;
-    width: calc(100% - 55px);
+    width: calc(100% - 156px);
     margin-right: 2px;
     padding: 5px;
     padding-left: 10px;
@@ -221,6 +223,23 @@ button:hover {
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25) inset;
 }
 
+.meeting-student-item .student-item-bar {
+    background-color: $light-green;
+    border-color: green;
+}
+
+.meeting-student-item .student-item-bar:hover {
+    background-color: $light-green-highlighted;
+}
+
+.meeting-student-item .misc-button {
+    background-color: $light-green-highlighted;
+}
+
+.meeting-student-item .misc-button:hover {
+    background-color: $light-green-highlighted-light-1;
+}
+
 @keyframes swap-student-up {
     from {
         transform: translateY(0);
@@ -248,7 +267,7 @@ button:hover {
 }
 
 // the 'NONE' text that appears when there are no students
-.student-queue-stuff h1 {
+.none-text-area h1 {
     font-size: 8vw;
     color: lightgray;
 }
@@ -264,7 +283,7 @@ button:hover {
     background-color: $gray-light-4;
 }
 
-.start-meeting-button {
+.meeting-button {
     align-self: center;
     display: flex;
     align-items: center;
@@ -273,26 +292,38 @@ button:hover {
     margin: 20px;
     margin-top: auto;
     padding: 10px;
-    background-color: $light-green;
-    color: white;
     border: none;
     border-radius: 5px;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
     font-size: 1vw;
 }
 
-.start-meeting-button:hover {
-    background-color: $light-green-highlighted;
-}
-
-.start-meeting-button:active {
+.meeting-button:active {
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25) inset;
 }
 
-/*.start-meeting-button img {
+/*.meeting-button img {
     height: 75%;
     margin-right: 5px;
 }*/
+
+.green-button {
+    background-color: $light-green;
+    color: white;
+}
+
+.green-button:hover {
+    background-color: $light-green-highlighted;
+}
+
+.red-button {
+    background-color: $light-red;
+    color: white;
+}
+
+.red-button:hover {
+    background-color: $light-red-light-1;
+}
 
 /* -------------------- WALK IN HOURS MANAGER STUFF -------------------- */
 .walk-in-hours-manager {
@@ -300,6 +331,21 @@ button:hover {
     grid-column: 6 / 7;
     padding: 20px;
     background-color: $gray-light-4;
+}
+
+.form-row {
+    margin-bottom: 20px;
+}
+
+.form-row label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 1vw;
+}
+
+.form-row input[type="time"] {
+    //margin-bottom: 10px;
+    font-size: 1vw;
 }
 
 /* -------------------- POPUP STUFF -------------------- */
@@ -429,4 +475,8 @@ button:hover {
 
 .popup-gray-button:hover {
     background-color: $gray-light-1;
+}
+
+.meeting-in-progress {
+    //background-color: $white-green;
 }

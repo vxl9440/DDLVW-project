@@ -32,9 +32,6 @@ export class StudentQueueInterfaceComponent implements OnInit {
   connected: boolean = false;
   timeUpdated: string = "?";
   bannerText: string = "";
-  //apiUrl = 'api/';  // URL to web api
-  apiUrl = 'http://date.jsontest.com/';  // URL to web api
-  things: any;
 
   constructor(private http: HttpClient) {
     
@@ -93,14 +90,6 @@ export class StudentQueueInterfaceComponent implements OnInit {
     ]});
 
     this.connect();
-    this.getAdvisors();
-  }
-
-  getAdvisors() {
-    this.http.get(`${this.apiUrl}`).subscribe(data => {
-      this.things = data;
-      console.log("this.things:", this.things);
-    });
   }
   
   connect() {

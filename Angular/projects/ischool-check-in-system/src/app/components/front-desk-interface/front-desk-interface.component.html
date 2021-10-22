@@ -29,7 +29,8 @@
       <h2 class="section-label">Advisor List Manager</h2>
       <div class="advisor-stuff">
         <div class="advisor-list">
-          <div class="advisor-item" *ngFor="let advisor of advisors; let i = index; let first = first">
+          <div class="advisor-item" *ngFor="let advisor of advisors; let i = index">
+          <!--div class="advisor-item" *ngFor="let advisor of advisors; let i = index; let first = first"-->
             <!--div class="advisor-item-info" [ngClass]="{selectedAdvisor: first}" (click)="select(advisor, i)"-->
             <div class="advisor-item-info" (click)="select(advisor, i)">
               <img class="selected-advisor-arrow" *ngIf="advisor == selectedAdvisor" src="../assets/icons/arrow_forward_ios_white_36dp.svg">

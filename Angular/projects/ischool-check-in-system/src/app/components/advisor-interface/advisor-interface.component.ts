@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth-service.service';
 import { Advisor } from '../../models/advisor';
 import { Student } from '../../models/student';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-advisor-interface',
@@ -13,7 +14,7 @@ export class AdvisorInterfaceComponent implements OnInit {
   title = 'advisor-interface';
   
   //advisorID: number = 1;
-  advisor: Advisor
+  advisor: Advisor;
 
   selectedAdvisor: Advisor = {
     firstName: "John", lastName: "Doe", portraitURL: "person2.jpg", studentQueue: [
@@ -26,12 +27,26 @@ export class AdvisorInterfaceComponent implements OnInit {
     username: ''
   };
   selectedStudent: Student = this.selectedAdvisor.studentQueue[0];
+  meetingStudent: Student;
 
   selectedStudentApptStartTime: string = "";
   selectedStudentApptEndTime: string = "";
   selectedStudentWalkIn: boolean = true;
 
   meetingInProgress: boolean = false;
+
+  walkInHoursForm = this.formBuilder.group({
+    mondayStart: '',
+    mondayEnd: '',
+    tuesdayStart: '',
+    tuesdayEnd: '',
+    wednesdayStart: '',
+    wednesdayEnd: '',
+    thursdayStart: '',
+    thursdayEnd: '',
+    fridayStart: '',
+    fridayEnd: ''
+  });
 
   buttonActions: string[] = ["deletePopup()", "", ""];
   popupTitle: string = "";
@@ -40,7 +55,7 @@ export class AdvisorInterfaceComponent implements OnInit {
   popupButton2Text: string = "";
   popupButton3Text: string = "";
 
-  constructor(private activatedRoute: ActivatedRoute, private authService: AuthService) {}
+  constructor(private activatedRoute: ActivatedRoute, private authService: AuthService, private formBuilder: FormBuilder) {}
 
   ngOnInit() {
     this.activatedRoute.data.subscribe((response: any) => {
@@ -54,6 +69,7 @@ export class AdvisorInterfaceComponent implements OnInit {
   }
 
   logout() {
+    this.endMeeting();
     console.log("logout");
     this.authService.logout();
   }
@@ -68,6 +84,16 @@ export class AdvisorInterfaceComponent implements OnInit {
     }
     this.selectedStudent = this.selectedAdvisor.studentQueue[i];
     (document.getElementsByClassName("student-item-bar")[i] as HTMLDivElement).classList.add("selected-student");
+  }
+
+  startMeeting() {
+    this.meetingStudent = this.selectedStudent;
+    this.meetingInProgress = true;
+  }
+
+  endMeeting() {
+    this.meetingStudent = new Student('', '', '');
+    this.meetingInProgress = false;
   }
 
   queueMoveStudentUp(i: number) {
@@ -173,11 +199,24 @@ export class AdvisorInterfaceComponent implements OnInit {
       this.setSelectedStudent(0);
     });*/
 
+    let studentToDelete = this.selectedAdvisor.studentQueue[i];
+
+    if(this.meetingStudent = studentToDelete) {
+      this.meetingInProgress = false;
+      this.meetingStudent = new Student('', '', '');
+    }
+
     this.selectedAdvisor.studentQueue.splice(i, 1);
     this.deletePopup();
-    setTimeout(() => {
-      this.setSelectedStudent(0);
-    }, 50);
+
+    if(!this.selectedAdvisor.studentQueue[0]) {
+      this.selectedStudent = new Student('', '', '');
+    }
+    else if(studentToDelete == this.selectedStudent) {
+      setTimeout(() => {
+        this.setSelectedStudent(0);
+      }, 50);
+    }
   }
 
   button1Action() {

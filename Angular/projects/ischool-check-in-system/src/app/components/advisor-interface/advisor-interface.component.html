@@ -6,10 +6,10 @@
       </div>
       <button (click)="logout()"><img src="../assets/icons/logout_white_36dp.svg">Sign Out</button>
     </div>
-    <div class="student-queue-manager">
+    <div class="student-queue-manager" [ngClass]="{'meeting-in-progress':meetingInProgress}">
       <h2>Students Checked In</h2>
       <div class="student-queue-stuff">
-        <div class="student-item" *ngFor="let student of selectedAdvisor.studentQueue; let i = index;">
+        <div class="student-item" *ngFor="let student of selectedAdvisor.studentQueue; let i = index;" [ngClass]="{'meeting-student-item':meetingInProgress && meetingStudent == student}">
           <div class="student-item-bar" (click)="setSelectedStudent(i)">
             <h3>{{student.studentName}}</h3>
           </div>
@@ -17,25 +17,50 @@
           <button class="misc-button" (click)="queueMoveStudentDown(i)"><img src="../assets/icons/arrow_downward_white_36dp.svg"></button>
           <button class="x-button" (click)="popupDeleteStudent(i)"><img src="../assets/icons/x_white_36dp.svg"></button>
         </div>
-        <div *ngIf="!selectedAdvisor.studentQueue[0]" class="none-text-area"><h1>NONE</h1></div>
       </div>
+      <div *ngIf="!selectedAdvisor.studentQueue[0]" class="none-text-area"><h1>NONE</h1></div>
     </div>
-    <div class="student-info-manager">
-      <h2>{{selectedStudent.studentName}}</h2>
-      <div>{{selectedStudent.username}}@rit.edu</div>
+    <div class="student-info-manager" [ngClass]="{'meeting-in-progress':meetingInProgress}">
+      <h2  *ngIf="selectedStudent.studentName">{{selectedStudent.studentName}}</h2>
+      <h2  *ngIf="!selectedStudent.studentName">No Name</h2>
+      <div *ngIf="selectedStudent.username">{{selectedStudent.username}}@rit.edu</div>
       <br>
-      <div>Checked in at {{selectedStudent.timeIn}}</div>
+      <div *ngIf="selectedStudent.timeIn">Checked in at {{selectedStudent.timeIn}}</div>
       <br>
       <div class="appointment-info" *ngIf="!selectedStudentWalkIn">
         <h2>Appointment</h2>
         <div>{{selectedStudentApptStartTime}} - {{selectedStudentApptEndTime}}</div>
       </div>
-      <button class="start-meeting-button" *ngIf="!meetingInProgress">Start Meeting</button>
-      <button class="end-meeting-button" *ngIf="meetingInProgress">End Meeting</button>
+      <button class="meeting-button green-button" *ngIf="!meetingInProgress && this.selectedAdvisor.studentQueue[0]" (click)="startMeeting()">Start Meeting</button>
+      <button class="meeting-button red-button" *ngIf="meetingInProgress && meetingStudent == selectedStudent" (click)="endMeeting()">End Meeting</button>
+      <div *ngIf="!selectedAdvisor.studentQueue[0]" class="none-text-area"><h1>NONE</h1></div>
     </div>
-    <div class="walk-in-hours-manager">
+    <div class="walk-in-hours-manager" [ngClass]="{'meeting-in-progress':meetingInProgress}">
       <h2>My Walk-In Hours</h2>
-      <button class="save-button" (click)="updateWalkInInfo()">Save</button>
+      <form [formGroup]="walkInHoursForm" (ngSubmit)="updateWalkInInfo()">
+        <div class="form-row">
+          <label for="mondayStart">Monday</label>
+          <input type="time" id="mondayStart" formControlName="mondayStart"> to <input type="time" id="mondayEnd" formControlName="mondayEnd"><br>
+        </div>
+        <div class="form-row">
+          <label for="tuesdayStart">Tuesday</label>
+          <input type="time" id="tuesdayStart" formControlName="tuesdayStart"> to <input type="time" id="tuesdayEnd" formControlName="tuesdayEnd"><br>
+        </div>
+        <div class="form-row">
+          <label for="wednesdayStart">Wednesday</label>
+          <input type="time" id="wednesdayStart" formControlName="wednesdayStart"> to <input type="time" id="wednesdayEnd" formControlName="wednesdayEnd"><br>
+        </div>
+        <div class="form-row">
+          <label for="thursdaStart">Thursday</label>
+          <input type="time" id="thursdayStart" formControlName="thursdayStart"> to <input type="time" id="thursdayEnd" formControlName="thursdayEnd"><br>
+        </div>
+        <div class="form-row">
+          <label for="fridayStart">Friday</label>
+          <input type="time" id="fridayStart" formControlName="fridayStart"> to <input type="time" id="fridayEnd" formControlName="fridayEnd"><br>
+        </div>
+        <input type="submit" value="Save">
+      </form>
+      <!--button class="save-button" (click)="updateWalkInInfo()">Save</button-->
     </div>
     <div class="popup-blur">
       <div class="popup-box">
