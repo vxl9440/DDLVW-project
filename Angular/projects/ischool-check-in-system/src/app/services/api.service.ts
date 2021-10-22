@@ -9,7 +9,7 @@ export class ApiService {
 
   // https://www.techiediaries.com/angular/angular-httpclient-9-8-service-api-calls-and-fetching-data/
 
-  apiUrl: string = 'http://raspberrypi/api/';
+  apiUrl: string = 'http://raspberrypi/api';
 
   constructor(private httpClient: HttpClient) { }
 
