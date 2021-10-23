@@ -35,6 +35,29 @@ export class AdvisorInterfaceComponent implements OnInit {
 
   meetingInProgress: boolean = false;
 
+  advisorWalkInHours = [{
+      startTime: "13:00:00",
+      endTime: "14:30:00",
+      weekday: "Mon"
+    }, {
+      startTime: "11:00:00",
+      endTime: "14:00:00",
+      weekday: "Tue"
+    }, {
+      startTime: "13:00:00",
+      endTime: "14:30:00",
+      weekday: "Wed"
+    }, {
+      startTime: "9:00:00",
+      endTime: "12:00:00",
+      weekday: "Thu"
+    }, {
+      startTime: "13:00:00",
+      endTime: "14:30:00",
+      weekday: "Fri"
+    }
+  ];
+
   walkInHoursForm = this.formBuilder.group({
     mondayStart: '',
     mondayEnd: '',
@@ -61,7 +84,9 @@ export class AdvisorInterfaceComponent implements OnInit {
     this.activatedRoute.data.subscribe((response: any) => {
       console.log('FETCHING ADVISOR ', response);
       this.advisor = response.advisor;
-    })
+    });
+
+    this.setWalkInInfo();
   }
 
   ngAfterViewInit() {
@@ -74,8 +99,63 @@ export class AdvisorInterfaceComponent implements OnInit {
     this.authService.logout();
   }
 
-  updateWalkInInfo() {
+  checkTimeLength(time: string) {
+    if(time.length == 7) {
+      return "0" + time;
+    }
+    else {
+      return time;
+    }
+  }
 
+  setWalkInInfo() {
+    let mondayInfo = ["", ""];
+    let tuesdayInfo = ["", ""];
+    let wednesdayInfo = ["", ""];
+    let thursdayInfo = ["", ""];
+    let fridayInfo = ["", ""];
+
+    for(let day of this.advisorWalkInHours) {
+      switch(day.weekday) {
+        case "Mon":
+          mondayInfo[0] = this.checkTimeLength(day.startTime);
+          mondayInfo[1] = this.checkTimeLength(day.endTime);
+          break;
+        case "Tue":
+          tuesdayInfo[0] = this.checkTimeLength(day.startTime);
+          tuesdayInfo[1] = this.checkTimeLength(day.endTime);
+          break;
+        case "Wed":
+          wednesdayInfo[0] = this.checkTimeLength(day.startTime);
+          wednesdayInfo[1] = this.checkTimeLength(day.endTime);
+          break;
+        case "Thu":
+          thursdayInfo[0] = this.checkTimeLength(day.startTime);
+          thursdayInfo[1] = this.checkTimeLength(day.endTime);
+          break;
+        case "Fri":
+          fridayInfo[0] = this.checkTimeLength(day.startTime);
+          fridayInfo[1] = this.checkTimeLength(day.endTime);
+          break;
+      }
+    }
+
+    this.walkInHoursForm = this.formBuilder.group({
+      mondayStart: mondayInfo[0],
+      mondayEnd: mondayInfo[1],
+      tuesdayStart: tuesdayInfo[0],
+      tuesdayEnd: tuesdayInfo[1],
+      wednesdayStart: wednesdayInfo[0],
+      wednesdayEnd: wednesdayInfo[1],
+      thursdayStart: thursdayInfo[0],
+      thursdayEnd: thursdayInfo[1],
+      fridayStart: fridayInfo[0],
+      fridayEnd: fridayInfo[1]
+    });
+  }
+
+  updateWalkInInfo() {
+    
   }
 
   setSelectedStudent(i: number) {
