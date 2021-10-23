@@ -14,18 +14,18 @@ export class AdvisorInterfaceComponent implements OnInit {
   title = 'advisor-interface';
   
   //advisorID: number = 1;
-  advisor: Advisor;
-  selectedStudent: Student;
-  meetingStudent: Student;
+  advisor: Advisor; // the current advisor
+  selectedStudent: Student; // the currently selected student in the advisor's student queue
+  meetingStudent: Student; // the student currently in a meeting
+  meetingStudentIndex: number; // the queue position of the student currently in a meeting
 
-  //selectedStudentApptStartTime: string = "";
-  //selectedStudentApptEndTime: string = "";
-  //selectedStudentWalkIn: boolean = true;
+  meetingInProgress: boolean = false; // whether or not a meeting is currently in progress
+  meetingDuration: string = "00:00"; // the duration of the current meeting
+  timer: any; // the meeting timer
 
-  meetingInProgress: boolean = false;
+  advisorWalkInHours: any; // the advisor's walk-in hours data
 
-  advisorWalkInHours: any;
-
+  // the walk-in hours form
   walkInHoursForm = this.formBuilder.group({
     mondayStart: '',
     mondayEnd: '',
@@ -39,12 +39,13 @@ export class AdvisorInterfaceComponent implements OnInit {
     fridayEnd: ''
   });
 
-  buttonActions: string[] = ["deletePopup()", "", ""];
-  popupTitle: string = "";
-  popupText: string = "";
-  popupButton1Text: string = "OK";
-  popupButton2Text: string = "";
-  popupButton3Text: string = "";
+  // popup stuff
+  buttonActions: string[] = ["deletePopup()", "", ""]; // the actions of the (up to) three buttons in the popup box
+  popupTitle: string = ""; // the title of the popup box
+  popupText: string = ""; // the text used in the popup box
+  popupButton1Text: string = "OK"; // popup box button 1 text
+  popupButton2Text: string = ""; // popup box button 2 text
+  popupButton3Text: string = ""; // popup box button 3 text
 
   constructor(private activatedRoute: ActivatedRoute, private authService: AuthService, private formBuilder: FormBuilder) {}
 
@@ -61,6 +62,7 @@ export class AdvisorInterfaceComponent implements OnInit {
     (document.getElementsByClassName("student-item-bar")[0] as HTMLDivElement).classList.add("selected-student");
   }
 
+  // gets all needed data
   getInfo() {
     this.advisor = {
       id: 0,
@@ -77,11 +79,12 @@ export class AdvisorInterfaceComponent implements OnInit {
     };
     this.selectedStudent = this.advisor.studentQueue[0];
     
-    // get walk-in hours info
+    // get/set walk-in hours info
     this.advisorWalkInHours = this.getWalkInHoursInfo(this.advisor.id);
     this.setWalkInInfo();
   }
 
+  // gets the advisor's walk-in hours info
   getWalkInHoursInfo(id: number) {
     // GET /meetingHost/{id}/walkInHours
     return [{
@@ -108,12 +111,14 @@ export class AdvisorInterfaceComponent implements OnInit {
     ];
   }
 
+  // signs out of the interface (will be routed back to the interface picker)
   logout() {
     this.endMeeting();
     console.log("logout");
     this.authService.logout();
   }
 
+  // gets a nicely-formatted string of the hours/minutes from a date string
   getDateTimeInfo(dateTime: string) {
     let date = new Date(dateTime);
     let hours = date.getHours();
@@ -134,6 +139,7 @@ export class AdvisorInterfaceComponent implements OnInit {
     return `${hours}:${date.getMinutes()} ${timeAMPM}`;
   }
 
+  // adds any leading zeros to time strings when necessary
   checkTimeLength(time: string) {
     if(time.length == 7) {
       return "0" + time;
@@ -143,6 +149,7 @@ export class AdvisorInterfaceComponent implements OnInit {
     }
   }
 
+  // sets walk-in hours info in the walk-in hours form using the advisorWalkInHours data
   setWalkInInfo() {
     let mondayInfo = ["", ""];
     let tuesdayInfo = ["", ""];
@@ -193,6 +200,7 @@ export class AdvisorInterfaceComponent implements OnInit {
     
   }
 
+  // sets selected student info in the typescript and html
   setSelectedStudent(i: number) {
     if((document.getElementsByClassName("selected-student")[0] as HTMLDivElement)) {
       (document.getElementsByClassName("selected-student")[0] as HTMLDivElement).classList.remove("selected-student");
@@ -201,16 +209,94 @@ export class AdvisorInterfaceComponent implements OnInit {
     (document.getElementsByClassName("student-item-bar")[i] as HTMLDivElement).classList.add("selected-student");
   }
 
+  // starts a meeting with the currently selected student
   startMeeting() {
     this.meetingStudent = this.selectedStudent;
     this.meetingInProgress = true;
+    this.meetingStudentIndex = this.advisor.studentQueue.indexOf(this.meetingStudent);
+
+    this.runMeetingTimer();
   }
 
+  // creates a popup asking if you are sure you want to end an in-progress meeting
+  popupEndMeeting(i: number) {
+    let studentName = this.advisor.studentQueue[i].studentName;
+
+    this.createPopup(
+      "Are You Sure?", 
+      `Are you sure you want end your meeting with ${studentName}?`, 
+      [
+        ["YES", "endMeeting()", "red"], 
+        ["NO", "deletePopup()", "gray"]
+      ]
+    );
+  }
+
+  // ends an in-progress meeting
   endMeeting() {
     this.meetingStudent = new Student('', '', '');
     this.meetingInProgress = false;
+    this.meetingDuration = "00:00";
+    clearInterval(this.timer);
+    this.queueDeleteStudent(this.meetingStudentIndex);
   }
 
+  // runs a timer for the current meeting
+  runMeetingTimer() {
+    let seconds = 0;
+    let minutes = 0;
+    let hours = 0;
+
+    let secondsString = "00";
+    let minutesString = "00";
+    let hoursString = "0"
+
+    this.timer = setInterval(() => {
+      seconds += 1;
+
+      if(seconds == 60) {
+        seconds = 0;
+        minutes += 1;
+
+        if(minutes == 60) {
+          hours += 1;
+        }
+      }
+
+      hoursString = `${hours}`;
+
+      if(minutes < 10) {
+        minutesString = `0${minutes}`;
+      }
+      else {
+        minutesString = `${minutes}`;
+      }
+
+      if(seconds < 10) {
+        secondsString = `0${seconds}`;
+      }
+      else {
+        secondsString = `${seconds}`;
+      }
+
+      if(hours > 0) {
+        this.meetingDuration = `${hoursString}:${minutesString}:${secondsString}`;
+      }
+      else {
+        this.meetingDuration = `${minutesString}:${secondsString}`;
+      }
+    }, 1000);
+  }
+
+  /*showEndMeetingText() {
+    (document.getElementsByClassName('meeting-button red-button')[0] as HTMLButtonElement).innerText = "End Meeting";
+  }
+
+  stopShowingEndMeetingText() {
+    (document.getElementsByClassName('meeting-button red-button')[0] as HTMLButtonElement).innerText = this.meetingDuration;
+  }*/
+
+  // moves a student up in the student queue (and runs animation)
   queueMoveStudentUp(i: number) {
     if(this.advisor.studentQueue[i - 1]) {
       let studentItem = (document.getElementsByClassName("student-item")[i] as HTMLDivElement);
@@ -232,6 +318,7 @@ export class AdvisorInterfaceComponent implements OnInit {
     }
   }
 
+  // moves a student down in the student queue (and runs animation)
   queueMoveStudentDown(i: number) {
     if(this.advisor.studentQueue[i + 1]) {
       let studentItem = (document.getElementsByClassName("student-item")[i] as HTMLDivElement);
@@ -254,6 +341,7 @@ export class AdvisorInterfaceComponent implements OnInit {
   }
 
   /* -------------------- POPUP STUFF -------------------- */
+  // uses the provided info to create a popup box with up to three buttons
   createPopup(popupTitle: string, popupText: string, buttons: any) {
     (document.getElementsByClassName("popup-blur")[0] as HTMLDivElement).style.display = "flex";
     this.popupTitle = popupTitle;
@@ -278,12 +366,14 @@ export class AdvisorInterfaceComponent implements OnInit {
     }
   }
 
+  // removes a currently active popup box
   deletePopup() {
     this.popupTitle = "";
     this.popupText = "";
     (document.getElementsByClassName("popup-blur")[0] as HTMLDivElement).style.display = "none";
   }
 
+  // creates a popup box for deleting a student from the student queue
   popupDeleteStudent(i: number) {
     let studentName = this.advisor.studentQueue[i].studentName;
 
@@ -297,6 +387,7 @@ export class AdvisorInterfaceComponent implements OnInit {
     );
   }
   
+  // deletes a student from the student queue
   queueDeleteStudent(i: number) {
     /*const deletedStudent = new Promise((resolve, reject) => {
       if(this.advisor.studentQueue.splice(i, 1)) {
@@ -318,7 +409,9 @@ export class AdvisorInterfaceComponent implements OnInit {
 
     if(this.meetingStudent = studentToDelete) {
       this.meetingInProgress = false;
+      this.meetingDuration = "00:00";
       this.meetingStudent = new Student('', '', '');
+      clearInterval(this.timer);
     }
 
     this.advisor.studentQueue.splice(i, 1);
@@ -334,14 +427,17 @@ export class AdvisorInterfaceComponent implements OnInit {
     }
   }
 
+  // needed for the user-provided popup box button 1 action to work
   button1Action() {
     eval(`this.${this.buttonActions[0]}`);
   }
 
+  // needed for the user-provided popup box button 2 action to work
   button2Action() {
     eval(`this.${this.buttonActions[1]}`);
   }
 
+  // needed for the user-provided popup box button 3 action to work
   button3Action() {
     eval(`this.${this.buttonActions[2]}`);
   }
