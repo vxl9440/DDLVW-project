@@ -33,7 +33,9 @@ const routes: Routes = [
   },
   {
     path: 'admin',
-    component: AdminInterfaceComponent
+    component: AdminInterfaceComponent,
+    canActivate: [AuthGuard],
+    data: { roles: [UserRole.Admin] }
   },
   {
     path: '**',
