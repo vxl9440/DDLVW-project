@@ -23,24 +23,17 @@ const app  = express();
 // forward request to the PHP script which will redirect to Shib auth
 // then it will return a JWT
 // Replace this url with Shibboleth authentication request if deploying
-
-// https://stackoverflow.com/questions/61113507/grabbing-the-oauth-token-from-url-after-redirect-uri-callback-using-angular
-
 app.use('/login', proxy('https://people.rit.edu', {
-    // proxy configuration
     https: true,
-    proxyReqPathResolver: () => '/~lxp3901/ISTE501/authenticateAdvisor.php'
+    proxyReqPathResolver: () => '/~lxp3901/ISTE501/auth.php'
 }));
 
+app.use('/logout', proxy('https://people.rit.edu', {
+    https: true,
+    proxyReqPathResolver: () => '/~lxp3901/ISTE501/logout.php'
+}));
 
 app.use(express.json());
-
-// const logger = function(req, res, next) {
-//     console.log("Request received: ", req);
-//     next(); // Passing the request to the next handler in the stack.
-// }
-
-// //app.use(logger);
 app.use('/reason', reasonRouter);
 app.use('/meetingHost', meetingHostRouter);
 app.use('/student', studentRouter);
