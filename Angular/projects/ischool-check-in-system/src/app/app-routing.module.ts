@@ -5,6 +5,7 @@ import { InterfacePickerComponent } from './components/interface-picker/interfac
 import { StudentQueueInterfaceComponent } from './components/student-queue-interface/student-queue-interface.component';
 import { FrontDeskInterfaceComponent } from './components/front-desk-interface/front-desk-interface.component';
 import { AdvisorInterfaceComponent } from './components/advisor-interface/advisor-interface.component';
+import { AdminInterfaceComponent } from './components/admin-interface/admin-interface.component';
 import { LoginComponent } from './components/login/login.component';
 import { AdvisorGuard } from './guards/advisor.guard';
 import { AdvisorResolver } from './resolvers/advisor.resolver';
@@ -18,6 +19,7 @@ const routes: Routes = [
     canActivate: [AdvisorGuard],
     //resolve: { advisor: AdvisorResolver } 
   },
+  { path: 'admin', component: AdminInterfaceComponent },
   { path: 'login', component: LoginComponent },
   { path: '**', component: InterfacePickerComponent },
 ];

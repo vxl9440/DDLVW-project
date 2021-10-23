@@ -9,31 +9,31 @@
     <div class="student-queue-manager" [ngClass]="{'meeting-in-progress':meetingInProgress}">
       <h2>Students Checked In</h2>
       <div class="student-queue-stuff">
-        <div class="student-item" *ngFor="let student of selectedAdvisor.studentQueue; let i = index;" [ngClass]="{'meeting-student-item':meetingInProgress && meetingStudent == student}">
+        <div class="student-item" *ngFor="let student of advisor.studentQueue; let i = index;" [ngClass]="{'meeting-student-item':meetingInProgress && meetingStudent == student}">
           <div class="student-item-bar" (click)="setSelectedStudent(i)">
-            <h3>{{student.studentName}}</h3>
+            <h3>{{student.studentName}}</h3><div *ngIf="!student.appointment">W</div><div *ngIf="student.appointment">A</div>
           </div>
           <button class="misc-button" (click)="queueMoveStudentUp(i)"><img src="../assets/icons/arrow_upward_white_36dp.svg"></button>
           <button class="misc-button" (click)="queueMoveStudentDown(i)"><img src="../assets/icons/arrow_downward_white_36dp.svg"></button>
           <button class="x-button" (click)="popupDeleteStudent(i)"><img src="../assets/icons/x_white_36dp.svg"></button>
         </div>
       </div>
-      <div *ngIf="!selectedAdvisor.studentQueue[0]" class="none-text-area"><h1>NONE</h1></div>
+      <div *ngIf="!advisor.studentQueue[0]" class="none-text-area"><h1>NONE</h1></div>
     </div>
     <div class="student-info-manager" [ngClass]="{'meeting-in-progress':meetingInProgress}">
       <h2  *ngIf="selectedStudent.studentName">{{selectedStudent.studentName}}</h2>
       <h2  *ngIf="!selectedStudent.studentName">No Name</h2>
       <div *ngIf="selectedStudent.username">{{selectedStudent.username}}@rit.edu</div>
       <br>
-      <div *ngIf="selectedStudent.timeIn">Checked in at {{selectedStudent.timeIn}}</div>
+      <div *ngIf="selectedStudent.timeIn">Checked in at {{getDateTimeInfo(selectedStudent.timeIn)}}</div>
       <br>
-      <div class="appointment-info" *ngIf="!selectedStudentWalkIn">
+      <div class="appointment-info" *ngIf="selectedStudent.appointment">
         <h2>Appointment</h2>
-        <div>{{selectedStudentApptStartTime}} - {{selectedStudentApptEndTime}}</div>
+        <div>{{getDateTimeInfo(selectedStudent.appointment.startTime)}} - {{getDateTimeInfo(selectedStudent.appointment.endTime)}}</div>
       </div>
-      <button class="meeting-button green-button" *ngIf="!meetingInProgress && this.selectedAdvisor.studentQueue[0]" (click)="startMeeting()">Start Meeting</button>
+      <button class="meeting-button green-button" *ngIf="!meetingInProgress && this.advisor.studentQueue[0]" (click)="startMeeting()">Start Meeting</button>
       <button class="meeting-button red-button" *ngIf="meetingInProgress && meetingStudent == selectedStudent" (click)="endMeeting()">End Meeting</button>
-      <div *ngIf="!selectedAdvisor.studentQueue[0]" class="none-text-area"><h1>NONE</h1></div>
+      <div *ngIf="!advisor.studentQueue[0]" class="none-text-area"><h1>NONE</h1></div>
     </div>
     <div class="walk-in-hours-manager" [ngClass]="{'meeting-in-progress':meetingInProgress}">
       <h2>My Walk-In Hours</h2>
@@ -58,7 +58,7 @@
           <label for="fridayStart">Friday</label>
           <input type="time" id="fridayStart" formControlName="fridayStart"> to <input type="time" id="fridayEnd" formControlName="fridayEnd"><br>
         </div>
-        <input type="submit" value="Save">
+        <input class="meeting-button green-button" type="submit" value="Save">
       </form>
       <!--button class="save-button" (click)="updateWalkInInfo()">Save</button-->
     </div>

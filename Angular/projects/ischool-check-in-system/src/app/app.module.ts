@@ -9,6 +9,7 @@ import { FrontDeskInterfaceComponent } from './components/front-desk-interface/f
 import { AdvisorInterfaceComponent } from './components/advisor-interface/advisor-interface.component';
 import { InterfacePickerComponent } from './components/interface-picker/interface-picker.component';
 import { HttpClientModule } from '@angular/common/http';
+import { AdminInterfaceComponent } from './components/admin-interface/admin-interface.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { HttpClientModule } from '@angular/common/http';
     StudentQueueInterfaceComponent,
     FrontDeskInterfaceComponent,
     AdvisorInterfaceComponent,
-    InterfacePickerComponent
+    InterfacePickerComponent,
+    AdminInterfaceComponent
   ],
   imports: [
     BrowserModule,
