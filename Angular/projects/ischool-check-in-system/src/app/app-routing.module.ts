@@ -5,21 +5,45 @@ import { InterfacePickerComponent } from './components/interface-picker/interfac
 import { StudentQueueInterfaceComponent } from './components/student-queue-interface/student-queue-interface.component';
 import { FrontDeskInterfaceComponent } from './components/front-desk-interface/front-desk-interface.component';
 import { AdvisorInterfaceComponent } from './components/advisor-interface/advisor-interface.component';
-import { LoginComponent } from './components/login/login.component';
-import { AdvisorGuard } from './guards/advisor.guard';
+import { AuthGuard } from './guards/auth.guard';
 import { AdvisorResolver } from './resolvers/advisor.resolver';
+import { LoginGuard } from './guards/login.guard';
+import { UserRole } from './models/user-role';
 
 const routes: Routes = [
-  { path: 'queue', component: StudentQueueInterfaceComponent },
-  { path: 'management', component: FrontDeskInterfaceComponent },
+  { 
+    path: 'queue', 
+    component: StudentQueueInterfaceComponent, 
+    canActivate: [AuthGuard],
+    data: { roles: [UserRole.Admin, UserRole.Manager] }
+  },
+  { 
+    path: 'management', 
+    component: FrontDeskInterfaceComponent,
+    canActivate: [AuthGuard],
+    data: { roles: [UserRole.Admin, UserRole.Manager] }
+  },
   { 
     path: 'advisor', 
     component: AdvisorInterfaceComponent, 
-    canActivate: [AdvisorGuard],
+    canActivate: [AuthGuard],
+    data: { roles: [UserRole.Advisor, UserRole.Admin] }
     //resolve: { advisor: AdvisorResolver } 
   },
-  { path: 'login', component: LoginComponent },
-  { path: '**', component: InterfacePickerComponent },
+  // {
+  //   path: 'admin',
+  //   canActivate: [AuthGuard],
+  //   data: { roles: [UserRole.Admin] }
+  // },
+  { 
+    path: 'login', 
+    canActivate: [LoginGuard],
+    children: []
+   },
+  { 
+    path: '**', 
+    component: InterfacePickerComponent 
+  },
 ];
 
 @NgModule({
