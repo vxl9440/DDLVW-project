@@ -36,6 +36,10 @@ button:hover {
     cursor: pointer;
 }
 
+input[type="submit"]:hover {
+    cursor: pointer;
+}
+
 /* -------------------- TOP BAR STUFF -------------------- */
 .top-bar {
     grid-row: 1 / 2;
@@ -147,6 +151,7 @@ button:hover {
     box-sizing: border-box;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     width: calc(100% - 156px);
     margin-right: 2px;
     padding: 5px;
@@ -168,6 +173,14 @@ button:hover {
 
 .student-item-bar h3 {
     margin: 0;
+}
+
+.student-item-bar div {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .selected-student {
@@ -346,6 +359,7 @@ button:hover {
 .form-row input[type="time"] {
     //margin-bottom: 10px;
     font-size: 1vw;
+    cursor: text;
 }
 
 /* -------------------- POPUP STUFF -------------------- */
@@ -475,8 +489,4 @@ button:hover {
 
 .popup-gray-button:hover {
     background-color: $gray-light-1;
-}
-
-.meeting-in-progress {
-    //background-color: $white-green;
 }

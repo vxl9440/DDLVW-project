@@ -11,6 +11,7 @@ import { InterfacePickerComponent } from './components/interface-picker/interfac
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
+import { AdminInterfaceComponent } from './components/admin-interface/admin-interface.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { ErrorInterceptor } from './interceptors/error.interceptor';
     StudentQueueInterfaceComponent,
     FrontDeskInterfaceComponent,
     AdvisorInterfaceComponent,
-    InterfacePickerComponent
+    InterfacePickerComponent,
+    AdminInterfaceComponent
   ],
   imports: [
     BrowserModule,

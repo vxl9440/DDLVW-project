@@ -6,43 +6,38 @@ import { StudentQueueInterfaceComponent } from './components/student-queue-inter
 import { FrontDeskInterfaceComponent } from './components/front-desk-interface/front-desk-interface.component';
 import { AdvisorInterfaceComponent } from './components/advisor-interface/advisor-interface.component';
 import { AuthGuard } from './guards/auth.guard';
+import { AdminInterfaceComponent } from './components/admin-interface/admin-interface.component';
 import { AdvisorResolver } from './resolvers/advisor.resolver';
 import { LoginGuard } from './guards/login.guard';
 import { UserRole } from './models/user-role';
 
 const routes: Routes = [
-  { 
-    path: 'queue', 
-    component: StudentQueueInterfaceComponent, 
+  {
+    path: 'queue',
+    component: StudentQueueInterfaceComponent,
     canActivate: [AuthGuard],
     data: { roles: [UserRole.Admin, UserRole.Manager] }
   },
-  { 
-    path: 'management', 
+  {
+    path: 'management',
     component: FrontDeskInterfaceComponent,
     canActivate: [AuthGuard],
     data: { roles: [UserRole.Admin, UserRole.Manager] }
   },
-  { 
-    path: 'advisor', 
-    component: AdvisorInterfaceComponent, 
+  {
+    path: 'advisor',
+    component: AdvisorInterfaceComponent,
     canActivate: [AuthGuard],
     data: { roles: [UserRole.Advisor, UserRole.Admin] }
-    //resolve: { advisor: AdvisorResolver } 
+    //resolve: { advisor: AdvisorResolver }
   },
-  // {
-  //   path: 'admin',
-  //   canActivate: [AuthGuard],
-  //   data: { roles: [UserRole.Admin] }
-  // },
-  { 
-    path: 'login', 
-    canActivate: [LoginGuard],
-    children: []
-   },
-  { 
-    path: '**', 
-    component: InterfacePickerComponent 
+  {
+    path: 'admin',
+    component: AdminInterfaceComponent
+  },
+  {
+    path: '**',
+    component: InterfacePickerComponent
   },
 ];
 
