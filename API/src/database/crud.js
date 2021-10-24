@@ -13,7 +13,7 @@ const executeQuery = function doAll(sql, sqlParam) {
             if (!error) {
                 resolve(responseData);
             } else {
-                responseData['message'] = 'Fail';
+                responseData['message'] = 'Fail: ' + error;
                 responseData['statusCode'] = -1;
                 reject(responseData);
             }

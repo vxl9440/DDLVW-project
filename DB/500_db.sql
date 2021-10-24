@@ -94,12 +94,16 @@ CREATE TABLE `registration_reason_assoc` (
 DROP TABLE IF EXISTS `walk_in_hour`;
 
 CREATE TABLE `walk_in_hour` (
+  `id` INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
   `advisor_id` INT NOT NULL,
   `start_time` time NOT NULL,
   `end_time` time NOT NULL,
   `weekday` char(3) NOT NULL,
-  PRIMARY KEY (`advisor_id`,`start_time`,`end_time`,`weekday`),
-  CONSTRAINT `walkInHour_advisor_fk` FOREIGN KEY (`advisor_id`) REFERENCES `advisor` (`advisor_id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `walkInHour_advisor_fk` 
+    FOREIGN KEY (`advisor_id`) 
+    REFERENCES `advisor` (`advisor_id`) 
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /* Data for the table `walk_in_hour` */

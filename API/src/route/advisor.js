@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import * as advisor from '../entity/advisor.js';
 import * as queue from '../entity/queue.js';
-import { getWalkInHoursByAdvisorId } from '../entity/walkInHour.js';
+import * as walkInHour from '../entity/walkInHour.js';
 
 const router = Router();
 
@@ -12,8 +12,27 @@ router.get('/available', (req, res) => {
 
 
 router.get('/:id/walkInHours', (req, res) => {
-    getWalkInHoursByAdvisorId(req.params.id)
+    walkInHour.getWalkInHoursByAdvisorId(req.params.id)
         .then(hours => res.json(hours));
+});
+
+
+router.delete('/:id/walkInHours/:hourId', (req, res) => {
+    walkInHour.deleteWalkInHours(req.params.hourId)
+        .then(result => res.json(result));
+});
+
+
+router.post('/:id/walkInHours', (req, res) => {
+    walkInHour.addWalkInHours(req.params.id, req.body)
+        .then(result => res.json(result))
+        .catch(err => res.json(err));
+});
+
+
+router.put('/:id/walkInHours/:hourId', (req, res) => {
+    walkInHour.updateWalkInHours(req.params.hourId, req.body)
+        .then(result => res.json(result));
 });
 
 
