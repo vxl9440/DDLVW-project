@@ -7,14 +7,11 @@ const router = Router();
 router.post('/checkin', async (req, res) => { 
     try {
         await insertRegistration(req.body);
-        insertStudentByAdvisorId(req.body.meetingHost, {
-            "studentName": req.body.studentName,
-            "studentUsername": req.body.studentUsername,
-            "timeIn": req.body.timeIn
-        });
+        insertStudentByAdvisorId(req.body.meetingHost, req.body);
         res.json({ "status": "success" });
     } catch(err) {
-        res.json(err);
+        console.log('error');
+        res.json(`{ error: ${ err }`);
     }
 });
 

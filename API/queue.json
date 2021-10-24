@@ -1,20 +1,13 @@
-[
-  {
-    "meetingHost": "1",
-    "queue": [
-      {
-        "studentName": "Lowell P",
-        "username": "lxp3901",
-        "timeIn": "2021-09-19T19:57:55+00:00"
+{
+  "1": [
+    {
+      "studentName": "Lowell P",
+      "username": "lxp3901",
+      "timeIn": "2021-09-19T19:57:55Z",
+      "appointment": {
+        "startTime": "2021-09-19T19:57:55Z",
+        "endTime": "2021-09-19T19:57:55Z"
       }
-    ]
-  },
-  {
-    "meetingHost": "2",
-    "queue": [
-      {
-        "test": 1
-      }
-    ]
-  }
-]
+    }
+  ]
+}

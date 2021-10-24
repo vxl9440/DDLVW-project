@@ -63,8 +63,8 @@ DROP TABLE IF EXISTS `registration`;
 CREATE TABLE `registration` (
   `registration_id` INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
   `advisor_id` INT NOT NULL,
-  `check_in_time` timestamp NOT NULL,
-  `check_out_time` timestamp NULL,
+  `check_in_time` DATETIME NOT NULL,
+  `check_out_time` DATETIME NULL,
   `scheduled` boolean NOT NULL,
   `student_username` varchar(10) NOT NULL,
   `student_name` varchar(24) NOT NULL,
@@ -106,12 +106,6 @@ CREATE TABLE `walk_in_hour` (
     ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/* Data for the table `walk_in_hour` */
-
-insert  into `walk_in_hour`(`advisor_id`,`start_time`,`end_time`,`weekday`) values 
-(1,'13:00:00','16:00:00','Mon'),
-(2,'12:00:00','13:00:00','Sat'),
-(2,'22:00:00','23:30:00','Mon');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
