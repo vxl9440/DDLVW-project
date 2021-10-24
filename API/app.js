@@ -11,7 +11,7 @@ const port = 8080;
 const app  = express();
 
 // Add JWT Authorization middleware first
-app.use(jwt({ secret: 'ischool', algorithms: ['HS256'] }));
+app.use(jwt({ secret: 'ischool', algorithms: ['HS256'] }).unless({ path: ['/login', '/logout']}));
 app.use((err, req, res, next) => {
     if (err.name === 'UnauthorizedError') {
       res.status(err.status).send({ message: err.message });
