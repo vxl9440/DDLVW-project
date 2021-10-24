@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 import { FormBuilder } from '@angular/forms';
 
 interface Student {
@@ -43,7 +45,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
   popupButton2Text: string = "";
   popupButton3Text: string = "";
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private activatedRoute: ActivatedRoute, private authService: AuthService, private formBuilder: FormBuilder) {}
 
   ngOnInit() {
     this.advisors.push({firstName: "John", lastName: "Doe", /*email: "jnd1234@rit.edu", meetsWithWalkIns: false, */portraitURL: "person2.jpg", studentQueue: [
@@ -125,6 +127,12 @@ export class FrontDeskInterfaceComponent implements OnInit {
 
     this.updateAdvisorInfoForm();
     this.updateBannerTextForm();
+  }
+
+  // signs out of the interface (will be routed back to the interface picker)
+  logout() {
+    console.log("logout");
+    this.authService.logout();
   }
 
   /* -------------------- STUDENT QUEUE STUFF -------------------- */

@@ -113,7 +113,10 @@ export class AdvisorInterfaceComponent implements OnInit {
 
   // signs out of the interface (will be routed back to the interface picker)
   logout() {
-    this.endMeeting();
+    if(this.meetingInProgress) {
+      this.endMeeting();
+    }
+    
     console.log("logout");
     this.authService.logout();
   }
