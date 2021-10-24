@@ -14,7 +14,7 @@ const app  = express();
 app.use(jwt({ secret: 'ischool', algorithms: ['HS256'] }));
 app.use((err, req, res, next) => {
     if (err.name === 'UnauthorizedError') {
-      res.sendStatus(err.status).send({ message: err.message });
+      res.status(err.status).send({ message: err.message });
       return;
     }
     next();
