@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://raspberrypi/api'
+  apiUrl: 'http://45.79.164.175/api'
 };
 
 /*

@@ -63,7 +63,7 @@ export class AuthService {
   logout() {
     localStorage.removeItem('user');
     this.userSubject.next(null);
-    this.apiService.logout;
+    this.apiService.logout();
   }
 
   redirectToShibboleth() {

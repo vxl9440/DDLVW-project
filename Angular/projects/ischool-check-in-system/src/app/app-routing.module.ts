@@ -31,6 +31,11 @@ const routes: Routes = [
     data: { roles: [UserRole.Advisor, UserRole.Admin] }
     //resolve: { advisor: AdvisorResolver }
   },
+  { 
+    path: 'login', 
+    canActivate: [LoginGuard],
+    children: []
+  },
   {
     path: 'admin',
     component: AdminInterfaceComponent,
