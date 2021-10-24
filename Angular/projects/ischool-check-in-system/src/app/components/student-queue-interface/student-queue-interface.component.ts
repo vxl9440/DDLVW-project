@@ -1,23 +1,24 @@
 import { Component, OnInit } from '@angular/core';
+import { Advisor } from '../../models/advisor';
+import { Student } from '../../models/student';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 
-interface Student {
+/*interface Student {
   firstName: String,
   lastName: String,
   img: String
-}
+}*/
 
-interface Advisor {
+/*interface Advisor {
   firstName: String,
   lastName: String,
-  email: String,
-  meetsWithWalkIns: boolean,
-  img: String,
+  username: String,
+  portraitURL: String,
   studentQueue: Student[]
-}
+}*/
 
 @Component({
   selector: 'app-student-queue-interface',
@@ -27,7 +28,6 @@ interface Advisor {
 export class StudentQueueInterfaceComponent implements OnInit {
   title = 'student-queue-interface';
   advisors: Advisor[] = [];
-  imgPathStart: string = "../assets/";
   maxStudentsInList: number = 14;
   connected: boolean = false;
   timeUpdated: string = "?";
@@ -38,55 +38,55 @@ export class StudentQueueInterfaceComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.advisors.push({firstName: "Elissa", lastName: "Weeden", email: "jnd1234@rit.edu", meetsWithWalkIns: false, img: "ElissaWeeden.png", studentQueue: [
-      {firstName: "Jack", lastName: "Smith", img: "person1.jpg"}, 
-      {firstName: "Jane", lastName: "Doe", img: "person3.jpg"}, 
-      {firstName: "Jill", lastName: "Smith", img: "person4.jpg"}
+    this.advisors.push({id: 0, firstName: "Elissa", middleName: '', lastName: "Weeden", username: "jnd1234", portraitURL: "../assets/ElissaWeeden.png", studentQueue: [
+      new Student('Jack Smith', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
+      new Student('Jane Doe', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Jill Smith', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'})
     ]});
-    this.advisors.push({firstName: "Kevin", lastName: "Stiner", email: "rcs4321@rit.edu", meetsWithWalkIns: true, img: "KevinStiner.png", studentQueue: [
-      {firstName: "Tim", lastName: "Bim", img: "person1.jpg"}, 
-      {firstName: "Rebecca", lastName: "Grobb", img: "person3.jpg"}, 
-      {firstName: "Billy", lastName: "Mann", img: "person2.jpg"}
+    this.advisors.push({id: 1, firstName: "Kevin", middleName: '', lastName: "Stiner", username: "rcs4321", portraitURL: "../assets/KevinStiner.png", studentQueue: [
+      new Student('Tim Bim', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
+      new Student('Rebecca Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Billy Mann', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'})
     ]});
-    this.advisors.push({firstName: "Betty", lastName: "Hillman", email: "gym1324@rit.edu", meetsWithWalkIns: true, img: "BettyHillman.png", studentQueue: [
-      {firstName: "Tim", lastName: "Bim", img: "person1.jpg"}, 
-      {firstName: "Rebecca", lastName: "Grobb", img: "person3.jpg"}, 
-      {firstName: "Billy", lastName: "Mann", img: "person2.jpg"}, 
-      {firstName: "Mikah", lastName: "Guell", img: "person4.jpg"}, 
-      {firstName: "Diesel", lastName: "Feesel", img: "person2.jpg"}, 
-      {firstName: "Dani", lastName: "Sel", img: "person3.jpg"}, 
-      {firstName: "Larry", lastName: "Grobb", img: "person1.jpg"}, 
-      {firstName: "Shima", lastName: "Plok", img: "person4.jpg"}, 
-      {firstName: "Gus", lastName: "Juss", img: "person2.jpg"}, 
+    this.advisors.push({id: 2, firstName: "Betty", middleName: '', lastName: "Hillman", username: "gym1324", portraitURL: "../assets/BettyHillman.png", studentQueue: [
+      new Student('Tim Bim', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
+      new Student('Rebecca Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Billy Mann', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
+      new Student('Mikah Guell', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Diesel Feesel', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Dani Sel', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Larry Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Shima Plok', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Gus Juss', 'jwd2222', '2021-09-19T19:57:55+00:00')
     ]});
-    this.advisors.push({firstName: "Stephen", lastName: "Zilora", email: "jnd1234@rit.edu", meetsWithWalkIns: false, img: "StephenZilora.png", studentQueue: [
-      {firstName: "Jack", lastName: "Smith", img: "person1.jpg"}, 
-      {firstName: "Jane", lastName: "Doe", img: "person3.jpg"}, 
-      {firstName: "Jill", lastName: "Smith", img: "person4.jpg"}, 
-      {firstName: "Max", lastName: "Lile", img: "person1.jpg"}, 
-      {firstName: "Dani", lastName: "Tuu", img: "person3.jpg"}, 
-      {firstName: "Moe", lastName: "Bo", img: "person2.jpg"}
+    this.advisors.push({id: 3, firstName: "Stephen", middleName: '', lastName: "Zilora", username: "jnd1234", portraitURL: "../assets/StephenZilora.png", studentQueue: [
+      new Student('Jack Smith', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
+      new Student('Jane Doe', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Jill Smith', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
+      new Student('Max Lile', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Dani Tuu', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Moe Bo', 'jwd2222', '2021-09-19T19:57:55+00:00')
     ]});
-    this.advisors.push({firstName: "Melissa", lastName: "Hanna", email: "jnd1234@rit.edu", meetsWithWalkIns: false, img: "MelissaHanna.png", studentQueue: []});
-    this.advisors.push({firstName: "Kristen", lastName: "Shinohara", email: "gym1324@rit.edu", meetsWithWalkIns: true, img: "KristenShinohara.png", studentQueue: [
-      {firstName: "Tim", lastName: "Bim", img: "person1.jpg"}, 
-      {firstName: "Rebecca", lastName: "Grobb", img: "person3.jpg"}, 
-      {firstName: "Billy", lastName: "Mann", img: "person2.jpg"}, 
-      {firstName: "Mikah", lastName: "Guell", img: "person4.jpg"}, 
-      {firstName: "Diesel", lastName: "Feesel", img: "person2.jpg"}, 
-      {firstName: "Dani", lastName: "Sel", img: "person3.jpg"}, 
-      {firstName: "Larry", lastName: "Grobb", img: "person1.jpg"}, 
-      {firstName: "Shima", lastName: "Plok", img: "person4.jpg"}, 
-      {firstName: "Gus", lastName: "Juss", img: "person2.jpg"}, 
-      {firstName: "Tim", lastName: "Bim", img: "person1.jpg"}, 
-      {firstName: "Rebecca", lastName: "Grobb", img: "person3.jpg"}, 
-      {firstName: "Billy", lastName: "Mann", img: "person2.jpg"}, 
-      {firstName: "Mikah", lastName: "Guell", img: "person4.jpg"}, 
-      {firstName: "Diesel", lastName: "Feesel", img: "person2.jpg"}, 
-      {firstName: "Dani", lastName: "Sel", img: "person3.jpg"}, 
-      {firstName: "Larry", lastName: "Grobb", img: "person1.jpg"}, 
-      {firstName: "Shima", lastName: "Plok", img: "person4.jpg"}, 
-      {firstName: "Gus", lastName: "Juss", img: "person2.jpg"}
+    this.advisors.push({id: 4, firstName: "Melissa", middleName: '', lastName: "Hanna", username: "jnd1234", portraitURL: "../assets/MelissaHanna.png", studentQueue: []});
+    this.advisors.push({id: 5, firstName: "Kristen", middleName: '', lastName: "Shinohara", username: "gym1324", portraitURL: "../assets/KristenShinohara.png", studentQueue: [
+      new Student('Tim Bim', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
+      new Student('Rebecca Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Billy Mann', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
+      new Student('Mikah Guell', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Diesel Feesel', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Dani Sel', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Larry Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Shima Plok', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Gus Juss', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Tim Bim', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
+      new Student('Rebecca Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Billy Mann', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
+      new Student('Mikah Guell', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Diesel Feesel', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Dani Sel', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Larry Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Shima Plok', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Gus Juss', 'jwd2222', '2021-09-19T19:57:55+00:00')
     ]});
 
     this.connect();
