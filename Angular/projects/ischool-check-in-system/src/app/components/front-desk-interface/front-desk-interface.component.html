@@ -45,7 +45,7 @@
         </div>
         <!--div class="vertical-line"></div-->
         <div class="advisor-info" *ngIf="selectedAdvisor.firstName || selectedAdvisor.lastName || selectedAdvisor.portraitURL">
-          <img src="{{imgPathStart}}{{selectedAdvisor.portraitURL}}" alt="{{imgPathStart}}{{selectedAdvisor.portraitURL}}">
+          <img src="{{selectedAdvisor.portraitURL}}" alt="{{selectedAdvisor.portraitURL}}" onerror="this.src='../assets/icons/account_circle_white_36dp.svg'">
           <form [formGroup]="advisorInfoForm" (ngSubmit)="saveAdvisorInfo()">
             <div class="form-row">
               <label for="fname">First name: </label>
@@ -59,15 +59,15 @@
               <label for="email">Email: </label>
               <input type="email" id="email" formControlName="email">
             </div-->
-            <!--div class="form-row">
-              <label for="photo">Photo ID: </label>
-              <input type="file" id="portraitURL" formControlName="portraitURL">
-            </div-->
+            <div class="form-row">
+              <label for="portraitURL">Photo URL: </label>
+              <input type="text" id="portraitURL" formControlName="portraitURL">
+            </div>
             <!--div class="checkbox-row">
               <input type="checkbox" id="meets-with-walk-ins" formControlName="meetsWithWalkIns" value="Meets with walk-ins">
               <label for="meets-with-walk-ins">Meets with walk-ins</label>
             </div-->
-            <input type="submit" value="Save">
+            <input class="add-button" type="submit" value="Save">
           </form>
         </div>
       </div>
@@ -79,11 +79,12 @@
       <p></p-->
       <form [formGroup]="bannerForm" (ngSubmit)="saveBannerText()">
         <!--div class="form-row"-->
-          <label for="bannerText">Banner Text: </label>
+          <label for="bannerText">Banner text: </label>
           <!--input type="text" id="bannerText" formControlName="bannerText"-->
           <textarea id="bannerText" formControlName="bannerText"></textarea>
+          <div>*If the text doesn't fit in this box, it won't fit on the student queue screen!</div>
         <!--/div-->
-        <input type="submit" value="Save">
+        <input class="add-button" type="submit" value="Save">
       </form>
     </div>
     <div class="popup-blur">

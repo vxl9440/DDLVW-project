@@ -15,31 +15,31 @@ const routes: Routes = [
   {
     path: 'queue',
     component: StudentQueueInterfaceComponent,
-    canActivate: [AuthGuard],
+    //canActivate: [AuthGuard],
     data: { roles: [UserRole.Admin, UserRole.Manager] }
   },
   {
     path: 'management',
     component: FrontDeskInterfaceComponent,
-    canActivate: [AuthGuard],
+    //canActivate: [AuthGuard],
     data: { roles: [UserRole.Admin, UserRole.Manager] }
   },
   {
     path: 'advisor',
     component: AdvisorInterfaceComponent,
-    canActivate: [AuthGuard],
+    //canActivate: [AuthGuard],
     data: { roles: [UserRole.Advisor, UserRole.Admin] }
     //resolve: { advisor: AdvisorResolver }
   },
   { 
     path: 'login', 
-    canActivate: [LoginGuard],
+    //canActivate: [LoginGuard],
     children: []
   },
   {
     path: 'admin',
     component: AdminInterfaceComponent,
-    canActivate: [AuthGuard],
+    //canActivate: [AuthGuard],
     data: { roles: [UserRole.Admin] }
   },
   {

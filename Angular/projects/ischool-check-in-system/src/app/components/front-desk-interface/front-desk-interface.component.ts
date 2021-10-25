@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { Advisor } from '../../models/advisor';
+import { Student } from '../../models/student';
+
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { FormBuilder } from '@angular/forms';
 
-interface Student {
+/*interface Student {
   studentName: string,
   username: string
 }
@@ -13,7 +16,7 @@ interface Advisor {
   lastName: string,
   portraitURL: string,
   studentQueue: Student[]
-}
+}*/
 
 @Component({
   selector: 'app-front-desk-interface',
@@ -23,20 +26,17 @@ interface Advisor {
 export class FrontDeskInterfaceComponent implements OnInit {
   title = 'front-desk-interface';
   advisors: Advisor[] = [];
-  selectedAdvisor: Advisor = {firstName: "", lastName: "", /*email: "", meetsWithWalkIns: false, */portraitURL: "", studentQueue: []};
+  selectedAdvisor: Advisor = {id: -1, firstName: "", middleName: "", lastName: "", username: "", portraitURL: "", studentQueue: []};
 
   advisorInfoForm = this.formBuilder.group({
     fname: '',
     lname: '',
     //email: '',
-    //portraitURL: '',
-    //meetsWithWalkIns: ''
+    portraitURL: ''
   });
 
   bannerText: string = "";
   bannerForm = this.formBuilder.group({ bannerText: '' });
-
-  imgPathStart: string = "../assets/";
 
   buttonActions: string[] = ["deletePopup()", "", ""];
   popupTitle: string = "";
@@ -48,73 +48,92 @@ export class FrontDeskInterfaceComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute, private authService: AuthService, private formBuilder: FormBuilder) {}
 
   ngOnInit() {
-    this.advisors.push({firstName: "John", lastName: "Doe", /*email: "jnd1234@rit.edu", meetsWithWalkIns: false, */portraitURL: "person2.jpg", studentQueue: [
+    this.advisors.push({id: 0, firstName: "Elissa", middleName: '', lastName: "Weeden", username: "jnd1234", portraitURL: "../assets/ElissaWeeden.png", studentQueue: [
+      new Student('Jack Smith', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
+      new Student('Jane Doe', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Jill Smith', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'})
+    ]});
+    this.advisors.push({id: 1, firstName: "Kevin", middleName: '', lastName: "Stiner", username: "rcs4321", portraitURL: "../assets/KevinStiner.png", studentQueue: [
+      new Student('Tim Bim', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
+      new Student('Rebecca Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Billy Mann', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'})
+    ]});
+    this.advisors.push({id: 2, firstName: "Betty", middleName: '', lastName: "Hillman", username: "gym1324", portraitURL: "../assets/BettyHillman.png", studentQueue: [
+      new Student('Tim Bim', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
+      new Student('Rebecca Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Billy Mann', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
+      new Student('Mikah Guell', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Diesel Feesel', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Dani Sel', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Larry Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Shima Plok', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Gus Juss', 'jwd2222', '2021-09-19T19:57:55+00:00')
+    ]});
+    this.advisors.push({id: 3, firstName: "Stephen", middleName: '', lastName: "Zilora", username: "jnd1234", portraitURL: "../assets/StephenZilora.png", studentQueue: [
+      new Student('Jack Smith', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
+      new Student('Jane Doe', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Jill Smith', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
+      new Student('Max Lile', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Dani Tuu', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Moe Bo', 'jwd2222', '2021-09-19T19:57:55+00:00')
+    ]});
+    this.advisors.push({id: 4, firstName: "Melissa", middleName: '', lastName: "Hanna", username: "jnd1234", portraitURL: "../assets/MelissaHanna.png", studentQueue: []});
+    this.advisors.push({id: 5, firstName: "Kristen", middleName: '', lastName: "Shinohara", username: "gym1324", portraitURL: "../assets/KristenShinohara.png", studentQueue: [
+      new Student('Tim Bim', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
+      new Student('Rebecca Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Billy Mann', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
+      new Student('Mikah Guell', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Diesel Feesel', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Dani Sel', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Larry Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Shima Plok', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Gus Juss', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Tim Bim', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
+      new Student('Rebecca Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Billy Mann', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
+      new Student('Mikah Guell', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Diesel Feesel', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Dani Sel', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Larry Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Shima Plok', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Gus Juss', 'jwd2222', '2021-09-19T19:57:55+00:00')
+    ]});
+    /*this.advisors.push({firstName: "John", lastName: "Doe", portraitURL: "../assets/person2.jpg", studentQueue: [
       {studentName: "Jack Smith", username: "abc1234"}, 
       {studentName: "Jane Doe", username: "abc1234"}, 
       {studentName: "Jill Smith", username: "abc1234"}
     ]});
-    this.advisors.push({firstName: "Rachel", lastName: "Smachel", /*email: "rcs4321@rit.edu", meetsWithWalkIns: true, */portraitURL: "person4.jpg", studentQueue: [
-      {studentName: "Tim Bim", username: "abc1234"}, 
-      {studentName: "Rebecca Grobb", username: "abc1234"}, 
-      {studentName: "Billy Mann", username: "abc1234"}
-    ]});
-    this.advisors.push({firstName: "George", lastName: "Guywithaveryveryverylongname", /*email: "gym1324@rit.edu", meetsWithWalkIns: true, */portraitURL: "person1.jpg", studentQueue: [
-      {studentName: "Tim Bim", username: "abc1234"}, 
-      {studentName: "Rebecca Grobb", username: "abc1234"}, 
-      {studentName: "Billy Mann", username: "abc1234"}, 
-      {studentName: "Mikah Guell", username: "abc1234"},  
-      {studentName: "Diesel Feesel", username: "abc1234"}, 
-      {studentName: "Dani Sel", username: "abc1234"}, 
-      {studentName: "Larry Grobb", username: "abc1234"}, 
-      {studentName: "Shima Plok", username: "abc1234"}, 
-      {studentName: "Gus Juss", username: "abc1234"}, 
-      {studentName: "Tim Bim", username: "abc1234"}, 
-      {studentName: "Rebecca Grobb", username: "abc1234"}, 
-      {studentName: "Billy Mann", username: "abc1234"}, 
-      {studentName: "Mikah Guell", username: "abc1234"}, 
-      {studentName: "Diesel Feesel", username: "abc1234"}, 
-      {studentName: "Dani Sel", username: "abc1234"}, 
-      {studentName: "Larry Grobb", username: "abc1234"}, 
-      {studentName: "Shima Plok", username: "abc1234"}, 
-      {studentName: "Gus Juss", username: "abc1234"}
-    ]});
-    this.advisors.push({firstName: "Sabrina", lastName: "Quazz", /*email: "stq2413@rit.edu", meetsWithWalkIns: false, */portraitURL: "person3.jpg", studentQueue: []});
-    /*this.advisors.push({firstName: "John", lastName: "Doe", portraitURL: "person2.jpg", studentQueue: [
+    this.advisors.push({firstName: "Jon", lastName: "Doe", portraitURL: "../assets/person2.jpg", studentQueue: [
       {studentName: "Jack Smith", username: "abc1234"}, 
       {studentName: "Jane Doe", username: "abc1234"}, 
       {studentName: "Jill Smith", username: "abc1234"}
     ]});
-    this.advisors.push({firstName: "Jon", lastName: "Doe", portraitURL: "person2.jpg", studentQueue: [
+    this.advisors.push({firstName: "Jo", lastName: "Doe", portraitURL: "../assets/person2.jpg", studentQueue: [
       {studentName: "Jack Smith", username: "abc1234"}, 
       {studentName: "Jane Doe", username: "abc1234"}, 
       {studentName: "Jill Smith", username: "abc1234"}
     ]});
-    this.advisors.push({firstName: "Jo", lastName: "Doe", portraitURL: "person2.jpg", studentQueue: [
+    this.advisors.push({firstName: "Jeff", lastName: "Doe", portraitURL: "../assets/person2.jpg", studentQueue: [
       {studentName: "Jack Smith", username: "abc1234"}, 
       {studentName: "Jane Doe", username: "abc1234"}, 
       {studentName: "Jill Smith", username: "abc1234"}
     ]});
-    this.advisors.push({firstName: "Jeff", lastName: "Doe", portraitURL: "person2.jpg", studentQueue: [
+    this.advisors.push({firstName: "Geoff", lastName: "Doe", portraitURL: "../assets/person2.jpg", studentQueue: [
       {studentName: "Jack Smith", username: "abc1234"}, 
       {studentName: "Jane Doe", username: "abc1234"}, 
       {studentName: "Jill Smith", username: "abc1234"}
     ]});
-    this.advisors.push({firstName: "Geoff", lastName: "Doe", portraitURL: "person2.jpg", studentQueue: [
+    this.advisors.push({firstName: "Geff", lastName: "Doe", portraitURL: "../assets/person2.jpg", studentQueue: [
       {studentName: "Jack Smith", username: "abc1234"}, 
       {studentName: "Jane Doe", username: "abc1234"}, 
       {studentName: "Jill Smith", username: "abc1234"}
     ]});
-    this.advisors.push({firstName: "Geff", lastName: "Doe", portraitURL: "person2.jpg", studentQueue: [
+    this.advisors.push({firstName: "Jef", lastName: "Doe", portraitURL: "../assets/person2.jpg", studentQueue: [
       {studentName: "Jack Smith", username: "abc1234"}, 
       {studentName: "Jane Doe", username: "abc1234"}, 
       {studentName: "Jill Smith", username: "abc1234"}
     ]});
-    this.advisors.push({firstName: "Jef", lastName: "Doe", portraitURL: "person2.jpg", studentQueue: [
-      {studentName: "Jack Smith", username: "abc1234"}, 
-      {studentName: "Jane Doe", username: "abc1234"}, 
-      {studentName: "Jill Smith", username: "abc1234"}
-    ]});
-    this.advisors.push({firstName: "Jiff", lastName: "Doe", portraitURL: "person2.jpg", studentQueue: [
+    this.advisors.push({firstName: "Jiff", lastName: "Doe", portraitURL: "../assets/person2.jpg", studentQueue: [
       {studentName: "Jack Smith", username: "abc1234"}, 
       {studentName: "Jane Doe", username: "abc1234"}, 
       {studentName: "Jill Smith", username: "abc1234"}
@@ -216,8 +235,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
       fname: this.selectedAdvisor.firstName,
       lname: this.selectedAdvisor.lastName,
       //email: this.selectedAdvisor.email,
-      //portraitURL: '',
-      //meetsWithWalkIns: this.selectedAdvisor.meetsWithWalkIns
+      portraitURL: this.selectedAdvisor.portraitURL
     });
   }
 
@@ -310,12 +328,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
   
   queueDeleteAdvisor(i: number) {
     if(this.advisors.length == 1) {
-      this.selectedAdvisor = {
-        firstName: "",
-        lastName: "",
-        portraitURL: "",
-        studentQueue: []
-      };
+      this.selectedAdvisor = {id: -1, firstName: "", middleName: "", lastName: "", username: "", portraitURL: "", studentQueue: []};
     }
     else if(this.advisors[i] == this.selectedAdvisor && this.advisors[i + 1]) {
       this.selectedAdvisor = this.advisors[i + 1];

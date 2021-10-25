@@ -173,14 +173,10 @@ $gray-highlighted: rgb(158, 158, 158);
 }
 
 .advisor-img {
-    //width: 80px;
-    //height: 80px;
     width: 9vw;
     height: 9vw;
-    //margin: 10px;
-    //background-color: $rit-orange;
+    background-color: lightgray;
     object-fit: cover;
-    //border-radius: 50%;
     box-shadow: -1.3vw -1.3vw white;
 }
 
