@@ -12,3 +12,5 @@ router.get('/reason', (req, res) => {
 // get student info from ldap /student
 
 // registration/checkin
+
+export default router;
