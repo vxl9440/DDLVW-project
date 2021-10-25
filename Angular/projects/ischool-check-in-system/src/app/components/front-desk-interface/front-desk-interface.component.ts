@@ -34,6 +34,19 @@ export class FrontDeskInterfaceComponent implements OnInit {
     rappt: false
   });
 
+  addAdvisorForm = this.formBuilder.group({
+    fname: '',
+    mname: '',
+    lname: '',
+    username: '',
+    portraitURL: '',
+  });
+
+  addStudentForm = this.formBuilder.group({
+    name: '',
+    username: ''
+  });
+
   buttonActions: string[] = ["deletePopup()", "", ""];
   popupTitle: string = "";
   popupText: string = "";
@@ -351,6 +364,36 @@ export class FrontDeskInterfaceComponent implements OnInit {
     document.getElementsByClassName("add-reason-subtitle")[0].classList.add("toggled-off");
   }
 
+  /* -------------------- ADD STUDENT STUFF -------------------- */
+  addAdvisor() {
+    // POST new advisor to API
+
+    this.clearAddAdvisorForm();
+  }
+
+  clearAddAdvisorForm() {
+    this.addAdvisorForm = this.formBuilder.group({
+      fname: '',
+      mname: '',
+      lname: '',
+      username: ''
+    });
+  }
+
+  /* -------------------- ADD ADVISOR STUFF -------------------- */
+  addStudent() {
+    // POST new student to API
+
+    this.clearAddStudentForm();
+  }
+
+  clearAddStudentForm() {
+    this.addStudentForm = this.formBuilder.group({
+      name: '',
+      username: ''
+    });
+  }
+
   /* -------------------- POPUP STUFF -------------------- */
   // uses the provided info to create a popup box with up to three buttons
   createConfirmPopup(popupTitle: string, popupText: string, buttons: any) {
@@ -402,6 +445,10 @@ export class FrontDeskInterfaceComponent implements OnInit {
     this.popupTitle = "";
     this.popupText = "";
     this.addingReason = false;
+
+    this.clearAddAdvisorForm();
+    this.clearAddStudentForm();
+
     (document.getElementsByClassName("popup-blur")[0] as HTMLDivElement).style.display = "none";
     (document.getElementById("confirm") as HTMLDivElement).style.display = "none";
     (document.getElementById("reason") as HTMLDivElement).style.display = "none";
@@ -422,11 +469,6 @@ export class FrontDeskInterfaceComponent implements OnInit {
   // needed for the user-provided popup box button 3 action to work
   button3Action() {
     eval(`this.${this.buttonActions[2]}`);
-  }
-
-  // creates a popup box for adding a student to the student queue
-  popupReasonManager() {
-    this.createReasonPopup();
   }
 
   // creates a popup box for deleting a student from the student queue
@@ -455,15 +497,5 @@ export class FrontDeskInterfaceComponent implements OnInit {
         ["NO", "deletePopup()", "gray"]
       ]
     );
-  }
-
-  // creates a popup box for adding a student to the student queue
-  popupAddStudent() {
-    this.createAddStudentPopup();
-  }
-
-  // creates a popup box for adding an advisor to the advisor list
-  popupAddAdvisor() {
-    this.createAddAdvisorPopup();
   }
 }

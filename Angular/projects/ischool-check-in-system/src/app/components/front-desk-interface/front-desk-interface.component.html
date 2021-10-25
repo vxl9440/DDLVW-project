@@ -23,7 +23,7 @@
       </div>
       <div *ngIf="!selectedAdvisor.studentQueue[0]" class="none-text-area"><h1>NONE</h1></div>
     </div>
-    <button class="add-button add-student-button"><img src="../assets/icons/add_box_white_36dp.svg">Add Student</button>
+    <button class="add-button add-student-button" (click)="createAddStudentPopup()"><img src="../assets/icons/add_box_white_36dp.svg">Add Student</button>
   </div>
   <div class="advisor-list-manager">
     <h2 class="section-label">Advisor List Manager</h2>
@@ -41,7 +41,7 @@
           <button class="x-button" (click)="popupDeleteAdvisor(i)"><img src="../assets/icons/x_white_36dp.svg"></button>
         </div>
         <div *ngIf="!advisors[0]" class="none-text-area"><h1>NONE</h1></div>
-        <div class="add-advisor-button"><button class="add-button"><img src="../assets/icons/add_box_white_36dp.svg">Add Advisor</button></div>
+        <div class="add-advisor-button"><button class="add-button" (click)="createAddAdvisorPopup()"><img src="../assets/icons/add_box_white_36dp.svg">Add Advisor</button></div>
       </div>
       <!--div class="vertical-line"></div-->
       <div class="advisor-info" *ngIf="selectedAdvisor.firstName || selectedAdvisor.lastName || selectedAdvisor.portraitURL">
@@ -97,12 +97,8 @@
             <form [formGroup]="reasonForm" (ngSubmit)="saveReason()">
               <div class="form-row">
                 <label for="rname">Reason Name: </label>
-                <input type="text" id="rname" formControlName="rname">
+                <input type="text" id="rname" formControlName="rname" required>
               </div>
-              <!--div class="form-row">
-                <label for="rcode">Reason Code: </label>
-                <input type="text" id="rcode" formControlName="rcode">
-              </div-->
               <div class="checkbox-row">
                 <input type="checkbox" id="rappt" formControlName="rappt"><label for="rappt">Requires Appointment</label>
               </div>
@@ -127,23 +123,55 @@
       </div>
     </div>
 
-    <div id="add-student" class="popup-box">
-      <div class="popup-top-bar">{{popupTitle}}</div>
-      <div class="popup-text-area">{{popupText}}</div>
-      <div class="popup-buttons-area">
-        <button id="popup-button-1" class="popup-button" (click)="button1Action()">{{popupButton1Text}}</button>
-        <button id="popup-button-2" class="popup-button" (click)="button2Action()">{{popupButton2Text}}</button>
-        <button id="popup-button-3" class="popup-button" (click)="button3Action()">{{popupButton3Text}}</button>
+    <div id="add-student" class="popup-box student-box">
+      <div class="popup-top-bar">Add Student</div>
+      <div class="popup-text-area">
+        <form [formGroup]="addStudentForm" (ngSubmit)="addStudent()">
+          <div class="form-row">
+            <label for="sname">Student Name: </label>
+            <input type="text" id="sname" formControlName="name" required>
+          </div>
+          <div class="form-row">
+            <label for="susername">Student Username: </label>
+            <input type="text" id="susername" formControlName="username" required>
+          </div>
+          <div class="popup-buttons-area">
+            <input class="popup-button popup-green-button" type="submit" value="Add">
+            <button class="popup-button popup-gray-button" (click)="deletePopup()">Cancel</button>
+          </div>
+        </form>
       </div>
     </div>
 
-    <div id="add-advisor" class="popup-box">
-      <div class="popup-top-bar">{{popupTitle}}</div>
-      <div class="popup-text-area">{{popupText}}</div>
-      <div class="popup-buttons-area">
-        <button id="popup-button-1" class="popup-button" (click)="button1Action()">{{popupButton1Text}}</button>
-        <button id="popup-button-2" class="popup-button" (click)="button2Action()">{{popupButton2Text}}</button>
-        <button id="popup-button-3" class="popup-button" (click)="button3Action()">{{popupButton3Text}}</button>
+    <div id="add-advisor" class="popup-box advisor-box">
+      <div class="popup-top-bar">Add Advisor</div>
+      <div class="popup-text-area">
+        <form [formGroup]="addAdvisorForm" (ngSubmit)="addAdvisor()">
+          <div class="form-row">
+            <label for="afname">First Name: </label>
+            <input type="text" id="afname" formControlName="fname" required>
+          </div>
+          <div class="form-row">
+            <label for="amname">Middle Name: </label>
+            <input type="text" id="amname" formControlName="mname">
+          </div>
+          <div class="form-row">
+            <label for="alname">Last Name: </label>
+            <input type="text" id="alname" formControlName="lname" required>
+          </div>
+          <div class="form-row">
+            <label for="ausername">Username: </label>
+            <input type="text" id="ausername" formControlName="username" required>
+          </div>
+          <div class="form-row">
+            <label for="aportraitURL">Photo URL: </label>
+            <input type="text" id="aportraitURL" formControlName="portraitURL">
+          </div>
+          <div class="popup-buttons-area">
+            <input class="popup-button popup-green-button" type="submit" value="Add">
+            <button class="popup-button popup-gray-button" (click)="deletePopup()">Cancel</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>

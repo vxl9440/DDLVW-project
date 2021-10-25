@@ -87,7 +87,7 @@ input[type="submit"]:hover {
     margin: 0;
     padding: 0;
     font-size: 1.5vw;
-    color: $rit-orange;
+    //color: $rit-orange;
 }
 
 // the buttons area of the top bar
@@ -614,6 +614,7 @@ input[type="text"] {
     //backdrop-filter: blur(3px); // removed due to heavy performance drop
     animation: display-popup;
     animation-duration: 0.25s;
+    z-index: 1;
 }
 
 #confirm {
@@ -821,4 +822,36 @@ input[type="text"] {
 .popup-reasons-right-area::-webkit-scrollbar-thumb:hover {
     background-color: $rit-orange-light-1;
     cursor: pointer;
+}
+
+/* -------------------- POPUP ADD STUDENT STUFF -------------------- */
+.student-box {
+    //height: 30vh;
+    width: 30vw;
+}
+
+.student-box .popup-text-area {
+    height: 100%;
+}
+
+.student-box .popup-text-area form {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* -------------------- POPUP ADD ADVISOR STUFF -------------------- */
+.advisor-box {
+    height: 30vh;
+    width: 30vw;
+}
+
+.advisor-box .popup-text-area {
+    height: 100%;
+}
+
+.advisor-box .popup-text-area form {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
