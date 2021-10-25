@@ -1,22 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Advisor } from '../../models/advisor';
 import { Student } from '../../models/student';
+import { Reason } from '../../models/reason';
 
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { FormBuilder } from '@angular/forms';
-
-/*interface Student {
-  studentName: string,
-  username: string
-}
-
-interface Advisor {
-  firstName: string,
-  lastName: string,
-  portraitURL: string,
-  studentQueue: Student[]
-}*/
 
 @Component({
   selector: 'app-front-desk-interface',
@@ -27,16 +16,23 @@ export class FrontDeskInterfaceComponent implements OnInit {
   title = 'front-desk-interface';
   advisors: Advisor[] = [];
   selectedAdvisor: Advisor = {id: -1, firstName: "", middleName: "", lastName: "", username: "", portraitURL: "", studentQueue: []};
-
   advisorInfoForm = this.formBuilder.group({
     fname: '',
     lname: '',
-    //email: '',
     portraitURL: ''
   });
 
   bannerText: string = "";
   bannerForm = this.formBuilder.group({ bannerText: '' });
+
+  reasons: Reason[] = [];
+  selectedReason: Reason = new Reason("", false);
+  addingReason: boolean = false;
+  reasonForm = this.formBuilder.group({
+    rname: '',
+    rcode: '',
+    rappt: false
+  });
 
   buttonActions: string[] = ["deletePopup()", "", ""];
   popupTitle: string = "";
@@ -146,6 +142,27 @@ export class FrontDeskInterfaceComponent implements OnInit {
 
     this.updateAdvisorInfoForm();
     this.updateBannerTextForm();
+
+    this.reasons.push(new Reason("General Questions", false));
+    this.reasons.push(new Reason("Reason 1", true));
+    this.reasons.push(new Reason("Reason 2", false));
+    this.reasons.push(new Reason("Reason 3", true));
+    this.reasons.push(new Reason("Reason 4 with a really long name", false));
+    this.reasons.push(new Reason("Reason5WithAReallyReallyLongName", true));
+    this.reasons.push(new Reason("Reason 6", false));
+    this.reasons.push(new Reason("Reason 7", true));
+    this.reasons.push(new Reason("Reason 8", false));
+    this.reasons.push(new Reason("Reason 9", true));
+    this.reasons.push(new Reason("Reason 10", false));
+    this.reasons.push(new Reason("Reason 11", true));
+    this.reasons.push(new Reason("Reason 12", false));
+    this.reasons.push(new Reason("Reason 13", true));
+    this.reasons.push(new Reason("Reason 14 with a really long name", false));
+    this.reasons.push(new Reason("Reason15WithAReallyReallyLongName", true));
+    this.reasons.push(new Reason("Reason 16", false));
+    this.reasons.push(new Reason("Reason 17", true));
+    this.reasons.push(new Reason("Reason 18", false));
+    this.reasons.push(new Reason("Reason 19", true));
   }
 
   // signs out of the interface (will be routed back to the interface picker)
@@ -196,19 +213,6 @@ export class FrontDeskInterfaceComponent implements OnInit {
       }, 250);
     }
   }
-
-  popupDeleteStudent(i: number) {
-    let studentName = this.selectedAdvisor.studentQueue[i].studentName;
-
-    this.createPopup(
-      "Are You Sure?", 
-      `Are you sure you want to delete ${studentName} from the queue?`, 
-      [
-        ["YES", `queueDeleteStudent(${i})`, "red"], 
-        ["NO", "deletePopup()", "gray"]
-      ]
-    );
-  }
   
   queueDeleteStudent(i: number) {
     this.selectedAdvisor.studentQueue.splice(i, 1);
@@ -218,15 +222,6 @@ export class FrontDeskInterfaceComponent implements OnInit {
   /* -------------------- ADVISOR LIST STUFF -------------------- */
   select(advisor: Advisor, i: number) {
     this.selectedAdvisor = advisor;
-
-    /*let selectedAdvisor = document.getElementsByClassName("selectedAdvisor")[0];
-    if(selectedAdvisor) {
-      selectedAdvisor.classList.remove("selectedAdvisor");
-    }
-
-    let allAdvisors = document.getElementsByClassName("advisor-item-info");
-    allAdvisors[i].classList.add("selectedAdvisor");*/
-
     this.updateAdvisorInfoForm();
   }
 
@@ -234,7 +229,6 @@ export class FrontDeskInterfaceComponent implements OnInit {
     this.advisorInfoForm = this.formBuilder.group({
       fname: this.selectedAdvisor.firstName,
       lname: this.selectedAdvisor.lastName,
-      //email: this.selectedAdvisor.email,
       portraitURL: this.selectedAdvisor.portraitURL
     });
   }
@@ -260,13 +254,6 @@ export class FrontDeskInterfaceComponent implements OnInit {
         let tempSwapAdvisor = this.advisors[i - 1];
         this.advisors[i - 1] = this.advisors[i];
         this.advisors[i] = tempSwapAdvisor;
-
-        /*setTimeout(() => {
-          if((i == 1) && document.getElementsByClassName("advisor-item")[0].firstElementChild?.classList.contains("selectedAdvisor")) {
-            document.getElementsByClassName("advisor-item")[0].firstElementChild?.classList.remove("selectedAdvisor");
-            document.getElementsByClassName("advisor-item")[1].firstElementChild?.classList.add("selectedAdvisor");
-          }
-        }, 50);*/
       }, 250);
     }
   }
@@ -282,48 +269,14 @@ export class FrontDeskInterfaceComponent implements OnInit {
       belowAdvisorItem.style.animationDuration = "0.25s";
 
       setTimeout(() => {
-        /*if(advisorItem.classList.contains("selectedAdvisor")) {
-          advisorItem.classList.remove("selectedAdvisor");
-          belowAdvisorItem.classList.add("selectedAdvisor");
-        }
-        else if(belowAdvisorItem.classList.contains("selectedAdvisor")) {
-          belowAdvisorItem.classList.remove("selectedAdvisor");
-          advisorItem.classList.add("selectedAdvisor");
-        }*/
-
         advisorItem.style.animation = "none";
         belowAdvisorItem.style.animation = "none";
 
         let tempSwapAdvisor = this.advisors[i + 1];
         this.advisors[i + 1] = this.advisors[i];
         this.advisors[i] = tempSwapAdvisor;
-
-        /*if((i - 1 == 0) && document.getElementsByClassName("advisor-item")[0].firstElementChild?.classList.contains("selectedAdvisor")) {
-          document.getElementsByClassName("advisor-item")[0].firstElementChild?.classList.remove("selectedAdvisor");
-          document.getElementsByClassName("advisor-item")[1].firstElementChild?.classList.add("selectedAdvisor");
-        }*/
-
-        /*setTimeout(() => {
-          if((i + 1 == 0) && document.getElementsByClassName("advisor-item")[0].firstElementChild?.classList.contains("selectedAdvisor")) {
-            document.getElementsByClassName("advisor-item")[0].firstElementChild?.classList.remove("selectedAdvisor");
-            document.getElementsByClassName("advisor-item")[1].firstElementChild?.classList.add("selectedAdvisor");
-          }
-        }, 50);*/
       }, 250);
     }
-  }
-
-  popupDeleteAdvisor(i: number) {
-    let advisorName = `${this.advisors[i].firstName} ${this.advisors[i].lastName}`;
-
-    this.createPopup(
-      "Are You Sure?", 
-      `Are you sure you want to delete ${advisorName}?`, 
-      [
-        ["YES", `queueDeleteAdvisor(${i})`, "red"], 
-        ["NO", "deletePopup()", "gray"]
-      ]
-    );
   }
   
   queueDeleteAdvisor(i: number) {
@@ -350,14 +303,62 @@ export class FrontDeskInterfaceComponent implements OnInit {
 
   }
 
+  /* -------------------- REASON MANAGER STUFF -------------------- */
+  saveReason() {
+    if(this.addingReason) {
+      this.reasonSetToEditMode();
+      // POST new reason to API
+    }
+    else {
+      // PUT existing reason in API
+    }
+  }
+
+  deleteReason() {
+    for(let [i, reason] of this.reasons.entries()) {
+      if(reason == this.selectedReason) {
+        this.reasons.splice(i, 1); // DELETE existing reason in API
+        this.selectedReason = new Reason("", false);
+        this.updateReasonForm();
+      }
+    }
+  }
+
+  selectReason(i: number) {
+    this.selectedReason = this.reasons[i];
+    this.updateReasonForm();
+  }
+
+  updateReasonForm() {
+    this.reasonForm = this.formBuilder.group({
+      rname: this.selectedReason.reason,
+      rappt: this.selectedReason.requiresAppt
+    });
+  }
+
+  reasonSetToAddMode() {
+    this.selectedReason = new Reason("", false);
+    this.updateReasonForm();
+
+    this.addingReason = true;
+    document.getElementsByClassName("add-reason-subtitle")[0].classList.remove("toggled-off");
+    document.getElementsByClassName("edit-reason-subtitle")[0].classList.add("toggled-off");
+  }
+
+  reasonSetToEditMode() {
+    this.addingReason = false;
+    document.getElementsByClassName("edit-reason-subtitle")[0].classList.remove("toggled-off");
+    document.getElementsByClassName("add-reason-subtitle")[0].classList.add("toggled-off");
+  }
+
   /* -------------------- POPUP STUFF -------------------- */
-  createPopup(popupTitle: string, popupText: string, buttons: any) {
+  // uses the provided info to create a popup box with up to three buttons
+  createConfirmPopup(popupTitle: string, popupText: string, buttons: any) {
     (document.getElementsByClassName("popup-blur")[0] as HTMLDivElement).style.display = "flex";
     this.popupTitle = popupTitle;
     this.popupText = popupText;
 
-    //let buttonArea = (document.getElementsByClassName("popup-buttons-area")[0] as HTMLDivElement);
-    //console.log("buttonArea:", buttonArea);
+    (document.getElementById("confirm") as HTMLDivElement).style.display = "flex";
 
     if(buttons[0]) {
       this.popupButton1Text = buttons[0][0];
@@ -376,32 +377,93 @@ export class FrontDeskInterfaceComponent implements OnInit {
       this.buttonActions[2] = buttons[2][1];
       document.getElementById("popup-button-3")?.classList.add(`popup-${buttons[2][2]}-button`);
     }
-
-    /*for(let button of buttons) {
-      //let buttonElement = document.createElement("button");
-      //buttonElement.classList.add("popup-button", `popup-${button[2]}-button`);
-      //buttonElement.textContent = button[0];
-      //buttonElement.addEventListener("click", function() { eval(button[1]); });
-      //buttonArea.appendChild(buttonElement);
-      buttonArea.innerHTML += "<button class='popup-button popup-" + button[2] + "-button' (click)='" + button[1] + "'>" + button[0] + "</button>";
-    }*/
   }
 
+  createReasonPopup() {
+    (document.getElementsByClassName("popup-blur")[0] as HTMLDivElement).style.display = "flex";
+
+    (document.getElementById("reason") as HTMLDivElement).style.display = "flex";
+  }
+
+  createAddStudentPopup() {
+    (document.getElementsByClassName("popup-blur")[0] as HTMLDivElement).style.display = "flex";
+
+    (document.getElementById("add-student") as HTMLDivElement).style.display = "flex";
+  }
+
+  createAddAdvisorPopup() {
+    (document.getElementsByClassName("popup-blur")[0] as HTMLDivElement).style.display = "flex";
+
+    (document.getElementById("add-advisor") as HTMLDivElement).style.display = "flex";
+  }
+
+  // removes a currently active popup box
   deletePopup() {
     this.popupTitle = "";
     this.popupText = "";
+    this.addingReason = false;
     (document.getElementsByClassName("popup-blur")[0] as HTMLDivElement).style.display = "none";
+    (document.getElementById("confirm") as HTMLDivElement).style.display = "none";
+    (document.getElementById("reason") as HTMLDivElement).style.display = "none";
+    (document.getElementById("add-student") as HTMLDivElement).style.display = "none";
+    (document.getElementById("add-advisor") as HTMLDivElement).style.display = "none";
   }
 
+  // needed for the user-provided popup box button 1 action to work
   button1Action() {
     eval(`this.${this.buttonActions[0]}`);
   }
 
+  // needed for the user-provided popup box button 2 action to work
   button2Action() {
     eval(`this.${this.buttonActions[1]}`);
   }
 
+  // needed for the user-provided popup box button 3 action to work
   button3Action() {
     eval(`this.${this.buttonActions[2]}`);
+  }
+
+  // creates a popup box for adding a student to the student queue
+  popupReasonManager() {
+    this.createReasonPopup();
+  }
+
+  // creates a popup box for deleting a student from the student queue
+  popupDeleteStudent(i: number) {
+    let studentName = this.selectedAdvisor.studentQueue[i].studentName;
+
+    this.createConfirmPopup(
+      "Are You Sure?", 
+      `Are you sure you want to delete ${studentName} from the queue?`, 
+      [
+        ["YES", `queueDeleteStudent(${i})`, "red"], 
+        ["NO", "deletePopup()", "gray"]
+      ]
+    );
+  }
+
+  // creates a popup box for deleting an advisor from the advisor list
+  popupDeleteAdvisor(i: number) {
+    let advisorName = `${this.advisors[i].firstName} ${this.advisors[i].lastName}`;
+
+    this.createConfirmPopup(
+      "Are You Sure?", 
+      `Are you sure you want to delete ${advisorName}?`, 
+      [
+        ["YES", `queueDeleteAdvisor(${i})`, "red"], 
+        ["NO", "deletePopup()", "gray"]
+      ]
+    );
+  }
+
+  // creates a popup box for adding a student to the student queue
+  popupAddStudent() {
+    this.createAddStudentPopup();
+  }
+
+  // creates a popup box for adding an advisor to the advisor list
+  popupAddAdvisor() {
+    this.createAddAdvisorPopup();
   }
 }

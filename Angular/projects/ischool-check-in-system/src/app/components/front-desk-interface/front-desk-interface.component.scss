@@ -34,6 +34,10 @@ button:hover {
     cursor: pointer;
 }
 
+input[type="submit"]:hover {
+    cursor: pointer;
+}
+
 // general styling for any sort of Add buttons
 .add-button {
     display: flex;
@@ -590,11 +594,11 @@ input[type="text"] {
 @keyframes display-popup {
     from {
         opacity: 0;
-        backdrop-filter: blur(0px);
+        //backdrop-filter: blur(0px); // removed due to heavy performance drop
     }
     to {
         opacity: 1;
-        backdrop-filter: blur(3px);
+        //backdrop-filter: blur(3px);
     }
 }
 
@@ -606,29 +610,33 @@ input[type="text"] {
     display: none;
     justify-content: center;
     align-items: center;
-    opacity: 1;
-    //filter: blur(5px);
-    backdrop-filter: blur(3px);
+    //opacity: 1;
+    //backdrop-filter: blur(3px); // removed due to heavy performance drop
     animation: display-popup;
     animation-duration: 0.25s;
+}
+
+#confirm {
+    display: none;
 }
 
 .popup-box {
     display: flex;
     flex-direction: column;
     height: 20vh;
-    width: 20vw;;
+    width: 20vw;
     //margin: 40%;
     background-color: $rit-white-orange;
     border: 5px solid $rit-orange;
     border-radius: 10px;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
+    z-index: 1;
 }
 
 .popup-top-bar {
     display: flex;
     align-items: center;
-    height: 15%;
+    height: 3vh;
     padding-top: 10px;
     padding-bottom: 10px;
     padding-left: 15px;
@@ -640,6 +648,16 @@ input[type="text"] {
     background-color: $rit-orange;
     color: white;
     font-size: 1vw;
+}
+
+.popup-subtitle-area {
+    margin: 0;
+    margin-bottom: 10px;
+    font-size: 1.2vw;
+}
+
+.popup-subtitle-area h2 {
+    font-size: 1.2vw;
 }
 
 .popup-text-area {
@@ -699,7 +717,7 @@ input[type="text"] {
     color: white;
 }
 
-.popup-green-button:hover {
+.popup-orange-button:hover {
     background-color: $rit-orange-light-3;
 }
 
@@ -711,4 +729,96 @@ input[type="text"] {
 
 .popup-gray-button:hover {
     background-color: $gray-highlighted;
+}
+
+#add-student {
+    display: none;
+}
+
+#add-advisor {
+    display: none;
+}
+
+/* -------------------- POPUP REASON MANAGER STUFF -------------------- */
+#reason {
+    display: none;
+}
+
+.reason-box {
+    height: 45vh;
+    width: 45vw;
+}
+
+.popup-reasons-main-area {
+    display: flex;
+}
+
+.popup-reasons-left-area {
+    width: 50%;
+}
+
+.add-reason-subtitle {
+    display: inline;
+}
+
+.add-reason-subtitle:hover {
+    cursor: pointer;
+}
+
+.edit-reason-subtitle {
+    display: inline;
+}
+
+.edit-reason-subtitle:hover {
+    cursor: pointer;
+}
+
+.toggled-off {
+    color: gray;
+}
+
+.popup-reasons-right-area {
+    width: 50%;
+    height: 30vh;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    overflow-y: scroll;
+}
+
+.reason-item {
+    margin-bottom: 5px;
+    padding: 10px;
+    padding-left: 20px;
+    background-color: $rit-orange-light-1;
+    color: white;
+    border-radius: 20px;
+}
+
+.reason-item:hover {
+    background-color: $rit-orange-light-2;
+    cursor: pointer;
+}
+
+/*.reason-button {
+    display: flex;
+}*/
+
+// scrollbar styling for the reason popup
+.popup-reasons-right-area::-webkit-scrollbar {
+    width: 1em;
+}
+ 
+.popup-reasons-right-area::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.25);
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.25);
+}
+ 
+.popup-reasons-right-area::-webkit-scrollbar-thumb {
+  background-color: $rit-orange;
+}
+
+.popup-reasons-right-area::-webkit-scrollbar-thumb:hover {
+    background-color: $rit-orange-light-1;
+    cursor: pointer;
 }

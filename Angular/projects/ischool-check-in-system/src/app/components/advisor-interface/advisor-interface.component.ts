@@ -343,53 +343,6 @@ export class AdvisorInterfaceComponent implements OnInit {
     }
   }
 
-  /* -------------------- POPUP STUFF -------------------- */
-  // uses the provided info to create a popup box with up to three buttons
-  createPopup(popupTitle: string, popupText: string, buttons: any) {
-    (document.getElementsByClassName("popup-blur")[0] as HTMLDivElement).style.display = "flex";
-    this.popupTitle = popupTitle;
-    this.popupText = popupText;
-
-    if(buttons[0]) {
-      this.popupButton1Text = buttons[0][0];
-      this.buttonActions[0] = buttons[0][1];
-      document.getElementById("popup-button-1")?.classList.add(`popup-${buttons[0][2]}-button`);
-    }
-
-    if(buttons[1]) {
-      this.popupButton2Text = buttons[1][0];
-      this.buttonActions[1] = buttons[1][1];
-      document.getElementById("popup-button-2")?.classList.add(`popup-${buttons[1][2]}-button`);
-    }
-
-    if(buttons[2]) {
-      this.popupButton3Text = buttons[2][0];
-      this.buttonActions[2] = buttons[2][1];
-      document.getElementById("popup-button-3")?.classList.add(`popup-${buttons[2][2]}-button`);
-    }
-  }
-
-  // removes a currently active popup box
-  deletePopup() {
-    this.popupTitle = "";
-    this.popupText = "";
-    (document.getElementsByClassName("popup-blur")[0] as HTMLDivElement).style.display = "none";
-  }
-
-  // creates a popup box for deleting a student from the student queue
-  popupDeleteStudent(i: number) {
-    let studentName = this.advisor.studentQueue[i].studentName;
-
-    this.createPopup(
-      "Are You Sure?", 
-      `Are you sure you want to delete ${studentName} from the queue?`, 
-      [
-        ["YES", `queueDeleteStudent(${i})`, "red"], 
-        ["NO", "deletePopup()", "gray"]
-      ]
-    );
-  }
-  
   // deletes a student from the student queue
   queueDeleteStudent(i: number) {
     /*const deletedStudent = new Promise((resolve, reject) => {
@@ -430,6 +383,39 @@ export class AdvisorInterfaceComponent implements OnInit {
     }
   }
 
+  /* -------------------- POPUP STUFF -------------------- */
+  // uses the provided info to create a popup box with up to three buttons
+  createPopup(popupTitle: string, popupText: string, buttons: any) {
+    (document.getElementsByClassName("popup-blur")[0] as HTMLDivElement).style.display = "flex";
+    this.popupTitle = popupTitle;
+    this.popupText = popupText;
+
+    if(buttons[0]) {
+      this.popupButton1Text = buttons[0][0];
+      this.buttonActions[0] = buttons[0][1];
+      document.getElementById("popup-button-1")?.classList.add(`popup-${buttons[0][2]}-button`);
+    }
+
+    if(buttons[1]) {
+      this.popupButton2Text = buttons[1][0];
+      this.buttonActions[1] = buttons[1][1];
+      document.getElementById("popup-button-2")?.classList.add(`popup-${buttons[1][2]}-button`);
+    }
+
+    if(buttons[2]) {
+      this.popupButton3Text = buttons[2][0];
+      this.buttonActions[2] = buttons[2][1];
+      document.getElementById("popup-button-3")?.classList.add(`popup-${buttons[2][2]}-button`);
+    }
+  }
+
+  // removes a currently active popup box
+  deletePopup() {
+    this.popupTitle = "";
+    this.popupText = "";
+    (document.getElementsByClassName("popup-blur")[0] as HTMLDivElement).style.display = "none";
+  }
+
   // needed for the user-provided popup box button 1 action to work
   button1Action() {
     eval(`this.${this.buttonActions[0]}`);
@@ -443,5 +429,19 @@ export class AdvisorInterfaceComponent implements OnInit {
   // needed for the user-provided popup box button 3 action to work
   button3Action() {
     eval(`this.${this.buttonActions[2]}`);
+  }
+
+  // creates a popup box for deleting a student from the student queue
+  popupDeleteStudent(i: number) {
+    let studentName = this.advisor.studentQueue[i].studentName;
+
+    this.createPopup(
+      "Are You Sure?", 
+      `Are you sure you want to delete ${studentName} from the queue?`, 
+      [
+        ["YES", `queueDeleteStudent(${i})`, "red"], 
+        ["NO", "deletePopup()", "gray"]
+      ]
+    );
   }
 }
