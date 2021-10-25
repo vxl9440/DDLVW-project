@@ -4,6 +4,7 @@ import reasonRouter from './src/route/reason.js';
 import meetingHostRouter from './src/route/advisor.js';
 import studentRouter from './src/route/student.js';
 import bannerRouter from './src/route/banner.js';
+import kioskRouter from './src/route/kiosk.js';
 import registrationRouter from './src/route/registration.js';
 import proxy from 'express-http-proxy';
 
@@ -11,7 +12,7 @@ const port = 8080;
 const app  = express();
 
 // Add JWT Authorization middleware first
-app.use(jwt({ secret: 'ischool', algorithms: ['HS256'] }).unless({ path: ['/login', '/logout']}));
+app.use(jwt({ secret: 'ischool', algorithms: ['HS256'] }).unless({ path: ['/login', '/logout', '/kiosk']}));
 app.use((err, req, res, next) => {
     if (err.name === 'UnauthorizedError') {
       res.status(err.status).send({ message: err.message });
@@ -34,6 +35,7 @@ app.use('/logout', proxy('https://people.rit.edu', {
 }));
 
 app.use(express.json());
+app.use('/kiosk', kioskRouter);
 app.use('/reason', reasonRouter);
 app.use('/meetingHost', meetingHostRouter);
 app.use('/student', studentRouter);
