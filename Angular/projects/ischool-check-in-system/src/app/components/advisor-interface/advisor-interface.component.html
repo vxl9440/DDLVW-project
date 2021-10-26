@@ -19,7 +19,7 @@
           <button class="x-button" (click)="popupDeleteStudent(i)"><img src="../assets/icons/x_white_36dp.svg"></button>
         </div>
       </div>
-      <div *ngIf="!advisor.studentQueue" class="none-text-area"><h1>NONE</h1></div>
+      <div *ngIf="!advisor.studentQueue || !advisor.studentQueue[0]" class="none-text-area"><h1>NONE</h1></div>
     </div>
     <div class="student-info-manager">
       <h2  *ngIf="selectedStudent.studentName">{{selectedStudent.studentName}}</h2>
@@ -33,10 +33,10 @@
         <div>{{getDateTimeInfo(selectedStudent.appointment.startTime)}} - {{getDateTimeInfo(selectedStudent.appointment.endTime)}}</div>
       </div>
       <!--div class="meeting-clock" *ngIf="meetingInProgress">{{meetingDuration}}</div-->
-      <button class="meeting-button green-button" *ngIf="!meetingInProgress && this.advisor.studentQueue" (click)="startMeeting()">Start Meeting</button>
+      <button class="meeting-button green-button" *ngIf="!meetingInProgress && advisor.studentQueue && advisor.studentQueue[0]" (click)="startMeeting()">Start Meeting</button>
       <button class="meeting-button red-button" *ngIf="meetingInProgress && meetingStudent == selectedStudent" (click)="popupEndMeeting(meetingStudentIndex)">{{meetingDuration}}</button>
       <!--button class="meeting-button red-button" *ngIf="meetingInProgress && meetingStudent == selectedStudent" (click)="endMeeting()" (mouseenter)="showEndMeetingText()" (mouseleave)="stopShowingEndMeetingText()">{{meetingDuration}}</button-->
-      <div *ngIf="!advisor.studentQueue" class="none-text-area"><h1>NONE</h1></div>
+      <div *ngIf="!advisor.studentQueue || !advisor.studentQueue[0]" class="none-text-area"><h1>NONE</h1></div>
     </div>
     <div class="walk-in-hours-manager">
       <h2>My Walk-In Hours</h2>

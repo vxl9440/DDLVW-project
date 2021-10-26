@@ -97,7 +97,9 @@ export class AdvisorInterfaceComponent implements OnInit {
           this.advisor.studentQueue = data[this.advisor.id];
           if(this.advisor.studentQueue[0]) {
             this.selectedStudent = this.advisor.studentQueue[0];
-            (document.getElementsByClassName("student-item-bar")[0] as HTMLDivElement).classList.add("selected-student");
+            setTimeout(() => {
+              (document.getElementsByClassName("student-item-bar")[0] as HTMLDivElement).classList.add("selected-student");
+            }, 50);
           }
         }
       });
@@ -203,6 +205,7 @@ export class AdvisorInterfaceComponent implements OnInit {
   // gets a nicely-formatted string of the hours/minutes from a date string
   getDateTimeInfo(dateTime: string) {
     let date = new Date(dateTime);
+    let minutesString = date.getMinutes().toString();
     let hours = date.getHours();
     let timeAMPM = 'AM';
 
@@ -218,7 +221,11 @@ export class AdvisorInterfaceComponent implements OnInit {
       timeAMPM = 'PM';
     }
 
-    return `${hours}:${date.getMinutes()} ${timeAMPM}`;
+    if(minutesString.length == 1) {
+      minutesString = `0${minutesString}`;
+    }
+
+    return `${hours}:${minutesString} ${timeAMPM}`;
   }
 
   // adds any leading zeros to time strings when necessary
