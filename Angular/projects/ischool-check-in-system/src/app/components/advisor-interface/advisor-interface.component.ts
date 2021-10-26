@@ -69,10 +69,6 @@ export class AdvisorInterfaceComponent implements OnInit {
     //this.connect();
   }
 
-  /*ngAfterViewInit() {
-    (document.getElementsByClassName("student-item-bar")[0] as HTMLDivElement).classList.add("selected-student");
-  }*/
-
   // runs the loop that gets all required data intermittently (maybe remove later?)
   connect() {
     setInterval(() => {
