@@ -98,10 +98,12 @@ export class AdvisorInterfaceComponent implements OnInit {
         new Student('Jill Smith', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'})
       ]
     };*/
+    // GET advisor
     this.activatedRoute.data.subscribe((response: any) => {
       console.log('FETCHING ADVISOR ', response);
       this.advisor = response.advisor;
 
+      // GET student queue
       this.apiService.getAllStudentQueues().subscribe((data: any[]) => {
         for(let queue of data) {
           if(this.advisor.id == queue.id) {
@@ -111,6 +113,11 @@ export class AdvisorInterfaceComponent implements OnInit {
             (document.getElementsByClassName("student-item-bar")[0] as HTMLDivElement).classList.add("selected-student");
           }
         }
+      });
+
+      // GET walk-in hours data
+      this.apiService.getAdvisorWalkInHours(this.advisor.id).subscribe((data: any[]) => {
+
       });
     });
     
@@ -122,7 +129,7 @@ export class AdvisorInterfaceComponent implements OnInit {
   // gets the advisor's walk-in hours info
   getWalkInHoursInfo(id: number) {
     // GET /meetingHost/{id}/walkInHours
-    return [{
+    /*return [{
         startTime: "13:00:00",
         endTime: "14:30:00",
         weekday: "Mon"
@@ -143,7 +150,7 @@ export class AdvisorInterfaceComponent implements OnInit {
         endTime: "14:30:00",
         weekday: "Fri"
       }
-    ];
+    ];*/
   }
 
   // signs out of the interface (will be routed back to the interface picker)
@@ -380,22 +387,6 @@ export class AdvisorInterfaceComponent implements OnInit {
 
   // deletes a student from the student queue
   queueDeleteStudent(i: number) {
-    /*const deletedStudent = new Promise((resolve, reject) => {
-      if(this.advisor.studentQueue.splice(i, 1)) {
-        resolve("Student deleted.");
-      }
-      else {
-        reject("Student not deleted.");
-      }
-    });
-
-    this.deletePopup();
-
-    deletedStudent.then(value => {
-      console.log(value);
-      this.setSelectedStudent(0);
-    });*/
-
     let studentToDelete = this.advisor.studentQueue[i];
 
     if(this.meetingStudent = studentToDelete) {
@@ -405,6 +396,7 @@ export class AdvisorInterfaceComponent implements OnInit {
       clearInterval(this.timer);
     }
 
+    // DELETE student from advisor's queue
     this.advisor.studentQueue.splice(i, 1);
     this.deletePopup();
 

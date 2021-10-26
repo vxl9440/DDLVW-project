@@ -106,10 +106,10 @@ export class StudentQueueInterfaceComponent implements OnInit {
         let i = 0;
         while(i < this.advisors.length) {
           if(data[this.advisors[i].id]) {
-            this.advisors[i].studentQueue = data[this.advisors[i].id]
+            this.advisors[i].studentQueue = data[this.advisors[i].id];
           }
 
-          //this.advisors[i].studentQueue = data[this.advisors[i].id]
+          //this.advisors[i].studentQueue = data[this.advisors[i].id];
           i++;
         }
       });
