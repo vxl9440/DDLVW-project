@@ -38,7 +38,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
     fname: '',
     mname: '',
     lname: '',
-    username: '',
+    email: '',
     portraitURL: '',
   });
 
