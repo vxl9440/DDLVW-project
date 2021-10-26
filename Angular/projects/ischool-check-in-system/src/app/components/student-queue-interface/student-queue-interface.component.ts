@@ -89,6 +89,8 @@ export class StudentQueueInterfaceComponent implements OnInit {
       this.refreshData();
     }, 3000);*/
 
+    this.refreshData();
+
     setInterval(() => {
       this.refreshData();
     }, 10000);
@@ -99,19 +101,35 @@ export class StudentQueueInterfaceComponent implements OnInit {
     //this.getBannerText();
     this.connected = false;
     this.apiService.getAllAdvisors().subscribe((data: Advisor[]) => {
+      console.log("getAllAdvisors: ", data);
       this.connected = true;
       this.timeUpdated = this.getCurrentTimeString();
       this.advisors = data;
-    });
-    this.apiService.getAllStudentQueues().subscribe((data: any[]) => {
-      for(let queue of data) {
-        for(let advisor of this.advisors) {
-          if(advisor.id == queue.id) {
-            advisor.studentQueue = queue.queue;
-          }
+
+      this.apiService.getAllStudentQueues().subscribe((data: any[]) => {
+        console.log("getAllStudentQueues: ", data);
+
+        let i = 0;
+        while(i < this.advisors.length) {
+          /*if(data[this.advisors[i].id]) {
+            this.advisors[i].studentQueue = data[this.advisors[i].id]
+          }*/
+          
+          this.advisors[i].studentQueue = data[this.advisors[i].id]
+
+          i++;
         }
-      }
+        /*for(let advisor of this.advisors) {
+          //let advisorIdString = ((advisor.id as unknown) as string)
+          //advisor.studentQueue = eval(`data.${advisorIdString}`);
+          if(data[advisor.id]) {
+
+          }
+          this.advisors[advisor.id - 1].studentQueue = data[advisor.id];
+        }*/
+      });
     });
+
     this.apiService.getBannerInfo().subscribe((data: any) => {
       this.bannerText = data.bannerInfo;
       if(this.bannerText.length > 750) {

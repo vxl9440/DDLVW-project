@@ -4,6 +4,7 @@ import { AuthService } from '../../services/auth.service';
 import { Advisor } from '../../models/advisor';
 import { Student } from '../../models/student';
 import { FormBuilder } from '@angular/forms';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-advisor-interface',
@@ -47,21 +48,33 @@ export class AdvisorInterfaceComponent implements OnInit {
   popupButton2Text: string = ""; // popup box button 2 text
   popupButton3Text: string = ""; // popup box button 3 text
 
-  constructor(private activatedRoute: ActivatedRoute, private authService: AuthService, private formBuilder: FormBuilder) {}
+  constructor(private activatedRoute: ActivatedRoute, private authService: AuthService, private apiService: ApiService, private formBuilder: FormBuilder) {}
 
   ngOnInit() {
-    this.activatedRoute.data.subscribe((response: any) => {
+    /*this.activatedRoute.data.subscribe((response: any) => {
       console.log('FETCHING ADVISOR ', response);
       this.advisor = response.advisor;
-    });
+    });*/
 
+    this.advisor = {
+      id: 0,
+      firstName: '',
+      middleName: '',
+      lastName: '',
+      email: '',
+      portraitURL: '',
+      studentQueue: []
+    };
+
+    this.selectedStudent = new Student('', '', '');
+
+    this.refreshData();
     this.connect();
-    //this.refreshData();
   }
 
-  ngAfterViewInit() {
+  /*ngAfterViewInit() {
     (document.getElementsByClassName("student-item-bar")[0] as HTMLDivElement).classList.add("selected-student");
-  }
+  }*/
 
   // runs the loop that gets all required data intermittently (maybe remove later?)
   connect() {
@@ -72,7 +85,7 @@ export class AdvisorInterfaceComponent implements OnInit {
 
   // gets all needed data
   refreshData() {
-    this.advisor = {
+    /*this.advisor = {
       id: 0,
       firstName: "John", 
       middleName: '',
@@ -84,8 +97,22 @@ export class AdvisorInterfaceComponent implements OnInit {
         new Student('Jane Doe', 'jwd2222', '2021-09-19T19:57:55+00:00'),
         new Student('Jill Smith', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'})
       ]
-    };
-    this.selectedStudent = this.advisor.studentQueue[0];
+    };*/
+    this.activatedRoute.data.subscribe((response: any) => {
+      console.log('FETCHING ADVISOR ', response);
+      this.advisor = response.advisor;
+
+      this.apiService.getAllStudentQueues().subscribe((data: any[]) => {
+        for(let queue of data) {
+          if(this.advisor.id == queue.id) {
+            this.advisor.studentQueue = queue.queue;
+  
+            this.selectedStudent = this.advisor.studentQueue[0];
+            (document.getElementsByClassName("student-item-bar")[0] as HTMLDivElement).classList.add("selected-student");
+          }
+        }
+      });
+    });
     
     // get/set walk-in hours info
     /*this.advisorWalkInHours = this.getWalkInHoursInfo(this.advisor.id);

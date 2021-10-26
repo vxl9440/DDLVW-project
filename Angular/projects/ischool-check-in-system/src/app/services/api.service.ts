@@ -88,7 +88,6 @@ export class ApiService {
   }
 
   /* -------------------- STUDENT QUEUE ENDPOINTS -------------------- */
-  // works weirdly (maybe change server-side?)
   public getAllStudentQueues() {
     return this.httpClient.get<any[]>(`${ environment.apiUrl }/meetingHost/queue`);
   }

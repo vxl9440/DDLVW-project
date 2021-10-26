@@ -43,7 +43,6 @@
         <div *ngIf="!advisors[0]" class="none-text-area"><h1>NONE</h1></div>
         <div class="add-advisor-button"><button class="add-button" (click)="createAddAdvisorPopup()"><img src="../assets/icons/add_box_white_36dp.svg">Add Advisor</button></div>
       </div>
-      <!--div class="vertical-line"></div-->
       <div class="advisor-info" *ngIf="selectedAdvisor.firstName || selectedAdvisor.lastName || selectedAdvisor.portraitURL">
         <img src="{{selectedAdvisor.portraitURL}}" alt="{{selectedAdvisor.portraitURL}}" onerror="this.src='../assets/icons/account_circle_white_36dp.svg'">
         <form [formGroup]="advisorInfoForm" (ngSubmit)="saveAdvisorInfo()">
