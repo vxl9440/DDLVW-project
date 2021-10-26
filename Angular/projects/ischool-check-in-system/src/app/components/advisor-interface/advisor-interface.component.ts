@@ -26,6 +26,8 @@ export class AdvisorInterfaceComponent implements OnInit {
 
   advisorWalkInHours: any; // the advisor's walk-in hours data
 
+  walkInDataExists: boolean = false;
+
   // the walk-in hours form
   walkInHoursForm = this.formBuilder.group({
     mondayStart: '',
@@ -69,7 +71,7 @@ export class AdvisorInterfaceComponent implements OnInit {
     this.selectedStudent = new Student('', '', '');
 
     this.refreshData();
-    this.connect();
+    //this.connect();
   }
 
   /*ngAfterViewInit() {
@@ -99,16 +101,19 @@ export class AdvisorInterfaceComponent implements OnInit {
       ]
     };*/
     // GET advisor
-    this.activatedRoute.data.subscribe((response: any) => {
-      console.log('FETCHING ADVISOR ', response);
-      this.advisor = response.advisor;
+    // for testing only
+    this.apiService.getAllAdvisors().subscribe((data: Advisor[]) => {
+      console.log('getAllAdvisors(): ', data);
+      this.advisor = data[0];
+    //this.activatedRoute.data.subscribe((response: any) => {
+      //console.log('FETCHING ADVISOR ', response);
+      //this.advisor = response.advisor;
 
       // GET student queue
       this.apiService.getAllStudentQueues().subscribe((data: any[]) => {
-        for(let queue of data) {
-          if(this.advisor.id == queue.id) {
-            this.advisor.studentQueue = queue.queue;
-  
+        if(data[this.advisor.id]) {
+          this.advisor.studentQueue = data[this.advisor.id];
+          if(this.advisor.studentQueue[0]) {
             this.selectedStudent = this.advisor.studentQueue[0];
             (document.getElementsByClassName("student-item-bar")[0] as HTMLDivElement).classList.add("selected-student");
           }
@@ -117,7 +122,57 @@ export class AdvisorInterfaceComponent implements OnInit {
 
       // GET walk-in hours data
       this.apiService.getAdvisorWalkInHours(this.advisor.id).subscribe((data: any[]) => {
+        console.log("walk-in data: ", data);
+        if(data) {
+          this.walkInDataExists = true;
+        }
+        else {
+          this.walkInDataExists = false;
+        }
 
+        let mondayInfo = ["", ""];
+        let tuesdayInfo = ["", ""];
+        let wednesdayInfo = ["", ""];
+        let thursdayInfo = ["", ""];
+        let fridayInfo = ["", ""];
+
+        for(let day of data) {
+          switch(day.weekday) {
+            case 'MON':
+              mondayInfo[0] = this.checkTimeLength(day.startTime);
+              mondayInfo[1] = this.checkTimeLength(day.endTime);
+              break;
+            case 'TUE':
+              tuesdayInfo[0] = this.checkTimeLength(day.startTime);
+              tuesdayInfo[1] = this.checkTimeLength(day.endTime);
+              break;
+            case 'WED':
+              wednesdayInfo[0] = this.checkTimeLength(day.startTime);
+              wednesdayInfo[1] = this.checkTimeLength(day.endTime);
+              break;
+            case 'THU':
+              thursdayInfo[0] = this.checkTimeLength(day.startTime);
+              thursdayInfo[1] = this.checkTimeLength(day.endTime);
+              break;
+            case 'FRI':
+              fridayInfo[0] = this.checkTimeLength(day.startTime);
+              fridayInfo[1] = this.checkTimeLength(day.endTime);
+              break;
+          }
+        }
+
+        this.walkInHoursForm = this.formBuilder.group({
+          mondayStart: mondayInfo[0],
+          mondayEnd: mondayInfo[1],
+          tuesdayStart: tuesdayInfo[0],
+          tuesdayEnd: tuesdayInfo[1],
+          wednesdayStart: wednesdayInfo[0],
+          wednesdayEnd: wednesdayInfo[1],
+          thursdayStart: thursdayInfo[0],
+          thursdayEnd: thursdayInfo[1],
+          fridayStart: fridayInfo[0],
+          fridayEnd: fridayInfo[1]
+        });
       });
     });
     
@@ -126,10 +181,10 @@ export class AdvisorInterfaceComponent implements OnInit {
     this.setWalkInInfo();*/
   }
 
-  // gets the advisor's walk-in hours info
+  /*// gets the advisor's walk-in hours info
   getWalkInHoursInfo(id: number) {
     // GET /meetingHost/{id}/walkInHours
-    /*return [{
+    return [{
         startTime: "13:00:00",
         endTime: "14:30:00",
         weekday: "Mon"
@@ -150,8 +205,8 @@ export class AdvisorInterfaceComponent implements OnInit {
         endTime: "14:30:00",
         weekday: "Fri"
       }
-    ];*/
-  }
+    ];
+  }*/
 
   // signs out of the interface (will be routed back to the interface picker)
   logout() {
@@ -194,7 +249,7 @@ export class AdvisorInterfaceComponent implements OnInit {
     }
   }
 
-  // sets walk-in hours info in the walk-in hours form using the advisorWalkInHours data
+  /*// sets walk-in hours info in the walk-in hours form using the advisorWalkInHours data
   setWalkInInfo() {
     let mondayInfo = ["", ""];
     let tuesdayInfo = ["", ""];
@@ -239,10 +294,52 @@ export class AdvisorInterfaceComponent implements OnInit {
       fridayStart: fridayInfo[0],
       fridayEnd: fridayInfo[1]
     });
-  }
+  }*/
 
   updateWalkInInfo() {
-    
+    let walkInData = [
+      {
+        id: 0,
+        startTime: this.walkInHoursForm.get('mondayStart')?.value,
+        endTime: this.walkInHoursForm.get('mondayStart')?.value,
+        weekday: 'MON'
+      },
+      {
+        id: 1,
+        startTime: this.walkInHoursForm.get('tuesdayStart')?.value,
+        endTime: this.walkInHoursForm.get('tuesdayStart')?.value,
+        weekday: 'TUE'
+      },
+      {
+        id: 2,
+        startTime: this.walkInHoursForm.get('wednesdayStart')?.value,
+        endTime: this.walkInHoursForm.get('wednesdayStart')?.value,
+        weekday: 'WED'
+      },
+      {
+        id: 3,
+        startTime: this.walkInHoursForm.get('thursdayStart')?.value,
+        endTime: this.walkInHoursForm.get('thursdayStart')?.value,
+        weekday: 'THU'
+      },
+      {
+        id: 4,
+        startTime: this.walkInHoursForm.get('fridayStart')?.value,
+        endTime: this.walkInHoursForm.get('fridayStart')?.value,
+        weekday: 'FRI'
+      },
+    ];
+
+    if(this.walkInDataExists) {
+      //PUT walk-in hours data
+      this.apiService.updateAdvisorWalkInHours(this.advisor.id, walkInData);
+    }
+    else {
+      //POST walk-in hours data
+      this.apiService.createAdvisorWalkInHours(this.advisor.id, walkInData);
+    }
+
+    this.refreshData();
   }
 
   // sets selected student info in the typescript and html

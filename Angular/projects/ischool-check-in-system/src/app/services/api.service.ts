@@ -77,14 +77,12 @@ export class ApiService {
     return this.httpClient.post(`${ environment.apiUrl }/meetingHost/${id}/walkInHours`, walkInHours);
   }
 
-  // works weirdly (maybe change server-side?)
-  public updateAdvisorWalkInHoursDay(advisorId: number, walkInHoursId: number, walkInHours: any) {
-    return this.httpClient.put(`${ environment.apiUrl }/meetingHost/${advisorId}/walkInHours/${walkInHoursId}`, walkInHours);
+  public updateAdvisorWalkInHours(advisorId: number, walkInHours: any) {
+    return this.httpClient.put(`${ environment.apiUrl }/meetingHost/${advisorId}/walkInHours`, walkInHours);
   }
 
-  // works weirdly (maybe change server-side?)
-  public deleteAdvisorWalkInHoursDay(advisorId: number, walkInHoursId: number) {
-    return this.httpClient.delete(`${ environment.apiUrl }/meetingHost/${advisorId}/walkInHours/${walkInHoursId}`);
+  public deleteAdvisorWalkInHours(advisorId: number) {
+    return this.httpClient.delete(`${ environment.apiUrl }/meetingHost/${advisorId}/walkInHours`);
   }
 
   /* -------------------- STUDENT QUEUE ENDPOINTS -------------------- */
