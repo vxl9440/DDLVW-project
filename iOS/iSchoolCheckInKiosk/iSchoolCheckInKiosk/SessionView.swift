@@ -38,16 +38,12 @@ struct SessionView: View {
 			switch session.phase {
 				case .identification:
 					InitialScreen()
-				case .appointmentType:
-					WalkInCheckScreen()
 				case .reasons:
 					ReasonsScreen()
-				case .denied:
-					DeniedScreen()
 				case .advisors:
 					MeetingHostScreen()
-				case .confirmation:
-					ConfirmationScreen()
+				case let .done(resolution):
+					DoneScreen(resolution: resolution)
 			}
 			
 			Spacer()

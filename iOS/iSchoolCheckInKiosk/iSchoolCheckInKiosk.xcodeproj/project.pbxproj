@@ -17,7 +17,6 @@
 		882DA9ED26FD3CE900EAEA8B /* BusinessRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882DA9EC26FD3CE900EAEA8B /* BusinessRules.swift */; };
 		883DBB4E26F53192007DD2D5 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 883DBB4D26F53192007DD2D5 /* WebView.swift */; };
 		883DBB5026F5529B007DD2D5 /* IDCardGraphic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 883DBB4F26F5529B007DD2D5 /* IDCardGraphic.swift */; };
-		883DBB5226F55473007DD2D5 /* WalkInCheckScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 883DBB5126F55473007DD2D5 /* WalkInCheckScreen.swift */; };
 		883DBB5526F555A4007DD2D5 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 883DBB5426F555A4007DD2D5 /* HeaderView.swift */; };
 		883DBB5726F556E9007DD2D5 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 883DBB5626F556E9007DD2D5 /* SessionManager.swift */; };
 		883DBB5C26F55BA5007DD2D5 /* CheckInPhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 883DBB5B26F55BA5007DD2D5 /* CheckInPhase.swift */; };
@@ -35,8 +34,11 @@
 		88C2BF1726E0047400E2F0C2 /* SessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C2BF1626E0047400E2F0C2 /* SessionView.swift */; };
 		88C2BF1926E0047600E2F0C2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 88C2BF1826E0047600E2F0C2 /* Assets.xcassets */; };
 		88C2BF1C26E0047600E2F0C2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 88C2BF1B26E0047600E2F0C2 /* Preview Assets.xcassets */; };
+		88C7CDF42727298400C97629 /* WalkInHoursView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C7CDF32727298400C97629 /* WalkInHoursView.swift */; };
+		88C7CDF62727348000C97629 /* ProfilePicture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C7CDF52727348000C97629 /* ProfilePicture.swift */; };
 		88F1A931271216F500BCE624 /* SwipeInputHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F1A930271216F500BCE624 /* SwipeInputHandler.swift */; };
 		88F1A933271221D100BCE624 /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F1A932271221D100BCE624 /* String+Ext.swift */; };
+		88F43987272649230058394D /* DoneScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88F43986272649230058394D /* DoneScreen.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,7 +52,6 @@
 		882DA9EC26FD3CE900EAEA8B /* BusinessRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessRules.swift; sourceTree = "<group>"; };
 		883DBB4D26F53192007DD2D5 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		883DBB4F26F5529B007DD2D5 /* IDCardGraphic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDCardGraphic.swift; sourceTree = "<group>"; };
-		883DBB5126F55473007DD2D5 /* WalkInCheckScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkInCheckScreen.swift; sourceTree = "<group>"; };
 		883DBB5426F555A4007DD2D5 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		883DBB5626F556E9007DD2D5 /* SessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
 		883DBB5B26F55BA5007DD2D5 /* CheckInPhase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInPhase.swift; sourceTree = "<group>"; };
@@ -70,8 +71,11 @@
 		88C2BF1826E0047600E2F0C2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		88C2BF1B26E0047600E2F0C2 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		88C2BF2226E0055A00E2F0C2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		88C7CDF32727298400C97629 /* WalkInHoursView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalkInHoursView.swift; sourceTree = "<group>"; };
+		88C7CDF52727348000C97629 /* ProfilePicture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePicture.swift; sourceTree = "<group>"; };
 		88F1A930271216F500BCE624 /* SwipeInputHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeInputHandler.swift; sourceTree = "<group>"; };
 		88F1A932271221D100BCE624 /* String+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
+		88F43986272649230058394D /* DoneScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoneScreen.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,11 +145,11 @@
 			isa = PBXGroup;
 			children = (
 				889559CE26E27C14005490A6 /* InitialScreen.swift */,
-				883DBB5126F55473007DD2D5 /* WalkInCheckScreen.swift */,
 				889559D026E27C25005490A6 /* ReasonsScreen.swift */,
 				889559D426E27C57005490A6 /* MeetingHostScreen.swift */,
 				889559D826E27C75005490A6 /* ConfirmationScreen.swift */,
 				889559D626E27C63005490A6 /* DeniedScreen.swift */,
+				88F43986272649230058394D /* DoneScreen.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -157,6 +161,8 @@
 				883DBB4D26F53192007DD2D5 /* WebView.swift */,
 				883DBB4F26F5529B007DD2D5 /* IDCardGraphic.swift */,
 				883DBB5426F555A4007DD2D5 /* HeaderView.swift */,
+				88C7CDF32727298400C97629 /* WalkInHoursView.swift */,
+				88C7CDF52727348000C97629 /* ProfilePicture.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -281,7 +287,9 @@
 				889559D126E27C25005490A6 /* ReasonsScreen.swift in Sources */,
 				883DBB4E26F53192007DD2D5 /* WebView.swift in Sources */,
 				889559CF26E27C14005490A6 /* InitialScreen.swift in Sources */,
+				88F43987272649230058394D /* DoneScreen.swift in Sources */,
 				889559D526E27C57005490A6 /* MeetingHostScreen.swift in Sources */,
+				88C7CDF62727348000C97629 /* ProfilePicture.swift in Sources */,
 				882DA9E326FCF0DD00EAEA8B /* Card.swift in Sources */,
 				88C2BF1726E0047400E2F0C2 /* SessionView.swift in Sources */,
 				88F1A933271221D100BCE624 /* String+Ext.swift in Sources */,
@@ -289,10 +297,10 @@
 				889559D926E27C75005490A6 /* ConfirmationScreen.swift in Sources */,
 				882DA9ED26FD3CE900EAEA8B /* BusinessRules.swift in Sources */,
 				88ACC22426E171DC009BB164 /* Model.swift in Sources */,
-				883DBB5226F55473007DD2D5 /* WalkInCheckScreen.swift in Sources */,
 				88195FE326FFB3F1008A286A /* PreviewContent.swift in Sources */,
 				883DBB5C26F55BA5007DD2D5 /* CheckInPhase.swift in Sources */,
 				889559D726E27C63005490A6 /* DeniedScreen.swift in Sources */,
+				88C7CDF42727298400C97629 /* WalkInHoursView.swift in Sources */,
 				883DBB5026F5529B007DD2D5 /* IDCardGraphic.swift in Sources */,
 				882DA9E526FCF98D00EAEA8B /* TextStyles.swift in Sources */,
 				88F1A931271216F500BCE624 /* SwipeInputHandler.swift in Sources */,

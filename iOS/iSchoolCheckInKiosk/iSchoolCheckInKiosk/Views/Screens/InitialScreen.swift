@@ -11,26 +11,21 @@ import SwiftUI
 // Handles student identification
 struct InitialScreen: View {
 
-	@EnvironmentObject var sessionManager: SessionManager
+	@EnvironmentObject private var sessionManager: SessionManager
 	@FocusState private var isFocused: Bool
 	@State private var isLoading = false // TODO: Implement loading indicator
+	@State private var advisors: [Advisor] = []
 
 	let focusCheck = Timer.publish(every: 5, tolerance: 5, on: .main, in: .common).autoconnect()
 	
 	var body: some View {
 		HStack {
 			CardSwipe
-			CheckInInfo
+			WalkInHoursView(advisors: advisors)
+		}.task {
+			advisors = await NetworkManager.fetchAvailableAdivsors()
 		}
 	}
-	
-	
-	var CheckInInfo: some View {
-		VStack {
-			//Text("Walk In Hours")
-		}
-	}
-	
 	
 	var CardSwipe: some View {
 		VStack {
@@ -61,23 +56,16 @@ struct InitialScreen: View {
 			
 			IDCardGraphic().rotationEffect(.degrees(20))
 
-			Text("Swipe ID Card to Check In")
-				.font(.custom(Font.primary, size: 40))
-				.bold()
-				.padding()
-			
-			Button("Simulate Card Swipe") {
-				sessionManager.currentSession.proceed()
+			HStack {
+				Circle()
+					.foregroundColor(isFocused ? .ritGreen : .ritRed)
+					.frame(width: 30, height: 30)
+				
+				Text("Swipe ID Card to Check In")
+					.font(.custom(Font.primary, size: 40))
+					.bold()
+					.padding()
 			}
-			Button("Disable focus") { isFocused = false }
-			
-			Circle()
-				.foregroundColor(isFocused ? .ritGreen : .ritRed)
-				.frame(width: 30, height: 30)
-			
-			ProgressView()
-				.padding()
-				.opacity(isLoading ? 1 : 0)
 		}
 	}
 }

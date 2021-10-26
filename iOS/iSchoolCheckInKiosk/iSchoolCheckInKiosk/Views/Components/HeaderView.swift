@@ -21,7 +21,9 @@ struct HeaderView: View {
 			
 			Spacer()
 			
-			Text("Resetting in \(session.timeRemaining)").padding()
+			Text("Resetting in \(session.timeRemaining)")
+				.padding()
+				.opacity(session.phase == .identification ? 0 : 1)
 		}
     }
 }

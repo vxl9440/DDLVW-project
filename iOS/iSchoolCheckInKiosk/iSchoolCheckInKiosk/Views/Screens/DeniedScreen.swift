@@ -9,7 +9,7 @@ import SwiftUI
 
 struct DeniedScreen: View {
 	
-	@EnvironmentObject var session: CheckInSession
+	@EnvironmentObject var sessionManager: SessionManager
 	
     var body: some View {
 		VStack {
@@ -20,7 +20,7 @@ struct DeniedScreen: View {
 				
 			
 			Button {
-				session.proceed()
+				sessionManager.reset()
 			} label: {
 				Text("OK")
 					.font(.system(size: 40, weight: .semibold))

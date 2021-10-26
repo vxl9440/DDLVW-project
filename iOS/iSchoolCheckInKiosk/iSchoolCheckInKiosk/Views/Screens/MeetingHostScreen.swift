@@ -40,7 +40,6 @@ struct MeetingHostScreen: View {
 				.task {
 					isLoading = true
 					advisors  = await session.getAvailableAdvisors()
-					advisors  = PreviewContent.getAdvisors()
 					isLoading = false
 				}
 			}
@@ -55,19 +54,8 @@ struct MeetingHostCell: View {
 	
 	var body: some View {
 		VStack {
-			AsyncImage(url: URL(string: advisor.picture)) { image in
-				image.resizable()
-			} placeholder: {
-				ZStack {
-					Color(uiColor: .systemGray5)
-						
-					Image(systemName: "person.fill")
-						.font(.system(size: 80))
-						.foregroundColor(.gray)
-				}
-			}
-			.clipShape(Circle())
-			.frame(width: 220, height: 220)
+			ProfilePicture(url: URL(string: advisor.picture))
+				.frame(width: 220, height: 220)
 			
 			Text(advisor.name)
 				.font(.largeTitle)

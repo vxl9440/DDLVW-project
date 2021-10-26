@@ -41,7 +41,8 @@ struct BodyText: View {
 	init(_ text: String) { self.text = text }
 	
 	var body: some View {
-		Text(text).font(.custom(Font.primary, size: 30, relativeTo: .body))
+		Text(text)
+			.font(.custom(Font.primary, size: 30, relativeTo: .body))
 	}
 }
 
@@ -53,7 +54,8 @@ struct CaptionText: View {
 	init(_ text: String) { self.text = text }
 	
 	var body: some View {
-		Text(text).font(.custom(Font.primary, size: 20, relativeTo: .caption))
+		Text(text)
+			.font(.custom(Font.primary, size: 20, relativeTo: .caption))
 	}
 }
 
@@ -61,9 +63,9 @@ struct CaptionText: View {
 struct TextStyle_Previews: PreviewProvider {
     static var previews: some View {
 		VStack {
-			Title("Placeholder text")
-			BodyText("Placeholder text")
-			CaptionText("Placeholder text")
+			Title("Title text")
+			BodyText("Body text")
+			CaptionText("Caption text")
 		}
     }
 }

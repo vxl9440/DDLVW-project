@@ -7,34 +7,15 @@
 
 import Foundation
 
-enum CheckInPhase {
+enum CheckInPhase: Equatable {
 	
-	case identification, appointmentType, reasons, denied, advisors, confirmation
+	case identification
+	case reasons
+    case advisors
+	case done(Resolution)
 	
-	func next(happyPath: Bool = true) -> CheckInPhase {
-		switch self {
-			case .identification:
-				return .appointmentType
-			case .appointmentType:
-				return .reasons
-			case .reasons:
-				return happyPath ? .advisors : .denied
-			case .advisors:
-				return .confirmation
-			case .denied, .confirmation:
-				return .identification
-		}
+	enum Resolution {
+		case confirmed, denied
 	}
-	
-	
-	var back: CheckInPhase {
-		switch self {
-			case .denied, .confirmation, .identification, .appointmentType:
-				return .identification
-			case .reasons:
-				return .appointmentType
-			case .advisors:
-				return .reasons
-		}
-	}
+
 }

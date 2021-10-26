@@ -14,19 +14,15 @@ final class SessionManager: ObservableObject {
 	// Published to register changes when the session is reset
 	@Published private(set) var currentSession = CheckInSession()
 	
-	
 	let inputHandler = StudentIDHandler()
 
-	
 	func fetchStudent(id studentID: String) async {
 		if let student = await NetworkManager.fetchStudent(id: studentID) {
 			currentSession.student = student
 			currentSession.proceed()
 		} else {
-			currentSession.student = Student(id: "999999999", studentName: "Lowell Pence", studentUsername: "lxp3901")
-			currentSession.proceed()
-//			ErrorManager.shared.presentAlert(AlertContext.identificationError)
-//			reset()
+			ErrorManager.shared.presentAlert(AlertContext.identificationError)
+			reset()
 		}
 	}
 

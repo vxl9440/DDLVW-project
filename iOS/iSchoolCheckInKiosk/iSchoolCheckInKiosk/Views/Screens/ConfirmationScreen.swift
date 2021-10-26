@@ -12,6 +12,14 @@ struct ConfirmationScreen: View {
 	@EnvironmentObject var session: CheckInSession
 	@EnvironmentObject var sessionManager: SessionManager
 	
+	private var appointmentTime: String {
+		if let appointment = session.student?.appointment {
+			return "\(appointment.startTime) - \(appointment.endTime)"
+		} else {
+			return "Walk In"
+		}
+	}
+	
     var body: some View {
 		VStack {
 			HStack() {
@@ -26,14 +34,14 @@ struct ConfirmationScreen: View {
 						.font(.system(.largeTitle, design: .rounded))
 						.padding(.bottom)
 					
-					Text("Please wait to be greeted by \(session.advisorName)")
+					Text("Please wait to be greeted.")
 						.font(.custom(Font.primary, size: 20))
 				}.padding()
 				
 				VStack(alignment: .leading, spacing: 0) {
 					ConfirmationItem(icon: SFSymbols.student, content: session.studentName)
 					ConfirmationItem(icon: SFSymbols.person, content: session.advisorName)
-					ConfirmationItem(icon: SFSymbols.calendar, content: "10:00 - 10:15")
+					ConfirmationItem(icon: SFSymbols.calendar, content: appointmentTime)
 				}
 				.padding()
 			}

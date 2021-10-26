@@ -54,7 +54,7 @@ struct ReasonButtonStyle: ButtonStyle {
 
 struct ReasonView_Previews: PreviewProvider {
     static var previews: some View {
-		ReasonView(reason: .constant(Reason(name: "Class Drop", needsAppointment: true)))
+		ReasonView(reason: .constant(Reason(id: 1, name: "Class Drop", needsAppt: true)))
 			.frame(width: 180, height: 100)
     }
 }
