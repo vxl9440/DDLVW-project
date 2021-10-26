@@ -19,8 +19,8 @@ router.get('/:id/walkInHours', (req, res) => {
 });
 
 
-router.delete('/:id/walkInHours/:hourId', (req, res) => {
-    walkInHour.deleteWalkInHours(req.params.hourId)
+router.delete('/:id/walkInHours/', (req, res) => {
+    walkInHour.deleteWalkInHours(req.params.id)
         .then(result => res.json(result))
         .catch(err => res.json(err));
 });
@@ -33,15 +33,15 @@ router.post('/:id/walkInHours', (req, res) => {
 });
 
 
-router.put('/:id/walkInHours/:hourId', (req, res) => {
-    walkInHour.updateWalkInHours(req.params.hourId, req.body)
+router.put('/:id/walkInHours/', (req, res) => {
+    walkInHour.updateWalkInHours(req.params.id, req.body)
         .then(result => res.json(result))
         .catch(err => res.json(err));
 });
 
 
 router.get('/queue', (req, res) => {
-    res.json(queue.getAdvisorQueueByIds(req.body))
+    res.json(queue.getAllQueue());
 });
 
 

@@ -51,17 +51,8 @@ function insertAdvisor(queue, advisorId) {
  * @param {*} data a list of advisor id
  * @returns a list that contains advisors' object
  */
-export function getAdvisorQueueByIds(data) {
-    const idList = data['id'];
-    const queue = read();
-    const selectedList = {};
-
-    for (const i in idList) {
-        const advisorId = idList[i];
-        selectedList[advisorId] = queue[advisorId];
-    } 
-
-    return selectedList;
+export function getAllQueue() {
+    return read();
 }
 
 /**
