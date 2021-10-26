@@ -8,7 +8,14 @@ export function getAllReasons() {
     const sql = 'SELECT reason_id as id, reason_name as name, needsAppt as needsAppt ' +
               'FROM reason';
 
-    return select(sql, []);
+    return new Promise((resolve, reject) => {
+        select(sql, [])
+            .then(reasons => {
+                reasons.forEach(reason => reason.needsAppt = Boolean(reason.needsAppt));
+                resolve(reasons);
+            })
+            .catch(err => reject(err));
+    });
 }
 
 /**

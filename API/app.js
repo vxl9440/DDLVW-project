@@ -11,12 +11,24 @@ import proxy from 'express-http-proxy';
 const port = 8080;
 const app  = express();
 
+// TODO: change this header if deploying to production
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
+
 // Add JWT Authorization middleware first
-app.use(jwt({ secret: 'ischool', algorithms: ['HS256'] }).unless({ path: ['/login', '/logout', '/kiosk']}));
+// app.use(jwt({ secret: 'ischool', algorithms: ['HS256'] })
+//     .unless({ path: [
+//         '/login', '/logout', '/kiosk/reason', '/kiosk/meetingHost/available', '/kiosk/student', '/kiosk/registration/checkin'
+//     ]})
+// );
+
 app.use((err, req, res, next) => {
     if (err.name === 'UnauthorizedError') {
-      res.status(err.status).send({ message: err.message });
-      return;
+        res.status(err.status).send({ message: err.message });
+        return;
     }
     next();
 });
