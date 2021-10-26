@@ -83,12 +83,6 @@ export class StudentQueueInterfaceComponent implements OnInit {
   
   // runs the loop that gets all required data intermittently (maybe remove later?)
   connect() {
-    /*//temp (for testing purposes)
-    setTimeout(() => { 
-      this.connected = true;
-      this.refreshData();
-    }, 3000);*/
-
     this.refreshData();
 
     setInterval(() => {
@@ -101,32 +95,23 @@ export class StudentQueueInterfaceComponent implements OnInit {
     //this.getBannerText();
     this.connected = false;
     this.apiService.getAllAdvisors().subscribe((data: Advisor[]) => {
-      console.log("getAllAdvisors: ", data);
+      //console.log("getAllAdvisors: ", data);
       this.connected = true;
       this.timeUpdated = this.getCurrentTimeString();
       this.advisors = data;
 
       this.apiService.getAllStudentQueues().subscribe((data: any[]) => {
-        console.log("getAllStudentQueues: ", data);
+        //console.log("getAllStudentQueues: ", data);
 
         let i = 0;
         while(i < this.advisors.length) {
-          /*if(data[this.advisors[i].id]) {
+          if(data[this.advisors[i].id]) {
             this.advisors[i].studentQueue = data[this.advisors[i].id]
-          }*/
-          
-          this.advisors[i].studentQueue = data[this.advisors[i].id]
+          }
 
+          //this.advisors[i].studentQueue = data[this.advisors[i].id]
           i++;
         }
-        /*for(let advisor of this.advisors) {
-          //let advisorIdString = ((advisor.id as unknown) as string)
-          //advisor.studentQueue = eval(`data.${advisorIdString}`);
-          if(data[advisor.id]) {
-
-          }
-          this.advisors[advisor.id - 1].studentQueue = data[advisor.id];
-        }*/
       });
     });
 
