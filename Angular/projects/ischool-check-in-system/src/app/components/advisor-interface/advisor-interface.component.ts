@@ -53,11 +53,6 @@ export class AdvisorInterfaceComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute, private authService: AuthService, private apiService: ApiService, private formBuilder: FormBuilder) {}
 
   ngOnInit() {
-    /*this.activatedRoute.data.subscribe((response: any) => {
-      console.log('FETCHING ADVISOR ', response);
-      this.advisor = response.advisor;
-    });*/
-
     this.advisor = {
       id: 0,
       firstName: '',
@@ -87,19 +82,6 @@ export class AdvisorInterfaceComponent implements OnInit {
 
   // gets all needed data
   refreshData() {
-    /*this.advisor = {
-      id: 0,
-      firstName: "John", 
-      middleName: '',
-      lastName: "Doe", 
-      email: '',
-      portraitURL: "../assets/person2.jpg", 
-      studentQueue: [
-        new Student('Jack Smith', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
-        new Student('Jane Doe', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-        new Student('Jill Smith', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'})
-      ]
-    };*/
     // GET advisor
     // for testing only
     this.apiService.getAllAdvisors().subscribe((data: Advisor[]) => {
@@ -327,7 +309,7 @@ export class AdvisorInterfaceComponent implements OnInit {
         startTime: this.walkInHoursForm.get('fridayStart')?.value,
         endTime: this.walkInHoursForm.get('fridayStart')?.value,
         weekday: 'FRI'
-      },
+      }
     ];
 
     if(this.walkInDataExists) {
