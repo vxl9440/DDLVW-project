@@ -88,6 +88,7 @@ export class ApiService {
   }
 
   /* -------------------- STUDENT QUEUE ENDPOINTS -------------------- */
+  // works weirdly (maybe change server-side?)
   public getAllStudentQueues() {
     return this.httpClient.get<any[]>(`${ environment.apiUrl }/meetingHost/queue`);
   }
@@ -96,12 +97,10 @@ export class ApiService {
     return this.httpClient.post(`${ environment.apiUrl }/meetingHost/${id}/queue`, student);
   }
 
-  // works weirdly (maybe change server-side?)
   public moveStudentInQueue(id: number, studentMoveInfo: any) {
     return this.httpClient.put(`${ environment.apiUrl }/meetingHost/${id}/queue`, studentMoveInfo);
   }
 
-  // works slightly weirdly (maybe change server-side?)
   public deleteStudentFromQueue(id: number, studentUsername: any) {
     return this.httpClient.delete(`${ environment.apiUrl }/meetingHost/${id}/queue`, studentUsername);
   }
@@ -114,8 +113,6 @@ export class ApiService {
   public createBannerInfo(bannerInfo: any) {
     return this.httpClient.post(`${ environment.apiUrl }/bannerInfo`, bannerInfo);
   }
-
-  // probably need PUT and DELETE for banner info
 
   /* -------------------- ANALYTICS ENDPOINTS -------------------- */
   // not implemented yet server-side, likely will not work (10/25/2021)

@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Advisor } from '../../models/advisor';
 import { Student } from '../../models/student';
+import { Reason } from '../../models/reason';
+
+import { ApiService } from '../../services/api.service';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
@@ -33,22 +36,27 @@ export class StudentQueueInterfaceComponent implements OnInit {
   timeUpdated: string = "?";
   bannerText: string = "";
 
-  constructor(private http: HttpClient) {
+  reasons: Reason[] = [];
+
+  constructor(private http: HttpClient, private apiService: ApiService) {
     
   }
 
   ngOnInit() {
-    this.advisors.push({id: 0, firstName: "Elissa", middleName: '', lastName: "Weeden", username: "jnd1234", portraitURL: "../assets/ElissaWeeden.png", studentQueue: [
+    //console.log(this.apiService.getAllReasons().subscribe((data: Reason[]) => this.reasons = data));
+    //this.apiService.getAllAdvisors().subscribe((data: Advisor[]) => {this.advisors = data;});
+
+    this.advisors.push({id: 0, firstName: "Elissa", middleName: '', lastName: "Weeden", email: "jnd1234@rit.edu", portraitURL: "../assets/ElissaWeeden.png", studentQueue: [
       new Student('Jack Smith', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
       new Student('Jane Doe', 'jwd2222', '2021-09-19T19:57:55+00:00'),
       new Student('Jill Smith', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'})
     ]});
-    this.advisors.push({id: 1, firstName: "Kevin", middleName: '', lastName: "Stiner", username: "rcs4321", portraitURL: "../assets/KevinStiner.png", studentQueue: [
+    this.advisors.push({id: 1, firstName: "Kevin", middleName: '', lastName: "Stiner", email: "rcs4321@rit.edu", portraitURL: "../assets/KevinStiner.png", studentQueue: [
       new Student('Tim Bim', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
       new Student('Rebecca Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
       new Student('Billy Mann', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'})
     ]});
-    this.advisors.push({id: 2, firstName: "Betty", middleName: '', lastName: "Hillman", username: "gym1324", portraitURL: "../assets/BettyHillman.png", studentQueue: [
+    this.advisors.push({id: 2, firstName: "Betty", middleName: '', lastName: "Hillman", email: "gym1324@rit.edu", portraitURL: "../assets/BettyHillman.png", studentQueue: [
       new Student('Tim Bim', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
       new Student('Rebecca Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
       new Student('Billy Mann', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
@@ -59,7 +67,7 @@ export class StudentQueueInterfaceComponent implements OnInit {
       new Student('Shima Plok', 'jwd2222', '2021-09-19T19:57:55+00:00'),
       new Student('Gus Juss', 'jwd2222', '2021-09-19T19:57:55+00:00')
     ]});
-    this.advisors.push({id: 3, firstName: "Stephen", middleName: '', lastName: "Zilora", username: "jnd1234", portraitURL: "../assets/StephenZilora.png", studentQueue: [
+    this.advisors.push({id: 3, firstName: "Stephen", middleName: '', lastName: "Zilora", email: "jnd1234@rit.edu", portraitURL: "../assets/StephenZilora.png", studentQueue: [
       new Student('Jack Smith', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
       new Student('Jane Doe', 'jwd2222', '2021-09-19T19:57:55+00:00'),
       new Student('Jill Smith', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
@@ -67,8 +75,8 @@ export class StudentQueueInterfaceComponent implements OnInit {
       new Student('Dani Tuu', 'jwd2222', '2021-09-19T19:57:55+00:00'),
       new Student('Moe Bo', 'jwd2222', '2021-09-19T19:57:55+00:00')
     ]});
-    this.advisors.push({id: 4, firstName: "Melissa", middleName: '', lastName: "Hanna", username: "jnd1234", portraitURL: "../assets/MelissaHanna.png", studentQueue: []});
-    this.advisors.push({id: 5, firstName: "Kristen", middleName: '', lastName: "Shinohara", username: "gym1324", portraitURL: "../assets/KristenShinohara.png", studentQueue: [
+    this.advisors.push({id: 4, firstName: "Melissa", middleName: '', lastName: "Hanna", email: "jnd1234@rit.edu", portraitURL: "../assets/MelissaHanna.png", studentQueue: []});
+    this.advisors.push({id: 5, firstName: "Kristen", middleName: '', lastName: "Shinohara", email: "gym1324@rit.edu", portraitURL: "../assets/KristenShinohara.png", studentQueue: [
       new Student('Tim Bim', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
       new Student('Rebecca Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
       new Student('Billy Mann', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
@@ -103,7 +111,14 @@ export class StudentQueueInterfaceComponent implements OnInit {
   getInfo() {
     if(this.connected) {
       this.timeUpdated = this.getCurrentTimeString();
-      this.getBannerText();
+      //this.getBannerText();
+      this.apiService.getAllAdvisors().subscribe((data: Advisor[]) => {this.advisors = data;});
+      this.apiService.getAllStudentQueues().subscribe((data: any[]) => {
+        for(let queue in data) {
+
+        }
+      });
+      this.apiService.getBannerInfo().subscribe((data: any) => {this.bannerText = data.bannerInfo;});
     }
   }
 

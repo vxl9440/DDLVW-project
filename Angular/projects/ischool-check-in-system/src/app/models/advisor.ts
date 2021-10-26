@@ -5,7 +5,7 @@ export class Advisor {
     firstName: string;
     middleName: string;
     lastName: string;
-    username: string;
+    email: string;
     portraitURL: string;
     studentQueue: Student[];
 }

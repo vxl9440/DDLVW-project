@@ -69,7 +69,7 @@ export class AdvisorInterfaceComponent implements OnInit {
       firstName: "John", 
       middleName: '',
       lastName: "Doe", 
-      username: '',
+      email: '',
       portraitURL: "../assets/person2.jpg", 
       studentQueue: [
         new Student('Jack Smith', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),

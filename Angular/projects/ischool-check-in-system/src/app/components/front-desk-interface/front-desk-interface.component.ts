@@ -15,7 +15,7 @@ import { FormBuilder } from '@angular/forms';
 export class FrontDeskInterfaceComponent implements OnInit {
   title = 'front-desk-interface';
   advisors: Advisor[] = [];
-  selectedAdvisor: Advisor = {id: -1, firstName: "", middleName: "", lastName: "", username: "", portraitURL: "", studentQueue: []};
+  selectedAdvisor: Advisor = {id: -1, firstName: "", middleName: "", lastName: "", email: "", portraitURL: "", studentQueue: []};
   advisorInfoForm = this.formBuilder.group({
     fname: '',
     lname: '',
@@ -57,17 +57,17 @@ export class FrontDeskInterfaceComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute, private authService: AuthService, private formBuilder: FormBuilder) {}
 
   ngOnInit() {
-    this.advisors.push({id: 0, firstName: "Elissa", middleName: '', lastName: "Weeden", username: "jnd1234", portraitURL: "../assets/ElissaWeeden.png", studentQueue: [
+    this.advisors.push({id: 0, firstName: "Elissa", middleName: '', lastName: "Weeden", email: "jnd1234@rit.edu", portraitURL: "../assets/ElissaWeeden.png", studentQueue: [
       new Student('Jack Smith', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
       new Student('Jane Doe', 'jwd2222', '2021-09-19T19:57:55+00:00'),
       new Student('Jill Smith', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'})
     ]});
-    this.advisors.push({id: 1, firstName: "Kevin", middleName: '', lastName: "Stiner", username: "rcs4321", portraitURL: "../assets/KevinStiner.png", studentQueue: [
+    this.advisors.push({id: 1, firstName: "Kevin", middleName: '', lastName: "Stiner", email: "rcs4321@rit.edu", portraitURL: "../assets/KevinStiner.png", studentQueue: [
       new Student('Tim Bim', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
       new Student('Rebecca Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
       new Student('Billy Mann', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'})
     ]});
-    this.advisors.push({id: 2, firstName: "Betty", middleName: '', lastName: "Hillman", username: "gym1324", portraitURL: "../assets/BettyHillman.png", studentQueue: [
+    this.advisors.push({id: 2, firstName: "Betty", middleName: '', lastName: "Hillman", email: "gym1324@rit.edu", portraitURL: "../assets/BettyHillman.png", studentQueue: [
       new Student('Tim Bim', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
       new Student('Rebecca Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
       new Student('Billy Mann', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
@@ -78,7 +78,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
       new Student('Shima Plok', 'jwd2222', '2021-09-19T19:57:55+00:00'),
       new Student('Gus Juss', 'jwd2222', '2021-09-19T19:57:55+00:00')
     ]});
-    this.advisors.push({id: 3, firstName: "Stephen", middleName: '', lastName: "Zilora", username: "jnd1234", portraitURL: "../assets/StephenZilora.png", studentQueue: [
+    this.advisors.push({id: 3, firstName: "Stephen", middleName: '', lastName: "Zilora", email: "jnd1234@rit.edu", portraitURL: "../assets/StephenZilora.png", studentQueue: [
       new Student('Jack Smith', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
       new Student('Jane Doe', 'jwd2222', '2021-09-19T19:57:55+00:00'),
       new Student('Jill Smith', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
@@ -86,8 +86,8 @@ export class FrontDeskInterfaceComponent implements OnInit {
       new Student('Dani Tuu', 'jwd2222', '2021-09-19T19:57:55+00:00'),
       new Student('Moe Bo', 'jwd2222', '2021-09-19T19:57:55+00:00')
     ]});
-    this.advisors.push({id: 4, firstName: "Melissa", middleName: '', lastName: "Hanna", username: "jnd1234", portraitURL: "../assets/MelissaHanna.png", studentQueue: []});
-    this.advisors.push({id: 5, firstName: "Kristen", middleName: '', lastName: "Shinohara", username: "gym1324", portraitURL: "../assets/KristenShinohara.png", studentQueue: [
+    this.advisors.push({id: 4, firstName: "Melissa", middleName: '', lastName: "Hanna", email: "jnd1234@rit.edu", portraitURL: "../assets/MelissaHanna.png", studentQueue: []});
+    this.advisors.push({id: 5, firstName: "Kristen", middleName: '', lastName: "Shinohara", email: "gym1324@rit.edu", portraitURL: "../assets/KristenShinohara.png", studentQueue: [
       new Student('Tim Bim', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
       new Student('Rebecca Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
       new Student('Billy Mann', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
@@ -107,46 +107,6 @@ export class FrontDeskInterfaceComponent implements OnInit {
       new Student('Shima Plok', 'jwd2222', '2021-09-19T19:57:55+00:00'),
       new Student('Gus Juss', 'jwd2222', '2021-09-19T19:57:55+00:00')
     ]});
-    /*this.advisors.push({firstName: "John", lastName: "Doe", portraitURL: "../assets/person2.jpg", studentQueue: [
-      {studentName: "Jack Smith", username: "abc1234"}, 
-      {studentName: "Jane Doe", username: "abc1234"}, 
-      {studentName: "Jill Smith", username: "abc1234"}
-    ]});
-    this.advisors.push({firstName: "Jon", lastName: "Doe", portraitURL: "../assets/person2.jpg", studentQueue: [
-      {studentName: "Jack Smith", username: "abc1234"}, 
-      {studentName: "Jane Doe", username: "abc1234"}, 
-      {studentName: "Jill Smith", username: "abc1234"}
-    ]});
-    this.advisors.push({firstName: "Jo", lastName: "Doe", portraitURL: "../assets/person2.jpg", studentQueue: [
-      {studentName: "Jack Smith", username: "abc1234"}, 
-      {studentName: "Jane Doe", username: "abc1234"}, 
-      {studentName: "Jill Smith", username: "abc1234"}
-    ]});
-    this.advisors.push({firstName: "Jeff", lastName: "Doe", portraitURL: "../assets/person2.jpg", studentQueue: [
-      {studentName: "Jack Smith", username: "abc1234"}, 
-      {studentName: "Jane Doe", username: "abc1234"}, 
-      {studentName: "Jill Smith", username: "abc1234"}
-    ]});
-    this.advisors.push({firstName: "Geoff", lastName: "Doe", portraitURL: "../assets/person2.jpg", studentQueue: [
-      {studentName: "Jack Smith", username: "abc1234"}, 
-      {studentName: "Jane Doe", username: "abc1234"}, 
-      {studentName: "Jill Smith", username: "abc1234"}
-    ]});
-    this.advisors.push({firstName: "Geff", lastName: "Doe", portraitURL: "../assets/person2.jpg", studentQueue: [
-      {studentName: "Jack Smith", username: "abc1234"}, 
-      {studentName: "Jane Doe", username: "abc1234"}, 
-      {studentName: "Jill Smith", username: "abc1234"}
-    ]});
-    this.advisors.push({firstName: "Jef", lastName: "Doe", portraitURL: "../assets/person2.jpg", studentQueue: [
-      {studentName: "Jack Smith", username: "abc1234"}, 
-      {studentName: "Jane Doe", username: "abc1234"}, 
-      {studentName: "Jill Smith", username: "abc1234"}
-    ]});
-    this.advisors.push({firstName: "Jiff", lastName: "Doe", portraitURL: "../assets/person2.jpg", studentQueue: [
-      {studentName: "Jack Smith", username: "abc1234"}, 
-      {studentName: "Jane Doe", username: "abc1234"}, 
-      {studentName: "Jill Smith", username: "abc1234"}
-    ]});*/
 
     this.selectedAdvisor = this.advisors[0];
 
@@ -294,7 +254,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
   
   queueDeleteAdvisor(i: number) {
     if(this.advisors.length == 1) {
-      this.selectedAdvisor = {id: -1, firstName: "", middleName: "", lastName: "", username: "", portraitURL: "", studentQueue: []};
+      this.selectedAdvisor = {id: -1, firstName: "", middleName: "", lastName: "", email: "", portraitURL: "", studentQueue: []};
     }
     else if(this.advisors[i] == this.selectedAdvisor && this.advisors[i + 1]) {
       this.selectedAdvisor = this.advisors[i + 1];
