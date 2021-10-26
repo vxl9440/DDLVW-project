@@ -20,11 +20,13 @@ struct InitialScreen: View {
 	
 	var body: some View {
 		HStack {
+			Spacer()
 			CardSwipe
+			Spacer()
 			WalkInHoursView(advisors: advisors)
-		}.task {
-			advisors = await NetworkManager.fetchAvailableAdivsors()
+			
 		}
+		.task { advisors = await NetworkManager.fetchAvailableAdivsors() }
 	}
 	
 	var CardSwipe: some View {
@@ -53,18 +55,19 @@ struct InitialScreen: View {
 					}
 				}
 				
-			
-			IDCardGraphic().rotationEffect(.degrees(20))
-
-			HStack {
-				Circle()
-					.foregroundColor(isFocused ? .ritGreen : .ritRed)
-					.frame(width: 30, height: 30)
+			VStack {
+				IDCardGraphic().rotationEffect(.degrees(20))
 				
 				Text("Swipe ID Card to Check In")
 					.font(.custom(Font.primary, size: 40))
 					.bold()
 					.padding()
+					.frame(width: 400)
+					.multilineTextAlignment(.center)
+				
+				Circle()
+					.foregroundColor(isFocused ? .ritGreen : .ritRed)
+					.frame(width: 30, height: 30)
 			}
 		}
 	}

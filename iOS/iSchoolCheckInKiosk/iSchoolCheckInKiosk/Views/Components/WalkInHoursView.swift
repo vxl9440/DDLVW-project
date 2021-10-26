@@ -19,8 +19,9 @@ struct WalkInHoursView: View {
 	
     var body: some View {
 		VStack(alignment: .leading) {
-			BodyText("Current Walk In Hours")
+			Title("Current Walk In Hours")
 				.padding()
+			
 			ScrollView {
 				ForEach(advisors.withHours()) { advisor in
 					AdvisorScheduleCell(advisor: advisor)
@@ -29,7 +30,7 @@ struct WalkInHoursView: View {
 		}
 		.background(Color(uiColor: .systemGray6))
 		.cornerRadius(14)
-		.padding()
+		.padding([.bottom, .horizontal], 40)
     }
 }
 
@@ -39,9 +40,10 @@ struct AdvisorScheduleCell: View {
 	
 	var body: some View {
 		HStack {
-			Photo.padding()
+			Photo
 			Hours
 		}
+		.padding()
 		.background(Color.white)
 		.cornerRadius(20)
 		.padding()
@@ -49,19 +51,21 @@ struct AdvisorScheduleCell: View {
 	
 	var Photo: some View {
 		ProfilePicture(url: URL(string: advisor.picture))
-			.frame(width: 50, height: 50)
+			.frame(width: 80, height: 80)
 	}
 	
 	var Hours: some View {
-		VStack(alignment: .leading) {
+		VStack(alignment: .leading, spacing: 10) {
 			Text(advisor.name)
+				.font(.custom(Font.primary, size: 30).bold())
+			
 			ForEach(advisor.walkInHours ?? []) { hours in
 				HStack {
 					Text(hours.weekday)
-					Text(hours.startTime)
-					Text(" - ")
-					Text(hours.endTime)
-				}
+					Text(hours.start)
+					Text("-")
+					Text(hours.end)
+				}.font(.custom(Font.primary, size: 26))
 			}
 		}
 		.padding()
@@ -69,9 +73,9 @@ struct AdvisorScheduleCell: View {
 	
 }
 
-struct WalkInHoursView_Previews: PreviewProvider {
-    static var previews: some View {
-		WalkInHoursView(advisors: PreviewContent.getAdvisors())
-.previewInterfaceOrientation(.landscapeLeft)
-    }
-}
+//struct WalkInHoursView_Previews: PreviewProvider {
+//    static var previews: some View {
+//		WalkInHoursView(advisors: PreviewContent.getAdvisors())
+//.previewInterfaceOrientation(.landscapeLeft)
+//    }
+//}

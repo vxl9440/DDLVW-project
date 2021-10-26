@@ -22,6 +22,9 @@ struct WalkInHours: Identifiable, Decodable {
 	let startTime: String
 	let endTime: String
 	let weekday: String
+	
+	var start: String { startTime.to12HrTime }
+	var end: String { endTime.to12HrTime }
 }
 
 extension Advisor {

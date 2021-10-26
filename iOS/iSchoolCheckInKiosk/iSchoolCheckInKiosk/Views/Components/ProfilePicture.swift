@@ -10,6 +10,7 @@ import SwiftUI
 struct ProfilePicture: View {
 	
 	let url: URL?
+	let placeHolderSize: CGFloat = 40
 	
     var body: some View {
 		AsyncImage(url: url) { image in
@@ -19,7 +20,7 @@ struct ProfilePicture: View {
 				Color(uiColor: .systemGray5)
 					
 				Image(systemName: "person.fill")
-					.font(.system(size: 40))
+					.font(.system(size: placeHolderSize))
 					.foregroundColor(.gray)
 			}
 		}

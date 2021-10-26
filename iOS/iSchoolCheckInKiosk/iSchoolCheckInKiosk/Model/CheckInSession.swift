@@ -88,8 +88,7 @@ final class CheckInSession: ObservableObject {
 	func getAvailableAdvisors() async -> [Advisor] {
 		let advisors = await NetworkManager.fetchAvailableAdivsors()
 		if advisors.isEmpty {
-			// TODO: Present alert
-			print(advisors)
+			ErrorManager.shared.presentAlert(AlertContext.noAvailableAdvisor)
 		}
 		
 		return advisors

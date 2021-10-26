@@ -39,7 +39,7 @@ struct ConfirmationScreen: View {
 				}.padding()
 				
 				VStack(alignment: .leading, spacing: 0) {
-					ConfirmationItem(icon: SFSymbols.student, content: session.studentName)
+					ConfirmationItem(icon: SFSymbols.student, content: "Lowell Pence")
 					ConfirmationItem(icon: SFSymbols.person, content: session.advisorName)
 					ConfirmationItem(icon: SFSymbols.calendar, content: appointmentTime)
 				}
