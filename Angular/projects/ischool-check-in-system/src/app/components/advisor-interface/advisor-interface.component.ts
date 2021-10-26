@@ -55,15 +55,23 @@ export class AdvisorInterfaceComponent implements OnInit {
       this.advisor = response.advisor;
     });
 
-    this.getInfo();
+    this.connect();
+    //this.refreshData();
   }
 
   ngAfterViewInit() {
     (document.getElementsByClassName("student-item-bar")[0] as HTMLDivElement).classList.add("selected-student");
   }
 
+  // runs the loop that gets all required data intermittently (maybe remove later?)
+  connect() {
+    setInterval(() => {
+      this.refreshData();
+    }, 10000);
+  }
+
   // gets all needed data
-  getInfo() {
+  refreshData() {
     this.advisor = {
       id: 0,
       firstName: "John", 
@@ -80,8 +88,8 @@ export class AdvisorInterfaceComponent implements OnInit {
     this.selectedStudent = this.advisor.studentQueue[0];
     
     // get/set walk-in hours info
-    this.advisorWalkInHours = this.getWalkInHoursInfo(this.advisor.id);
-    this.setWalkInInfo();
+    /*this.advisorWalkInHours = this.getWalkInHoursInfo(this.advisor.id);
+    this.setWalkInInfo();*/
   }
 
   // gets the advisor's walk-in hours info

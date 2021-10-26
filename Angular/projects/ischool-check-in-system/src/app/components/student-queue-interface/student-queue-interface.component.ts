@@ -5,24 +5,6 @@ import { Reason } from '../../models/reason';
 
 import { ApiService } from '../../services/api.service';
 
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
-
-/*interface Student {
-  firstName: String,
-  lastName: String,
-  img: String
-}*/
-
-/*interface Advisor {
-  firstName: String,
-  lastName: String,
-  username: String,
-  portraitURL: String,
-  studentQueue: Student[]
-}*/
-
 @Component({
   selector: 'app-student-queue-interface',
   templateUrl: './student-queue-interface.component.html',
@@ -35,18 +17,17 @@ export class StudentQueueInterfaceComponent implements OnInit {
   connected: boolean = false;
   timeUpdated: string = "?";
   bannerText: string = "";
+  /*this.bannerText = "This is an example of the bottom banner text. It should be large enough to be clearly legible by students looking at the interface, " + 
+      "and should catch their attention without being annoying or distracting.";*/
 
   reasons: Reason[] = [];
 
-  constructor(private http: HttpClient, private apiService: ApiService) {
+  constructor(private apiService: ApiService) {
     
   }
 
   ngOnInit() {
-    //console.log(this.apiService.getAllReasons().subscribe((data: Reason[]) => this.reasons = data));
-    //this.apiService.getAllAdvisors().subscribe((data: Advisor[]) => {this.advisors = data;});
-
-    this.advisors.push({id: 0, firstName: "Elissa", middleName: '', lastName: "Weeden", email: "jnd1234@rit.edu", portraitURL: "../assets/ElissaWeeden.png", studentQueue: [
+    /*this.advisors.push({id: 0, firstName: "Elissa", middleName: '', lastName: "Weeden", email: "jnd1234@rit.edu", portraitURL: "../assets/ElissaWeeden.png", studentQueue: [
       new Student('Jack Smith', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
       new Student('Jane Doe', 'jwd2222', '2021-09-19T19:57:55+00:00'),
       new Student('Jill Smith', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'})
@@ -95,33 +76,52 @@ export class StudentQueueInterfaceComponent implements OnInit {
       new Student('Larry Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
       new Student('Shima Plok', 'jwd2222', '2021-09-19T19:57:55+00:00'),
       new Student('Gus Juss', 'jwd2222', '2021-09-19T19:57:55+00:00')
-    ]});
+    ]});*/
 
     this.connect();
   }
   
+  // runs the loop that gets all required data intermittently (maybe remove later?)
   connect() {
-    //temp (for testing purposes)
+    /*//temp (for testing purposes)
     setTimeout(() => { 
       this.connected = true;
-      this.getInfo();
-    }, 3000);
+      this.refreshData();
+    }, 3000);*/
+
+    setInterval(() => {
+      this.refreshData();
+    }, 10000);
   }
 
-  getInfo() {
-    if(this.connected) {
+  // gets all required data from the API and deals with it appropriately
+  refreshData() {
+    //this.getBannerText();
+    this.connected = false;
+    this.apiService.getAllAdvisors().subscribe((data: Advisor[]) => {
+      this.connected = true;
       this.timeUpdated = this.getCurrentTimeString();
-      //this.getBannerText();
-      this.apiService.getAllAdvisors().subscribe((data: Advisor[]) => {this.advisors = data;});
-      this.apiService.getAllStudentQueues().subscribe((data: any[]) => {
-        for(let queue in data) {
-
+      this.advisors = data;
+    });
+    this.apiService.getAllStudentQueues().subscribe((data: any[]) => {
+      for(let queue of data) {
+        for(let advisor of this.advisors) {
+          if(advisor.id == queue.id) {
+            advisor.studentQueue = queue.queue;
+          }
         }
-      });
-      this.apiService.getBannerInfo().subscribe((data: any) => {this.bannerText = data.bannerInfo;});
-    }
+      }
+    });
+    this.apiService.getBannerInfo().subscribe((data: any) => {
+      this.bannerText = data.bannerInfo;
+      if(this.bannerText.length > 750) {
+        this.bannerText = this.bannerText.slice(0, 746);
+        this.bannerText += " ...";
+      }
+    });
   }
 
+  // gets the current time and returns it as a formatted string
   getCurrentTimeString() {
     let currDay = new Date();
     let timeAMPM = "AM";
@@ -148,20 +148,10 @@ export class StudentQueueInterfaceComponent implements OnInit {
     }
   }
 
-  getBannerText() {
-    /*this.bannerText = "This is an example of the bottom banner text. It should be large enough to be clearly legible by students looking at the interface, " + 
-      "and should catch their attention without being annoying or distracting. This is an example of the bottom banner text. It should be large enough to be " + 
-      "clearly legible by students looking at the interface, and should catch their attention without being annoying or distracting. This is an example of the " + 
-      "bottom banner text. It should be large enough to be clearly legible by students looking at the interface, and should catch their attention without being " + 
-      "annoying or distracting. This is an example of the bottom banner text. It should be large enough to be clearly legible by students looking at the interface, " + 
-      "and should catch their attention without being annoying or distracting.";*/
-    this.bannerText = "This is an example of the bottom banner text. It should be large enough to be clearly legible by students looking at the interface, " + 
-      "and should catch their attention without being annoying or distracting.";
-    //this.bannerText = "";
-
+  /*getBannerText() {
     if(this.bannerText.length > 750) {
       this.bannerText = this.bannerText.slice(0, 746);
       this.bannerText += " ...";
     }
-  }
+  }*/
 }
