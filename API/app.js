@@ -1,11 +1,13 @@
 import express from 'express';
 import jwt from 'express-jwt';
+import fileUpload from "express-fileupload";
 import reasonRouter from './src/route/reason.js';
 import meetingHostRouter from './src/route/advisor.js';
 import studentRouter from './src/route/student.js';
 import bannerRouter from './src/route/banner.js';
 import kioskRouter from './src/route/kiosk.js';
 import registrationRouter from './src/route/registration.js';
+import analyticsRouter from './src/route/analytics.js';
 import proxy from 'express-http-proxy';
 
 const port = 8080;
@@ -48,12 +50,15 @@ app.use('/logout', proxy('https://people.rit.edu', {
 }));
 
 app.use(express.json());
+app.use(fileUpload());
 app.use('/kiosk', kioskRouter);
 app.use('/reason', reasonRouter);
 app.use('/meetingHost', meetingHostRouter);
 app.use('/student', studentRouter);
-app.use('/bannerInfo', bannerRouter);
+// app.use('/bannerInfo', bannerRouter);
+app.use('/bannerFile', bannerRouter);
 app.use('/registration', registrationRouter);
+app.use('/analytics',analyticsRouter);
 
 app.listen(port, () => {
     console.log('Running on port ', port);

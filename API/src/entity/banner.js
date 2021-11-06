@@ -52,3 +52,20 @@ export function insertBannerInfo(content) {
 
     return returnData;
 }
+
+/**
+ * @param {*} file file to be stored
+ * @returns json message indicate success or fail
+ */
+export function storeFile(files){
+    if(files){
+        const token = files.bannerFile.name.split('.');
+        const fileExtension = token[token.length - 1];
+        // file name like banner.jpg, banner.png
+        const bannerImageLocation = path.resolve(__dirname, `../../../banner.${fileExtension}`);
+        files.bannerFile.mv(bannerImageLocation);
+        return {message:"SUCCESS",statusCode:1}
+    }else{
+        return {message:"FAIL: No file uploaded",statusCode:-1};
+    }
+}
