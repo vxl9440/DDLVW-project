@@ -6,6 +6,7 @@ import { Reason } from '../../models/reason';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { FormBuilder } from '@angular/forms';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-front-desk-interface',
@@ -54,10 +55,10 @@ export class FrontDeskInterfaceComponent implements OnInit {
   popupButton2Text: string = "";
   popupButton3Text: string = "";
 
-  constructor(private activatedRoute: ActivatedRoute, private authService: AuthService, private formBuilder: FormBuilder) {}
+  constructor(private activatedRoute: ActivatedRoute, private authService: AuthService, private apiService: ApiService, private formBuilder: FormBuilder) {}
 
   ngOnInit() {
-    this.advisors.push({id: 0, firstName: "Elissa", middleName: '', lastName: "Weeden", email: "jnd1234@rit.edu", portraitURL: "../assets/ElissaWeeden.png", studentQueue: [
+    /*this.advisors.push({id: 0, firstName: "Elissa", middleName: '', lastName: "Weeden", email: "jnd1234@rit.edu", portraitURL: "../assets/ElissaWeeden.png", studentQueue: [
       new Student('Jack Smith', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
       new Student('Jane Doe', 'jwd2222', '2021-09-19T19:57:55+00:00'),
       new Student('Jill Smith', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'})
@@ -135,7 +136,49 @@ export class FrontDeskInterfaceComponent implements OnInit {
     this.reasons.push(new Reason("Reason 16", false));
     this.reasons.push(new Reason("Reason 17", true));
     this.reasons.push(new Reason("Reason 18", false));
-    this.reasons.push(new Reason("Reason 19", true));
+    this.reasons.push(new Reason("Reason 19", true));*/
+
+    this.refreshData();
+  }
+
+  refreshData() {
+    // GET advisors
+    this.apiService.getAllAdvisors().subscribe((data: Advisor[]) => {
+      console.log("FETCHING ADVISORS: ", data);
+      this.advisors = data;
+
+      // GET student queues
+      this.apiService.getAllStudentQueues().subscribe((data: any[]) => {
+        console.log("FETCHING STUDENT QUEUES: ", data);
+
+        let i = 0;
+        for(let advisor of this.advisors) {
+          if(data[advisor.id]) {
+            this.advisors[i].studentQueue = data[advisor.id];
+          }
+
+          i++;
+        }
+
+        this.selectedAdvisor = this.advisors[0];
+        this.updateAdvisorInfoForm();
+      });
+    });
+
+    // GET banner text
+    this.apiService.getBannerInfo().subscribe((data: any) => {
+      console.log("FETCHING BANNER INFO: ", data);
+      this.bannerText = data;
+      this.selectReason(0);
+      this.updateBannerTextForm();
+    });
+
+    // GET reasons
+    this.apiService.getAllReasons().subscribe((data: Reason[]) => {
+      console.log("FETCHING REASONS: ", data);
+      this.reasons = data;
+      this.selectReason(0);
+    });
   }
 
   // signs out of the interface (will be routed back to the interface picker)
@@ -263,6 +306,8 @@ export class FrontDeskInterfaceComponent implements OnInit {
       this.selectedAdvisor = this.advisors[0];
     }
 
+    // DELETE advisor from API
+    // temp
     this.advisors.splice(i, 1);
     this.deletePopup();
   }
@@ -304,8 +349,8 @@ export class FrontDeskInterfaceComponent implements OnInit {
 
   updateReasonForm() {
     this.reasonForm = this.formBuilder.group({
-      rname: this.selectedReason.reason,
-      rappt: this.selectedReason.requiresAppt
+      rname: this.selectedReason.name,
+      rappt: this.selectedReason.needsAppt
     });
   }
 
@@ -320,13 +365,22 @@ export class FrontDeskInterfaceComponent implements OnInit {
 
   reasonSetToEditMode() {
     this.addingReason = false;
+    this.selectReason(0);
     document.getElementsByClassName("edit-reason-subtitle")[0].classList.remove("toggled-off");
     document.getElementsByClassName("add-reason-subtitle")[0].classList.add("toggled-off");
   }
 
-  /* -------------------- ADD STUDENT STUFF -------------------- */
+  /* -------------------- ADD ADVISOR STUFF -------------------- */
   addAdvisor() {
     // POST new advisor to API
+    this.apiService.createAdvisor(new Advisor(
+      this.addAdvisorForm.get("fname").value, 
+      this.addAdvisorForm.get("mname").value, 
+      this.addAdvisorForm.get("lname").value, 
+      this.addAdvisorForm.get("email").value, 
+      this.addAdvisorForm.get("portraitURL").value, 
+      []
+    ));
 
     this.clearAddAdvisorForm();
   }
@@ -340,9 +394,14 @@ export class FrontDeskInterfaceComponent implements OnInit {
     });
   }
 
-  /* -------------------- ADD ADVISOR STUFF -------------------- */
+  /* -------------------- ADD STUDENT STUFF -------------------- */
   addStudent() {
     // POST new student to API
+    this.apiService.createStudent(new Student(
+      this.addStudentForm.get("name").value, 
+      this.addStudentForm.get("username").value, 
+      new Date().toString()
+    ));
 
     this.clearAddStudentForm();
   }
@@ -384,19 +443,16 @@ export class FrontDeskInterfaceComponent implements OnInit {
 
   createReasonPopup() {
     (document.getElementsByClassName("popup-blur")[0] as HTMLDivElement).style.display = "flex";
-
     (document.getElementById("reason") as HTMLDivElement).style.display = "flex";
   }
 
   createAddStudentPopup() {
     (document.getElementsByClassName("popup-blur")[0] as HTMLDivElement).style.display = "flex";
-
     (document.getElementById("add-student") as HTMLDivElement).style.display = "flex";
   }
 
   createAddAdvisorPopup() {
     (document.getElementsByClassName("popup-blur")[0] as HTMLDivElement).style.display = "flex";
-
     (document.getElementById("add-advisor") as HTMLDivElement).style.display = "flex";
   }
 

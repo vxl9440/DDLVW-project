@@ -84,11 +84,12 @@ export class AdvisorInterfaceComponent implements OnInit {
       console.log('getAllAdvisors(): ', data);
       this.advisor = data[0];
     //this.activatedRoute.data.subscribe((response: any) => {
-      //console.log('FETCHING ADVISOR ', response);
+      //console.log('FETCHING ADVISOR: ', response);
       //this.advisor = response.advisor;
 
       // GET student queue
       this.apiService.getAllStudentQueues().subscribe((data: any[]) => {
+        console.log("FETCHING STUDENT QUEUES: ", data);
         if(data[this.advisor.id]) {
           this.advisor.studentQueue = data[this.advisor.id];
           if(this.advisor.studentQueue[0]) {
@@ -100,9 +101,11 @@ export class AdvisorInterfaceComponent implements OnInit {
         }
       });
 
+      // GET reasons
+
       // GET walk-in hours data
       this.apiService.getAdvisorWalkInHours(this.advisor.id).subscribe((data: any[]) => {
-        console.log("walk-in data: ", data);
+        console.log("FETCHING WALK-IN DATA: ", data);
         if(data) {
           this.walkInDataExists = true;
         }
@@ -290,25 +293,25 @@ export class AdvisorInterfaceComponent implements OnInit {
         weekday: 'MON'
       },
       {
-        id: 1,
+        id: 0,
         startTime: this.walkInHoursForm.get('tuesdayStart')?.value,
         endTime: this.walkInHoursForm.get('tuesdayStart')?.value,
         weekday: 'TUE'
       },
       {
-        id: 2,
+        id: 0,
         startTime: this.walkInHoursForm.get('wednesdayStart')?.value,
         endTime: this.walkInHoursForm.get('wednesdayStart')?.value,
         weekday: 'WED'
       },
       {
-        id: 3,
+        id: 0,
         startTime: this.walkInHoursForm.get('thursdayStart')?.value,
         endTime: this.walkInHoursForm.get('thursdayStart')?.value,
         weekday: 'THU'
       },
       {
-        id: 4,
+        id: 0,
         startTime: this.walkInHoursForm.get('fridayStart')?.value,
         endTime: this.walkInHoursForm.get('fridayStart')?.value,
         weekday: 'FRI'
@@ -361,6 +364,7 @@ export class AdvisorInterfaceComponent implements OnInit {
 
   // ends an in-progress meeting
   endMeeting() {
+    // PUT time into analytics
     this.meetingStudent = new Student('', '', '');
     this.meetingInProgress = false;
     this.meetingDuration = "00:00";

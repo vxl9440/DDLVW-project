@@ -1,9 +1,9 @@
 export class Reason {
-    reason: string;
-    requiresAppt: boolean;
+    name: string;
+    needsAppt: boolean;
 
-    constructor(reason: string, requiresAppt: boolean) {
-        this.reason = reason;
-        this.requiresAppt = requiresAppt;
+    constructor(name: string, needsAppt: boolean) {
+        this.name = name;
+        this.needsAppt = needsAppt;
     }
 }

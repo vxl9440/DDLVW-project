@@ -111,6 +111,10 @@ export class ApiService {
     return this.httpClient.post(`${ environment.apiUrl }/bannerInfo`, bannerInfo);
   }
 
+  public createBannerFile(bannerFile: any) {
+    return this.httpClient.post(`${ environment.apiUrl }/bannerFile`, bannerFile);
+  }
+
   /* -------------------- ANALYTICS ENDPOINTS -------------------- */
   // not implemented yet server-side, likely will not work (10/25/2021)
   public getAnalytics() {
