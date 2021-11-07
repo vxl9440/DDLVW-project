@@ -1,9 +1,9 @@
-import {select} from '../database/crud.js';
-import {getTimeStamp} from '../util/timeUtil.js';
-import {writeFileSync } from 'fs';
+import { select } from '../database/crud.js';
+import { getTimeStamp } from '../util/timeUtil.js';
+import { writeFileSync } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import {v1} from 'uuid';
+import { v1 } from 'uuid';
 
 const __dirname = fileURLToPath(import.meta.url);
 const filePath = path.resolve(__dirname, '../../../');
@@ -14,8 +14,8 @@ const filePath = path.resolve(__dirname, '../../../');
  * @param {*} to end date
  * @returns records of registration of DB
  */
-function getRecords(from,to){
-    const sql = `SELECT reg.registration_id AS 'registrationId',CONCAT(ad.first_name,' ',ad.last_name) AS advisorName, 
+function getRecords(from, to) {
+    const sql = `SELECT reg.registration_id AS 'registrationId', CONCAT(ad.first_name,' ',ad.last_name) AS advisorName, 
     reg.check_in_time AS checkinTime, reg.check_out_time AS checkoutTime, 
     reg.scheduled AS scheduled, reg.student_username AS studentUsername, 
     reg.student_name AS studentName, re.reason_name AS reason 
@@ -54,7 +54,7 @@ function constructLine(record){
  * @param {*} content csv file content
  * @returns an object contains file locatiion
  */
-function createFile(content){
+function createFile(content) {
     const fileLocation = path.resolve(__dirname, '../../../'+v1()+'.csv');
     try {
         writeFileSync(fileLocation, content)
@@ -67,7 +67,6 @@ function createFile(content){
        'status': 1,
        'fileLocation': fileLocation 
     };
-    
 }
 
 /**
@@ -75,17 +74,17 @@ function createFile(content){
  * @param {*} data contains from and to
  * @returns a csv file
  */
-export async function constructFile(data){
+export async function constructFile(data) {
    const records = await getRecords(data['from'],data['to']);
 //    return an empty object if records is empty
-   if(records.length === 0) return {};
+   if (records.length === 0) return {};
    var flag = records[0]['registrationId'];
    var content = '';
    var line = constructLine(records[0]);
-   for(var i = 1;i < records.length;i++){
-       if(flag === records[i]['registrationId']){
+   for(var i = 1;i < records.length;i++) {
+       if (flag === records[i]['registrationId']) {
            line += `,${records[i]['reason']}`;
-       }else{
+       } else {
            flag = records[i]['registrationId'];
            content += line + '\r\n';
            line = constructLine(records[i]);

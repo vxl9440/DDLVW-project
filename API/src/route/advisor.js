@@ -45,11 +45,6 @@ router.get('/queue', (req, res) => {
 });
 
 
-router.post('/:id/queue', (req, res) => {
-    res.json(queue.insertStudentByAdvisorId(req.params.id, req.body));
-});
-
-
 router.put('/:id/queue', (req, res) => {
     res.json(queue.adjustStudentPositionByAdvisorId(req.params.id,req.body)); 
 }); 
@@ -71,8 +66,7 @@ router.get('/', (req, res) => {
         advisor.getAllAdvisors()
             .then(advisors => res.json(advisors))
             .catch(err => res.json(err));
-    }
-    
+    } 
 });
 
 

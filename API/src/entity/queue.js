@@ -55,6 +55,7 @@ export function getAllQueue() {
     return read();
 }
 
+
 /**
  * 
  * @param {*} targetId advisor id
@@ -66,29 +67,29 @@ export function insertStudentByAdvisorId(advisorId, data) {
     const advisorQueue = queue[advisorId];
 
     if (advisorQueue !== undefined && Array.isArray(advisorQueue)) {
+        const entry = {
+            'studentName': data['studentName'],
+            'username': data['username'],
+            'timeIn': data['timeIn']
+        }
+
         if (data['appointment']) {
-            const appointment = {
+            entry['appointment'] = {
                 'startTime': data['startTime'],
                 'endTime': data['endTime']
             }
+        } 
 
-            advisorQueue.push({
-                'studentName': data['studentName'],
-                'username': data['username'],
-                'timeIn': data['timeIn'],
-                'appointment': appointment
-            });
-        } else {
-            advisorQueue.push({
-                'studentName': data['studentName'],
-                'username': data['username'],
-                'timeIn': data['timeIn']
-            });
+        if (data['reasons'] && Array.isArray(data['reasons'])) {
+            entry['reasons'] = data['reasons'];
         }
+
+        advisorQueue.push(entry);
+        return write(queue);
     }
 
-    return write(queue);
-}
+    return { "error": "Error reading queue with provided advisor id." };
+} 
 
 /**
  * 

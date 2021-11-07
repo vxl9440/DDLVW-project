@@ -3,7 +3,7 @@ import { getTimeStamp } from '../util/timeUtil.js';
 
 function constructReasonAssoc(sqls, sqlParams, reasons) {
     for (const reason of reasons) {
-        sqls.push('INSERT INTO registration_reason_assoc(registration_id,reason_id) VALUES(?,?)')
+        sqls.push('INSERT INTO registration_reason_assoc(registration_id,reason_id) VALUES(?,?)');
         sqlParams.push([reason]);
     }
 } 
@@ -15,8 +15,8 @@ export function insertRegistration(data) {
 
     const advisorId   = parseInt(data['meetingHost']);
     const timeIn      = getTimeStamp(new Date(data['timeIn']));
-    const scheduled   = data['hasAppt'];
-    const stuUsername = data['studentUsername'];
+    const scheduled   = data['appointment'];
+    const stuUsername = data['username'];
     const stuName     = data['studentName'];
 
     const queries = [sql];

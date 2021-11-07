@@ -1,17 +1,34 @@
 import { Router } from 'express';
 import { insertRegistration } from '../entity/registration.js';
 import { insertStudentByAdvisorId } from '../entity/queue.js';
+import { getReasonsByIds } from '../entity/reason.js';
 
 const router = Router();
 
 router.post('/checkin', async (req, res) => { 
     try {
-        await insertRegistration(req.body);
-        insertStudentByAdvisorId(req.body.meetingHost, req.body);
-        res.json({ "status": "success" });
+        const reqBody = req.body;
+        await insertRegistration(reqBody);
+        // get reason names
+        let reasons = [];
+        if (reqBody.reasons && reqBody.reasons.length) {
+            reasons = (await getReasonsByIds(reqBody.reasons)).map(row => row.reason);
+        }
+        
+        const studentQueueRegistration = {
+            'studentName': reqBody.studentName,
+            'username': reqBody.username,
+            'timeIn': reqBody.timeIn,
+            'appointment': {}, // TODO: Add appointment functionality
+            'reasons': reasons
+        };
+
+        insertStudentByAdvisorId(req.body.meetingHost, studentQueueRegistration);
+        
+        res.sendStatus(201);
+
     } catch(err) {
-        console.log('error');
-        res.json(`{ error: ${ err }`);
+        res.status(500).json(err);
     }
 });
 

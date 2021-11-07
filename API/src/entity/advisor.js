@@ -44,14 +44,14 @@ export function getAdvisorByEmail(email) {
  * @returns result set
  */
 export function getAdvisorByWalkInAvailability() {
-    // const sql = 'SELECT a.advisor_id as id, a.first_name as firstName, ' +
-    //                  'a.middle_name as middleName, a.last_name as lastName, ' +
-    //                  'a.ritEmail as email, a.portrait_url as portraitURL, ' +
-    //                  'w.id as hourId, w.start_time as startTime, w.end_time as endTime, w.weekday ' +
-    //                  'FROM advisor a INNER JOIN walk_in_hour w ON ' +
-    //                  'a.advisor_id = w.advisor_id WHERE a.enabled = true ' + 
-    //                  'AND w.weekday = ? AND (? between w.start_time AND w.end_time)';
-    const sql = 'SELECT '
+    const sql = 'SELECT a.advisor_id as id, a.first_name as firstName, ' +
+                     'a.middle_name as middleName, a.last_name as lastName, ' +
+                     'a.ritEmail as email, a.portrait_url as portraitURL, ' +
+                     'w.id as hourId, w.start_time as startTime, w.end_time as endTime, w.weekday ' +
+                     'FROM advisor a INNER JOIN walk_in_hour w ON ' +
+                     'a.advisor_id = w.advisor_id WHERE a.enabled = true ' + 
+                     'AND w.weekday = ? AND (? between w.start_time AND w.end_time)';
+
     return new Promise((resolve, reject) => {
         select(sql, [getCurrentWeekDay(), getCurrentTime()])
             .then(advisors => resolve(advisors.reduce(advisorReducer, [])))

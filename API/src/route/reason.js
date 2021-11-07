@@ -21,10 +21,14 @@ router.put('/:id',(req,res) => {
       .catch(error => res.json(error));
 });
 
-router.delete('/:id',(req,res) => {
+router.delete('/:id', (req,res) => {
    deleteReason(req.params.id)
       .then(success => res.json(success))
       .catch(error => res.json(reason))
+});
+
+router.get('/student/:username', (req, res) => {
+   // query the registration tabl to get reasons associated with the provided student
 });
 
 export default router;

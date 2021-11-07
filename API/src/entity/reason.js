@@ -18,6 +18,10 @@ export function getAllReasons() {
     });
 }
 
+export function getReasonsByIds(ids) {
+    return select('SELECT reason_name as reason FROM reason WHERE reason_id IN (?)', [ids]);
+}
+
 /**
  * insert a new reason into DB
  * @param {*} data new reason data
