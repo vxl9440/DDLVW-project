@@ -29,11 +29,11 @@ export class ApiService {
     return this.httpClient.get<Reason[]>(`${ environment.apiUrl }/reason`);
   }
 
-  public createReason(reason: Reason) {
+  public createReason(reason: any) {
     return this.httpClient.post(`${ environment.apiUrl }/reason`, reason);
   }
 
-  public updateReason(id: number, reason: Reason) {
+  public updateReason(id: number, reason: any) {
     return this.httpClient.put(`${ environment.apiUrl }/reason/${id}`, reason);
   }
 
@@ -56,11 +56,11 @@ export class ApiService {
     return this.httpClient.get<Advisor>(`${ environment.apiUrl }/meetingHost?user=${ username }`);
   }
 
-  public createAdvisor(advisor: Advisor) {
+  public createAdvisor(advisor: any) {
     return this.httpClient.post(`${ environment.apiUrl }/meetingHost`, advisor);
   }
 
-  public updateAdvisor(id: number, advisor: Advisor) {
+  public updateAdvisor(id: number, advisor: any) {
     return this.httpClient.put(`${ environment.apiUrl }/meetingHost/${id}`, advisor);
   }
 
@@ -90,9 +90,9 @@ export class ApiService {
     return this.httpClient.get<any[]>(`${ environment.apiUrl }/meetingHost/queue`);
   }
 
-  public addStudentToQueue(id: number, student: Student) {
+  /*public addStudentToQueue(id: number, student: Student) {
     return this.httpClient.post(`${ environment.apiUrl }/meetingHost/${id}/queue`, student);
-  }
+  }*/
 
   public moveStudentInQueue(id: number, studentMoveInfo: any) {
     return this.httpClient.put(`${ environment.apiUrl }/meetingHost/${id}/queue`, studentMoveInfo);
@@ -100,6 +100,11 @@ export class ApiService {
 
   public deleteStudentFromQueue(id: number, studentUsername: any) {
     return this.httpClient.delete(`${ environment.apiUrl }/meetingHost/${id}/queue`, studentUsername);
+  }
+
+  /* -------------------- REGISTRATION ENDPOINTS -------------------- */
+  public checkInStudent(student: any) {
+    return this.httpClient.post(`${ environment.apiUrl }/registration/checkin`, student);
   }
 
   /* -------------------- BANNER INFO ENDPOINTS -------------------- */

@@ -51,8 +51,16 @@
             <input type="text" id="fname" formControlName="fname">
           </div>
           <div class="form-row">
+            <label for="mname">Middle name: </label>
+            <input type="text" id="mname" formControlName="mname">
+          </div>
+          <div class="form-row">
             <label for="lname">Last name: </label>
             <input type="text" id="lname" formControlName="lname">
+          </div>
+          <div class="form-row">
+            <label for="email">Email: </label>
+            <input type="text" id="email" formControlName="email">
           </div>
           <div class="form-row">
             <label for="portraitURL">Photo URL: </label>
@@ -113,7 +121,8 @@
         </div>
         <div class="popup-reasons-right-area" *ngIf="!addingReason">
           <div class="popup-text-area">
-            <div class="reason-item" *ngFor="let reason of reasons; let i = index" (click)="selectReason(i)">{{reason.reason}}</div>
+            <div class="reason-item" *ngFor="let reason of reasons; let i = index" (click)="selectReason(i)">{{reason.name}}</div>
+            <div *ngIf="!reasons[0]" class="none-text-area"><h1>NONE</h1></div>
           </div>
         </div>
       </div>
@@ -151,7 +160,7 @@
             <input type="text" id="afname" formControlName="fname" required>
           </div>
           <div class="form-row">
-            <label for="amname">Middle Name: </label>
+            <label for="amname">Middle Name (Optional): </label>
             <input type="text" id="amname" formControlName="mname">
           </div>
           <div class="form-row">
@@ -163,7 +172,7 @@
             <input type="text" id="aemail" formControlName="email" required>
           </div>
           <div class="form-row">
-            <label for="aportraitURL">Photo URL: </label>
+            <label for="aportraitURL">Photo URL (Optional): </label>
             <input type="text" id="aportraitURL" formControlName="portraitURL">
           </div>
           <div class="popup-buttons-area">
