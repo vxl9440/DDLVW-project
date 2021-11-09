@@ -2,7 +2,7 @@ import { getConnection } from './connection.js';
 
 const connection = getConnection();
 
-const executeQuery = function doAll(sql, sqlParam) {
+const executeQuery = function doAll(sql, sqlParam,returnResult) {
     return new Promise((resolve, reject) => {
         connection.query(sql, sqlParam, function(error, result, field) {
             const responseData = {
@@ -11,7 +11,8 @@ const executeQuery = function doAll(sql, sqlParam) {
             };
 
             if (!error) {
-                resolve(responseData);
+                if(returnResult !== undefined) resolve(result)
+                else resolve(responseData);
             } else {
                 responseData['message'] = 'Fail: ' + error;
                 responseData['statusCode'] = -1;
@@ -30,7 +31,7 @@ export function transaction(queries, sqlParams) {
                 reject(err); 
             }
             try {
-                const res = await executeQuery(queries[0], sqlParams[0]);
+                const res = await executeQuery(queries[0], sqlParams[0],1);
                 
                 for (var i = 1; i < queries.length; i++) {
                     sqlParams[i].unshift(res.insertId);
