@@ -1,4 +1,4 @@
-import { transaction } from '../database/crud.js';
+import { transaction,update } from '../database/crud.js';
 import { getTimeStamp } from '../util/timeUtil.js';
 
 function constructReasonAssoc(sqls, sqlParams, reasons) {
@@ -25,4 +25,11 @@ export function insertRegistration(data) {
     constructReasonAssoc(queries, sqlParams, data['reasons']);
 
     return transaction(queries, sqlParams); 
+}
+
+
+export function updateMeetingStartTime(data){
+    const sql = 'UPDATE registration SET meeting_start_time = ? WHERE check_in_time = ?';
+    const sqlParam = [getTimeStamp(data['meetingStartTime']),getTimeStamp(data['timeIn'])];
+    return update(sql,sqlParam);
 }
