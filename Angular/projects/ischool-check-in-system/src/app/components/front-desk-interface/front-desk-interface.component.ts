@@ -30,7 +30,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
 
   reasons: Reason[] = [];
   selectedReason: Reason = new Reason(-1, "", false);
-  addingReason: boolean = false;
+  addingReason: boolean = true;
   reasonForm = this.formBuilder.group({
     rname: '',
     rcode: '',
@@ -62,7 +62,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute, private authService: AuthService, private apiService: ApiService, private formBuilder: FormBuilder) {}
 
   ngOnInit() {
-    /*this.advisors.push({id: 0, firstName: "Elissa", middleName: '', lastName: "Weeden", email: "jnd1234@rit.edu", portraitURL: "../assets/ElissaWeeden.png", studentQueue: [
+    this.advisors.push({id: 0, firstName: "Elissa", middleName: '', lastName: "Weeden", email: "jnd1234@rit.edu", portraitURL: "../assets/ElissaWeeden.png", studentQueue: [
       new Student('Jack Smith', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
       new Student('Jane Doe', 'jwd2222', '2021-09-19T19:57:55+00:00'),
       new Student('Jill Smith', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'})
@@ -113,15 +113,12 @@ export class FrontDeskInterfaceComponent implements OnInit {
       new Student('Gus Juss', 'jwd2222', '2021-09-19T19:57:55+00:00')
     ]});
 
-    this.selectedAdvisor = this.advisors[0];
-
-    this.bannerText = "This is an example of the bottom banner text. It should be large enough to be clearly legible by students looking at the interface, " + 
+    /*this.bannerText = "This is an example of the bottom banner text. It should be large enough to be clearly legible by students looking at the interface, " + 
       "and should catch their attention without being annoying or distracting.";
 
-    this.updateAdvisorInfoForm();
     this.updateBannerTextForm();*/
 
-    /*this.reasons.push(new Reason(0, "General Questions", false));
+    this.reasons.push(new Reason(0, "General Questions", false));
     this.reasons.push(new Reason(1, "Reason 1", true));
     this.reasons.push(new Reason(2, "Reason 2", false));
     this.reasons.push(new Reason(3, "Reason 3", true));
@@ -140,11 +137,24 @@ export class FrontDeskInterfaceComponent implements OnInit {
     this.reasons.push(new Reason(16, "Reason 16", false));
     this.reasons.push(new Reason(17, "Reason 17", true));
     this.reasons.push(new Reason(18, "Reason 18", false));
-    this.reasons.push(new Reason(19, "Reason 19", true));*/
+    this.reasons.push(new Reason(19, "Reason 19", true));
 
+    //this.refreshData();
+  }
+
+  ngOnViewInit() {
+    this.selectedAdvisor = this.advisors[0];
+    this.updateAdvisorInfoForm();
+
+    if(this.reasons && this.reasons[0]) {
+      console.log("testing 1 2 3");
+      this.reasonSetToEditMode();
+    }
+    // everything above this is temporary - remove when testing with server
     this.refreshData();
   }
 
+  // refreshes all data from the API and takes appropriate actions on the page based on the data received
   refreshData() {
     // GET advisors
     this.apiService.getAllAdvisors().subscribe((data: Advisor[]) => {
@@ -181,7 +191,11 @@ export class FrontDeskInterfaceComponent implements OnInit {
     this.apiService.getAllReasons().subscribe((data: Reason[]) => {
       console.log("FETCHING REASONS: ", data);
       this.reasons = data;
-      this.selectReason(0);
+      //this.selectReason(0);
+
+      if(this.reasons && this.reasons[0]) {
+        this.reasonSetToEditMode();
+      }
     });
   }
 
@@ -192,6 +206,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
   }
 
   /* -------------------- STUDENT QUEUE STUFF -------------------- */
+  // swaps a student in the queue with the student above them
   queueMoveStudentUp(i: number) {
     if(this.selectedAdvisor.studentQueue[i - 1]) {
       let studentItem = (document.getElementsByClassName("student-item")[i] as HTMLDivElement);
@@ -224,6 +239,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
     }
   }
 
+  // swaps a student in the queue with the student below them
   queueMoveStudentDown(i: number) {
     if(this.selectedAdvisor.studentQueue[i + 1]) {
       let studentItem = (document.getElementsByClassName("student-item")[i] as HTMLDivElement);
@@ -270,11 +286,13 @@ export class FrontDeskInterfaceComponent implements OnInit {
   }
 
   /* -------------------- ADVISOR LIST STUFF -------------------- */
-  select(advisor: Advisor, i: number) {
+  // selects an advisor in the list given that advisor's data
+  selectAdvisor(advisor: Advisor) {
     this.selectedAdvisor = advisor;
     this.updateAdvisorInfoForm();
   }
 
+  // updates the advisor info form with the currently selected advisor's info
   updateAdvisorInfoForm() {
     this.advisorInfoForm = this.formBuilder.group({
       fname: this.selectedAdvisor.firstName,
@@ -285,6 +303,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
     });
   }
 
+  // saves the modified advisor info to the API from the advisor info form
   saveAdvisorInfo() {
     // PUT updated advisor info into advisor info on server
     let advisorInfoToUpdate = 
@@ -302,7 +321,8 @@ export class FrontDeskInterfaceComponent implements OnInit {
     this.apiService.updateAdvisor(this.selectedAdvisor.id, advisorInfoToUpdate);
   }
 
-  listMoveAdvisorUp(i: number) {
+  // swaps an advisor in the list with the advisor above them (NOT IN USE - NO API ENDPOINT)
+  /*listMoveAdvisorUp(i: number) {
     if(this.advisors[i - 1]) {
       let advisorItem = (document.getElementsByClassName("advisor-item")[i] as HTMLDivElement);
       advisorItem.style.animation = "swap-advisor-up";
@@ -321,9 +341,10 @@ export class FrontDeskInterfaceComponent implements OnInit {
         this.advisors[i] = tempSwapAdvisor;
       }, 250);
     }
-  }
+  }*/
 
-  listMoveAdvisorDown(i: number) {
+  // swaps an advisor in the list with the advisor below them (NOT IN USE - NO API ENDPOINT)
+  /*listMoveAdvisorDown(i: number) {
     if(this.advisors[i + 1]) {
       let advisorItem = (document.getElementsByClassName("advisor-item")[i] as HTMLDivElement);
       advisorItem.style.animation = "swap-advisor-down";
@@ -342,9 +363,10 @@ export class FrontDeskInterfaceComponent implements OnInit {
         this.advisors[i] = tempSwapAdvisor;
       }, 250);
     }
-  }
+  }*/
   
-  queueDeleteAdvisor(i: number) {
+  // deletes an advisor from the list given their id
+  listDeleteAdvisor(i: number) {
     if(this.advisors.length == 1) {
       this.selectedAdvisor = {id: -1, firstName: "", middleName: "", lastName: "", email: "", portraitURL: "", studentQueue: []};
     }
@@ -356,8 +378,9 @@ export class FrontDeskInterfaceComponent implements OnInit {
     }
 
     // DELETE advisor from API
+    this.apiService.deleteAdvisor(i);
     // temp
-    this.advisors.splice(i, 1);
+    //this.advisors.splice(i, 1);
     this.deletePopup();
   }
 
@@ -371,7 +394,8 @@ export class FrontDeskInterfaceComponent implements OnInit {
   }
 
   /* -------------------- REASON MANAGER STUFF -------------------- */
-  saveReason() {
+  // adds a new reason to the API if the reason form is set to 'add' mode, otherwise edits an existing reason using the reason form
+  addOrSaveReason() {
     if(this.shouldSubmitForm) {
       if(this.addingReason) {
         this.reasonSetToEditMode();
@@ -403,6 +427,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
     }
   }
 
+  // clears the form used for adding/editing reasons
   clearReasonForm() {
     this.reasonForm = this.formBuilder.group({
       rname: '',
@@ -410,26 +435,46 @@ export class FrontDeskInterfaceComponent implements OnInit {
     });
   }
 
+  // deletes the selected reason from the API
   deleteReason() {
-    for(let [i, reason] of this.reasons.entries()) {
+    this.shouldSubmitForm = false;
+    //for(let [i, reason] of this.reasons.entries()) {
+    for(let reason of this.reasons) {
       if(reason == this.selectedReason) {
-        this.reasons.splice(i, 1); // DELETE existing reason in API
-        this.selectedReason = new Reason(-1, "", false);
+        // DELETE existing reason in API
+        this.apiService.deleteReason(this.selectedReason.id);
+
+        if(this.reasons[0]) {
+          this.selectedReason = this.reasons[0];
+        }
+
+        //this.reasons.splice(i, 1);
+        //this.selectedReason = new Reason(-1, "", false);
         this.updateReasonForm();
+        this.shouldSubmitForm = true;
       }
     }
   }
 
+  // selects a reason given its id
   selectReason(i: number) {
+    /*if(document.getElementsByClassName("selected-reason")[0]) {
+      document.getElementsByClassName("selected-reason")[0].classList.remove("selected-reason");
+    }*/
     this.selectedReason = this.reasons[i];
 
     if(!this.selectedReason) {
       this.selectedReason = new Reason(-1, "", false);
     }
 
+    /*if(document.getElementsByClassName("reason-item")[i]) {
+      document.getElementsByClassName("reason-item")[i].classList.add("selected-reason");
+    }*/
+
     this.updateReasonForm();
   }
 
+  // updates the add/edit reason form with the currently selected reason's info
   updateReasonForm() {
     this.reasonForm = this.formBuilder.group({
       rname: this.selectedReason.name,
@@ -437,6 +482,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
     });
   }
 
+  // sets the reason form to 'add mode', allowing it to add new reasons instead of edit existing reasons
   reasonSetToAddMode() {
     this.selectedReason = new Reason(-1, "", false);
     this.updateReasonForm();
@@ -446,6 +492,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
     document.getElementsByClassName("edit-reason-subtitle")[0].classList.add("toggled-off");
   }
 
+  // sets the reason form to 'edit mode', allowing it to edit existing reasons instead of add new reasons
   reasonSetToEditMode() {
     this.addingReason = false;
     this.selectReason(0);
@@ -454,6 +501,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
   }
 
   /* -------------------- ADD ADVISOR STUFF -------------------- */
+  // adds a new advisor to the API using info from the 'add advisor' form
   addAdvisor() {
     if(this.shouldSubmitForm) {
       // POST new advisor to API
@@ -473,6 +521,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
     }
   }
 
+  // clears the form used for adding new advisors
   clearAddAdvisorForm() {
     this.addAdvisorForm = this.formBuilder.group({
       fname: '',
@@ -484,6 +533,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
   }
 
   /* -------------------- ADD STUDENT STUFF -------------------- */
+  // adds a new student to the API using info from the 'add student' form
   addStudent() {
     if(this.shouldSubmitForm) {
       // POST new student to API
@@ -504,6 +554,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
     }
   }
 
+  // clears the form used for adding new students
   clearAddStudentForm() {
     this.addStudentForm = this.formBuilder.group({
       name: '',
@@ -514,7 +565,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
   /* -------------------- POPUP STUFF -------------------- */
   // uses the provided info to create a popup box with up to three buttons
   createConfirmPopup(popupTitle: string, popupText: string, buttons: any) {
-    (document.getElementsByClassName("popup-blur")[0] as HTMLDivElement).style.display = "flex";
+    (document.getElementsByClassName("popup-background-area")[0] as HTMLDivElement).style.display = "flex";
     this.popupTitle = popupTitle;
     this.popupText = popupText;
 
@@ -539,21 +590,24 @@ export class FrontDeskInterfaceComponent implements OnInit {
     }
   }
 
+  // displays the 'Manage Reasons' popup
   createReasonPopup() {
     this.shouldSubmitForm = true;
-    (document.getElementsByClassName("popup-blur")[0] as HTMLDivElement).style.display = "flex";
+    (document.getElementsByClassName("popup-background-area")[0] as HTMLDivElement).style.display = "flex";
     (document.getElementById("reason") as HTMLDivElement).style.display = "flex";
   }
 
+  // displays the 'Add Student' popup
   createAddStudentPopup() {
     this.shouldSubmitForm = true;
-    (document.getElementsByClassName("popup-blur")[0] as HTMLDivElement).style.display = "flex";
+    (document.getElementsByClassName("popup-background-area")[0] as HTMLDivElement).style.display = "flex";
     (document.getElementById("add-student") as HTMLDivElement).style.display = "flex";
   }
 
+  // displays the 'Add Advisor' popup
   createAddAdvisorPopup() {
     this.shouldSubmitForm = true;
-    (document.getElementsByClassName("popup-blur")[0] as HTMLDivElement).style.display = "flex";
+    (document.getElementsByClassName("popup-background-area")[0] as HTMLDivElement).style.display = "flex";
     (document.getElementById("add-advisor") as HTMLDivElement).style.display = "flex";
   }
 
@@ -568,7 +622,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
     this.clearAddAdvisorForm();
     this.clearAddStudentForm();
 
-    (document.getElementsByClassName("popup-blur")[0] as HTMLDivElement).style.display = "none";
+    (document.getElementsByClassName("popup-background-area")[0] as HTMLDivElement).style.display = "none";
     (document.getElementById("confirm") as HTMLDivElement).style.display = "none";
     (document.getElementById("reason") as HTMLDivElement).style.display = "none";
     (document.getElementById("add-student") as HTMLDivElement).style.display = "none";
@@ -612,7 +666,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
       "Are You Sure?", 
       `Are you sure you want to delete ${advisorName}?`, 
       [
-        ["YES", `queueDeleteAdvisor(${i})`, "red"], 
+        ["YES", `listDeleteAdvisor(${i})`, "red"], 
         ["NO", "deletePopup()", "gray"]
       ]
     );

@@ -1,12 +1,14 @@
 <div class="grid-container">
+  <!-- The Top Bar -->
   <div class="top-bar">
     <h1>iSchool Check In System: Front Desk Interface</h1>
     <div class="top-bar-buttons">
-      <!--button><img src="../assets/icons/home_white_36dp.svg">Home</button-->
       <button (click)="createReasonPopup()"><img src="../assets/icons/list_alt_white_36dp.svg">Manage Reasons</button>
       <button (click)="logout()"><img src="../assets/icons/logout_white_36dp.svg">Sign Out</button>
     </div>
   </div>
+
+  <!-- The Student Queue Manager -->
   <div class="student-queue-manager">
     <h2 class="section-label" *ngIf="selectedAdvisor.firstName && selectedAdvisor.lastName">Student Queue Manager - {{selectedAdvisor.firstName}} {{selectedAdvisor.lastName}}</h2>
     <h2 class="section-label" *ngIf="selectedAdvisor.firstName && !selectedAdvisor.lastName">Student Queue Manager - {{selectedAdvisor.firstName}}</h2>
@@ -25,19 +27,21 @@
     </div>
     <button class="add-button add-student-button" (click)="createAddStudentPopup()"><img src="../assets/icons/add_box_white_36dp.svg">Add Student</button>
   </div>
+
+  <!-- The Advisor List Manager -->
   <div class="advisor-list-manager">
     <h2 class="section-label">Advisor List Manager</h2>
     <div class="advisor-stuff">
       <div class="advisor-list">
         <div class="advisor-item" *ngFor="let advisor of advisors; let i = index">
         <!--div class="advisor-item" *ngFor="let advisor of advisors; let i = index; let first = first"-->
-          <!--div class="advisor-item-info" [ngClass]="{selectedAdvisor: first}" (click)="select(advisor, i)"-->
-          <div class="advisor-item-info" (click)="select(advisor, i)">
+          <!--div class="advisor-item-info" [ngClass]="{selectedAdvisor: first}" (click)="selectAdvisor(advisor)"-->
+          <div class="advisor-item-info" (click)="selectAdvisor(advisor)">
             <img class="selected-advisor-arrow" *ngIf="advisor == selectedAdvisor" src="../assets/icons/arrow_forward_ios_white_36dp.svg">
             <h3>{{advisor.firstName}} {{advisor.lastName}}</h3>
           </div>
-          <button class="misc-button" (click)="listMoveAdvisorUp(i)"><img src="../assets/icons/arrow_upward_white_36dp.svg"></button>
-          <button class="misc-button" (click)="listMoveAdvisorDown(i)"><img src="../assets/icons/arrow_downward_white_36dp.svg"></button>
+          <!--button class="misc-button" (click)="listMoveAdvisorUp(i)"><img src="../assets/icons/arrow_upward_white_36dp.svg"></button>
+          <button class="misc-button" (click)="listMoveAdvisorDown(i)"><img src="../assets/icons/arrow_downward_white_36dp.svg"></button-->
           <button class="x-button" (click)="popupDeleteAdvisor(i)"><img src="../assets/icons/x_white_36dp.svg"></button>
         </div>
         <div *ngIf="!advisors[0]" class="none-text-area"><h1>NONE</h1></div>
@@ -72,6 +76,8 @@
     </div>
   </div>
   <div class="vertical-line"></div>
+  
+  <!-- The Banner Info Manager -->
   <div class="banner-info-manager">
     <h2 class="section-label">Banner Info Manager</h2>
     <form [formGroup]="bannerForm" (ngSubmit)="saveBannerText()">
@@ -82,7 +88,8 @@
     </form>
   </div>
 
-  <div class="popup-blur">
+  <div class="popup-background-area">
+    <!-- The Adjustable Confirmation Popup Box -->
     <div id="confirm" class="popup-box">
       <div class="popup-top-bar">{{popupTitle}}</div>
       <div class="popup-text-area">{{popupText}}</div>
@@ -93,20 +100,21 @@
       </div>
     </div>
 
+    <!-- The 'Manage Reasons' Popup Box -->
     <div id="reason" class="popup-box reason-box">
       <div class="popup-top-bar">Manage Reason Codes</div>
       <div class="popup-reasons-main-area">
         <div class="popup-reasons-left-area">
           <div class="popup-text-area">
             <div class="popup-subtitle-area">
-              <h2 class="edit-reason-subtitle" (click)="reasonSetToEditMode()">Edit Reason</h2>/<h2 class="add-reason-subtitle toggled-off" (click)="reasonSetToAddMode()">Add Reason</h2>
+              <h2 class="edit-reason-subtitle toggled-off" *ngIf="reasons && reasons[0]" (click)="reasonSetToEditMode()">Edit Reason</h2><span *ngIf="reasons && reasons[0]">/</span><h2 class="add-reason-subtitle" (click)="reasonSetToAddMode()">Add Reason</h2>
             </div>
-            <form [formGroup]="reasonForm" (ngSubmit)="saveReason()">
-              <div class="form-row">
+            <form [formGroup]="reasonForm" (ngSubmit)="addOrSaveReason()">
+              <div class="form-row" *ngIf="(reasons && reasons[0]) || addingReason">
                 <label for="rname">Reason Name: </label>
                 <input type="text" id="rname" formControlName="rname" required>
               </div>
-              <div class="checkbox-row">
+              <div class="checkbox-row" *ngIf="(reasons && reasons[0]) || addingReason">
                 <input type="checkbox" id="rappt" formControlName="rappt"><label for="rappt">Requires Appointment</label>
               </div>
               <div class="popup-buttons-area" *ngIf="addingReason">
@@ -121,7 +129,7 @@
         </div>
         <div class="popup-reasons-right-area" *ngIf="!addingReason">
           <div class="popup-text-area">
-            <div class="reason-item" *ngFor="let reason of reasons; let i = index" (click)="selectReason(i)">{{reason.name}}</div>
+            <div class="reason-item" *ngFor="let reason of reasons; let i = index" (click)="selectReason(i)"><img class="selected-reason-arrow" *ngIf="reason == selectedReason" src="../assets/icons/arrow_forward_ios_white_36dp.svg">{{reason.name}}</div>
             <div *ngIf="!reasons[0]" class="none-text-area"><h1>NONE</h1></div>
           </div>
         </div>
@@ -131,6 +139,7 @@
       </div>
     </div>
 
+    <!-- The 'Add Student' Popup Box -->
     <div id="add-student" class="popup-box student-box">
       <div class="popup-top-bar">Add Student</div>
       <div class="popup-text-area">
@@ -151,6 +160,7 @@
       </div>
     </div>
 
+    <!-- The 'Add Advisor' Popup Box -->
     <div id="add-advisor" class="popup-box advisor-box">
       <div class="popup-top-bar">Add Advisor</div>
       <div class="popup-text-area">

@@ -427,6 +427,7 @@ input[type="submit"]:hover {
     margin-top: 0;
 }
 
+// the small arrow used to show which advisor is selected
 .selected-advisor-arrow {
     height: 1.8vh;
     //margin-bottom: 2px;
@@ -438,8 +439,8 @@ input[type="submit"]:hover {
     display: flex;
     align-items: center;
     height: 50px;
-    //width: calc(100% - 55px);
-    width: calc(100% - 156px);
+    width: calc(100% - 55px);
+    //width: calc(100% - 156px);
     margin-right: 2px;
     padding: 5px;
     padding-left: 10px;
@@ -603,7 +604,8 @@ input[type="text"] {
     }
 }
 
-.popup-blur {
+// for covering the entire screen whenever a popup appears
+.popup-background-area {
     grid-row: 1 / 6;
     grid-column: 1 / 6;
     width: 100%;
@@ -775,6 +777,7 @@ input[type="text"] {
     cursor: pointer;
 }
 
+//styling for either the clickable 'Edit Reason' or 'Add Reason' text in the reason manager popup
 .toggled-off {
     color: gray;
 }
@@ -789,6 +792,8 @@ input[type="text"] {
 }
 
 .reason-item {
+    display: flex;
+    align-items: center;
     margin-bottom: 5px;
     padding: 10px;
     padding-left: 20px;
@@ -802,9 +807,15 @@ input[type="text"] {
     cursor: pointer;
 }
 
-/*.reason-button {
-    display: flex;
+/*.selected-reason {
+    background-color: $rit-orange-light-2;
 }*/
+
+// the small arrow used to show which reason is selected
+.selected-reason-arrow {
+    height: 0.75vw;
+    margin-right: 5px;
+}
 
 // scrollbar styling for the reason popup
 .popup-reasons-right-area::-webkit-scrollbar {
@@ -826,15 +837,17 @@ input[type="text"] {
 }
 
 /* -------------------- POPUP ADD STUDENT STUFF -------------------- */
+// the dimensions of the 'add student' popup box
 .student-box {
-    //height: 30vh;
     width: 30vw;
 }
 
+// makes sure the popup box content covers the entire height of the popup
 .student-box .popup-text-area {
     height: 100%;
 }
 
+// formats the form in the popup box so that it covers the entire height and is a column
 .student-box .popup-text-area form {
     display: flex;
     flex-direction: column;
@@ -842,15 +855,18 @@ input[type="text"] {
 }
 
 /* -------------------- POPUP ADD ADVISOR STUFF -------------------- */
+// the dimensions of the 'add advisor' popup box
 .advisor-box {
     height: 30vh;
     width: 30vw;
 }
 
+// makes sure the popup box content covers the entire height of the popup
 .advisor-box .popup-text-area {
     height: 100%;
 }
 
+// formats the form in the popup box so that it covers the entire height and is a column
 .advisor-box .popup-text-area form {
     display: flex;
     flex-direction: column;
