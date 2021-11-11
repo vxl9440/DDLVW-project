@@ -142,7 +142,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
     //this.refreshData();
   }
 
-  ngOnViewInit() {
+  ngAfterViewInit() {
     this.selectedAdvisor = this.advisors[0];
     this.updateAdvisorInfoForm();
 
