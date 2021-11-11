@@ -437,7 +437,6 @@ export class FrontDeskInterfaceComponent implements OnInit {
 
   // deletes the selected reason from the API
   deleteReason() {
-    this.shouldSubmitForm = false;
     //for(let [i, reason] of this.reasons.entries()) {
     for(let reason of this.reasons) {
       if(reason == this.selectedReason) {
@@ -450,8 +449,11 @@ export class FrontDeskInterfaceComponent implements OnInit {
 
         //this.reasons.splice(i, 1);
         //this.selectedReason = new Reason(-1, "", false);
+        this.shouldSubmitForm = false;
         this.updateReasonForm();
-        this.shouldSubmitForm = true;
+        setTimeout(() => {
+          this.shouldSubmitForm = true;
+        }, 50);
       }
     }
   }
