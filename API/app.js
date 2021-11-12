@@ -1,6 +1,5 @@
 import express from 'express';
 import jwt from 'express-jwt';
-import fileUpload from "express-fileupload";
 import reasonRouter from './src/route/reason.js';
 import meetingHostRouter from './src/route/advisor.js';
 import studentRouter from './src/route/student.js';
@@ -12,6 +11,9 @@ import proxy from 'express-http-proxy';
 
 const port = 8080;
 const app  = express();
+
+// enable static file serving in the public directory
+app.use(express.static('public/'));
 
 // TODO: change this header if deploying to production
 app.use(function(req, res, next) {
@@ -50,7 +52,6 @@ app.use('/logout', proxy('https://people.rit.edu', {
 }));
 
 app.use(express.json());
-app.use(fileUpload());
 app.use('/kiosk', kioskRouter);
 app.use('/reason', reasonRouter);
 app.use('/meetingHost', meetingHostRouter);
