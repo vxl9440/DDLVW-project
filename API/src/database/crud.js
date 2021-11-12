@@ -5,17 +5,10 @@ const connection = getConnection();
 const executeQuery = function doAll(sql, sqlParam) {
     return new Promise((resolve, reject) => {
         connection.query(sql, sqlParam, function(error, result, field) {
-            const responseData = {
-                'message':'SUCCESS',
-                'statusCode': 1
-            };
-
             if (!error) {
-                resolve(responseData);
+                resolve(result);
             } else {
-                responseData['message'] = 'Fail: ' + error;
-                responseData['statusCode'] = -1;
-                reject(responseData);
+                reject({ 'error': error });
             }
         });
     });

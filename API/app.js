@@ -55,7 +55,7 @@ app.use('/kiosk', kioskRouter);
 app.use('/reason', reasonRouter);
 app.use('/meetingHost', meetingHostRouter);
 app.use('/student', studentRouter);
-app.use('/bannerFile', bannerRouter);
+app.use('/announcements', bannerRouter);
 app.use('/registration', registrationRouter);
 app.use('/analytics',analyticsRouter);
 
