@@ -93,3 +93,33 @@ export async function constructFile(data) {
    content += line;
    return createFile(content);
 }
+
+export function getAvgWaitingTime(data){
+    const sql = `SELECT FORMAT(FLOOR(AVG(TIME_TO_SEC(meeting_start_time) - TIME_TO_SEC(check_in_time))),0) AS 'value' 
+                FROM registration
+                WHERE check_in_time BETWEEN ? AND ?;`;
+    const sqlParam = [data['from']+' 00:00:00',data['to']+ ' 23:59:59'];
+    return select(sql,sqlParam);
+}
+
+export function getAvgStudentPerDay(data){
+    const sql = `SELECT FORMAT(FLOOR(AVG(t.cnt)),0) AS 'value'
+                 FROM (SELECT DATE(check_in_time),check_in_time AS 'cit', COUNT(*) AS 'cnt' 
+                       FROM registration 
+                       GROUP BY DATE(check_in_time)) t 
+                 WHERE t.cit BETWEEN ? AND ?;`;
+    const sqlParam = [data['from']+' 00:00:00',data['to']+ ' 23:59:59'];
+    return select(sql,sqlParam);
+}
+
+export function getMostCommonReason(data){
+    const sql = `SELECT re.reason_name AS 'value'
+                 FROM (SELECT rra.reason_id,COUNT(rra.reason_id) AS cnt
+                      FROM registration_reason_assoc rra INNER JOIN registration reg
+                      ON rra.registration_id = reg.registration_id AND (reg.check_in_time BETWEEN ? AND ?)
+                      GROUP BY rra.reason_id
+                      ORDER BY COUNT(rra.reason_id) DESC LIMIT 1) t INNER JOIN reason re
+                 ON t.reason_id = re.reason_id;`;
+    const sqlParam = [data['from']+' 00:00:00',data['to']+ ' 23:59:59'];
+    return select(sql,sqlParam);
+}

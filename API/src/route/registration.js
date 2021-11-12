@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { insertRegistration } from '../entity/registration.js';
+import { insertRegistration,updateMeetingStartTime } from '../entity/registration.js';
 import { insertStudentByAdvisorId } from '../entity/queue.js';
 import { getReasonsByIds } from '../entity/reason.js';
 
@@ -31,5 +31,13 @@ router.post('/checkin', async (req, res) => {
         res.status(500).json(err);
     }
 });
+
+// to update meeting start time
+router.put('/startMeeting',(req,res)=>{
+    updateMeetingStartTime(req.body)
+    .then(result => res.json(result))
+    .catch(err => res.json(err));
+});
+
 
 export default router;
