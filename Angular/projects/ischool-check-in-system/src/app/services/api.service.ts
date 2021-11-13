@@ -108,21 +108,40 @@ export class ApiService {
   }
 
   /* -------------------- BANNER INFO ENDPOINTS -------------------- */
-  public getBannerInfo() {
+  /*public getBannerInfo() {
     return this.httpClient.get<any>(`${ environment.apiUrl }/bannerInfo`);
-  }
+  }*/
 
-  public createBannerInfo(bannerInfo: any) {
+  /*public createBannerInfo(bannerInfo: any) {
     return this.httpClient.post(`${ environment.apiUrl }/bannerInfo`, bannerInfo);
+  }*/
+
+  public getAnnouncements() {
+    return this.httpClient.get<any>(`${ environment.apiUrl }/announcements`);
   }
 
-  public createBannerFile(bannerFile: any) {
-    return this.httpClient.post(`${ environment.apiUrl }/bannerFile`, bannerFile);
+  public createAnnouncements(files: any) {
+    return this.httpClient.post(`${ environment.apiUrl }/announcements`, files);
+  }
+
+  public deleteAnnouncements() {
+    return this.httpClient.delete(`${ environment.apiUrl }/announcements/all`);
   }
 
   /* -------------------- ANALYTICS ENDPOINTS -------------------- */
-  // not implemented yet server-side, likely will not work (10/25/2021)
-  public getAnalytics() {
-    return this.httpClient.get<any>(`${ environment.apiUrl }/analytics`);
+  getAnalyticsDownload(timeReq) {
+    return this.httpClient.get<any>(`${ environment.apiUrl }/analytics/download`, timeReq);
+  }
+  
+  public getAnalyticsAvgWaitingTime(timeReq: any) {
+    return this.httpClient.get<any>(`${ environment.apiUrl }/analytics/avgWaitingTime`, timeReq);
+  }
+
+  public getAnalyticsAvgStudentPerDay(timeReq: any) {
+    return this.httpClient.get<any>(`${ environment.apiUrl }/analytics/avgStudentPerDay`, timeReq);
+  }
+
+  public getAnalyticsMostCommonReason(timeReq: any) {
+    return this.httpClient.get<any>(`${ environment.apiUrl }/analytics/mostCommonReason`, timeReq);
   }
 }
