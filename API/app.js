@@ -58,7 +58,7 @@ app.use('/meetingHost', meetingHostRouter);
 app.use('/student', studentRouter);
 app.use('/announcements', bannerRouter);
 app.use('/registration', registrationRouter);
-app.use('/analytics',analyticsRouter);
+app.use('/analytics', analyticsRouter);
 
 app.listen(port, () => {
     console.log('Running on port ', port);

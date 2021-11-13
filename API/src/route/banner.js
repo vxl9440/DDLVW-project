@@ -67,5 +67,27 @@ router.get('/', (req, res) => {
     }
 });
 
+// removes all images in the the public/uploads directory
+router.delete('/all', (req, res) => {
+    let filesRemoved = 0;
+
+    fs.readdir(fileLocation, (err, files) => {
+        if (err) res.status(500).json(err);
+        
+        for (const file of files) {
+            // remove the file
+            try {
+                fs.unlinkSync(path.join(fileLocation, file));
+                filesRemoved += 1;
+            } catch(err) {
+                res.status(500).json({ 'error': 'Issue deleting image' });
+                return;
+            }
+        }
+
+        res.json({ 'filesRemoved': filesRemoved })
+    });
+});
+
 
 export default router;
