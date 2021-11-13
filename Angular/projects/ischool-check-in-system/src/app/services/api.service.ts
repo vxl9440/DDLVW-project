@@ -129,7 +129,7 @@ export class ApiService {
   }
 
   /* -------------------- ANALYTICS ENDPOINTS -------------------- */
-  getAnalyticsDownload(timeReq) {
+  getAnalyticsDownload(timeReq: any) {
     return this.httpClient.get<any>(`${ environment.apiUrl }/analytics/download`, timeReq);
   }
   
