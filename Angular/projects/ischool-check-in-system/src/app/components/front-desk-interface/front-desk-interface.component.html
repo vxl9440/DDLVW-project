@@ -23,7 +23,7 @@
         <button class="misc-button" (click)="queueMoveStudentDown(i)"><img src="../assets/icons/arrow_downward_white_36dp.svg"></button>
         <button class="x-button" (click)="popupDeleteStudent(i)"><img src="../assets/icons/x_white_36dp.svg"></button>
       </div>
-      <div *ngIf="!selectedAdvisor.studentQueue[0]" class="none-text-area"><h1>NONE</h1></div>
+      <div *ngIf="!selectedAdvisor.studentQueue || !selectedAdvisor.studentQueue[0]" class="none-text-area"><h1>NONE</h1></div>
     </div>
     <button *ngIf="connected" class="add-button add-student-button" (click)="createAddStudentPopup()"><img src="../assets/icons/add_box_white_36dp.svg">Add Student</button>
   </div>
@@ -92,9 +92,9 @@
     <!--form action="http://{{environment.apiUrl}}/api/announcements" method="post" enctype="multipart/form-data"-->
     <!--form [formGroup]="bannerForm" (ngSubmit)="uploadBannerImages()"-->
     <form (ngSubmit)="uploadBannerImages()">
-      <label for="bannerFiles">Banner images: </label>
+      <label for="announcement_files">Banner images: </label>
       <!--input type="file" name="bannerFiles" multiple accept="image/*" required-->
-      <input type="file" (change)="onBannerFileSelected($event)" multiple accept="image/*" required>
+      <input type="file" name="announcement_files" (change)="onBannerFileSelected($event)" multiple accept="image/*" required>
       <input *ngIf="connected" class="add-button" type="submit" value="Upload">
       <button *ngIf="connected" class="remove-button" (click)="clearBanner()">Clear Banner</button>
     </form>

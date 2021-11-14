@@ -237,13 +237,23 @@ export class FrontDeskInterfaceComponent implements OnInit {
         // PUT student into new queue position
         // The student position starts at 1, not 0 like the studentQueue array. 
         // Therefore, a 'newPosition' of 'i' is equivalent to studentQueue[i - 1].
-        let studentMoveInfo = 
+        /*let studentMoveInfo = 
         `{
           "username": ${this.selectedAdvisor.studentQueue[i].username},
           "newPosition": ${i},
-        }`;
+        }`;*/
+        let studentMoveInfo = 
+        {
+          "username": this.selectedAdvisor.studentQueue[i].username,
+          "newPosition": i,
+        };
 
-        this.apiService.moveStudentInQueue(this.selectedAdvisor.id, studentMoveInfo);
+        console.log("studentMoveInfo: ", studentMoveInfo);
+
+        this.apiService.moveStudentInQueue(this.selectedAdvisor.id, studentMoveInfo).subscribe(() => {
+          console.log("Student successfully moved up in queue.");
+          this.refreshData();
+        });
       }, 250);
     }
   }
@@ -270,28 +280,45 @@ export class FrontDeskInterfaceComponent implements OnInit {
         // PUT student into new queue position
         // The student position starts at 1, not 0 like the studentQueue array. 
         // Therefore, a 'newPosition' of 'i + 2' is equivalent to studentQueue[i + 1].
-        let studentMoveInfo = 
+        /*let studentMoveInfo = 
         `{
           "username": ${this.selectedAdvisor.studentQueue[i].username},
           "newPosition": ${i + 2},
-        }`;
+        }`;*/
+        let studentMoveInfo = 
+        {
+          "username": this.selectedAdvisor.studentQueue[i].username,
+          "newPosition": i + 2,
+        };
 
-        this.apiService.moveStudentInQueue(this.selectedAdvisor.id, studentMoveInfo);
+        console.log("studentMoveInfo: ", studentMoveInfo);
+
+        this.apiService.moveStudentInQueue(this.selectedAdvisor.id, studentMoveInfo).subscribe(() => {
+          console.log("Student successfully moved down in queue.");
+          this.refreshData();
+        });
       }, 250);
     }
   }
   
   queueDeleteStudent(i: number) {
     // DELETE student from queue
-    let studentToDelete = 
+    /*let studentToDelete = 
     `{
       "username": ${this.selectedAdvisor.studentQueue[i].username}
-    }`;
+    }`;*/
+    let studentToDelete = 
+    {
+      "username": this.selectedAdvisor.studentQueue[i].username
+    };
 
-    this.apiService.deleteStudentFromQueue(this.selectedAdvisor.id, studentToDelete);
+    console.log("studentToDelete: ", studentToDelete);
 
-    //this.selectedAdvisor.studentQueue.splice(i, 1);
-    this.deletePopup();
+    this.apiService.deleteStudentFromQueue(this.selectedAdvisor.id, studentToDelete).subscribe(() => {
+      console.log("Student successfully deleted from queue.");
+      //this.selectedAdvisor.studentQueue.splice(i, 1);
+      this.deletePopup();
+    });
   }
 
   /* -------------------- ADVISOR LIST STUFF -------------------- */
@@ -315,7 +342,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
   // saves the modified advisor info to the API from the advisor info form
   saveAdvisorInfo() {
     // PUT updated advisor info into advisor info on server
-    let advisorInfoToUpdate = 
+    /*let advisorInfoToUpdate = 
     `{
       "firstName": ${this.advisorInfoForm.get("fname")?.value},
       "middleName": ${this.advisorInfoForm.get("mname")?.value},
@@ -323,11 +350,23 @@ export class FrontDeskInterfaceComponent implements OnInit {
       "email": ${this.advisorInfoForm.get("email")?.value},
       "portraitURL": ${this.advisorInfoForm.get("portraitURL")?.value},
       "enabled": true
-    }`;
+    }`;*/
+    let advisorInfoToUpdate = 
+    {
+      "firstName": this.advisorInfoForm.get("fname")?.value,
+      "middleName": this.advisorInfoForm.get("mname")?.value,
+      "lastName": this.advisorInfoForm.get("lname")?.value,
+      "email": this.advisorInfoForm.get("email")?.value,
+      "portraitURL": this.advisorInfoForm.get("portraitURL")?.value,
+      "enabled": true
+    };
 
     console.log("advisorInfoToUpdate: ", advisorInfoToUpdate);
 
-    this.apiService.updateAdvisor(this.selectedAdvisor.id, advisorInfoToUpdate);
+    this.apiService.updateAdvisor(this.selectedAdvisor.id, advisorInfoToUpdate).subscribe(() => {
+      console.log("Advisor info successfully updated.");
+      this.refreshData();
+    });
   }
 
   // swaps an advisor in the list with the advisor above them (NOT IN USE - NO API ENDPOINT)
@@ -386,11 +425,16 @@ export class FrontDeskInterfaceComponent implements OnInit {
       this.selectedAdvisor = this.advisors[0];
     }
 
+    console.log("Advisor ID to delete: ", i);
+
     // DELETE advisor from API
-    this.apiService.deleteAdvisor(i);
+    this.apiService.deleteAdvisor(i).subscribe(() => {
+      console.log("Advisor successfully deleted.");
+      this.refreshData();
+      this.deletePopup();
+    });
     // temp
     //this.advisors.splice(i, 1);
-    this.deletePopup();
   }
 
   /* -------------------- BANNER INFO STUFF -------------------- */
@@ -404,9 +448,16 @@ export class FrontDeskInterfaceComponent implements OnInit {
     for(let file of this.selectedFiles) {
       fd.append('image', file, file.name);
     }
+    /*let fd = "[";
+    for(let file of this.selectedFiles) {
+      fd.append('image', file, file.name);
+    }*/
 
-    console.log("Uploading images.");
-    this.apiService.createAnnouncements(fd);
+    console.log("Uploading image(s)...");
+    this.apiService.createAnnouncements(fd).subscribe(() => {
+      console.log("Image(s) successfully uploaded.");
+      this.refreshData();
+    });
   }
 
   /*uploadBannerImages() {
@@ -416,8 +467,11 @@ export class FrontDeskInterfaceComponent implements OnInit {
   }*/
 
   clearBanner() {
-    console.log("Clearing banner.");
-    this.apiService.deleteAnnouncements();
+    console.log("Deleting all banner images...");
+    this.apiService.deleteAnnouncements().subscribe(() => {
+      console.log("Banner image(s) successfully deleted.");
+      this.refreshData();
+    });
   }
 
   /* -------------------- REASON MANAGER STUFF -------------------- */
@@ -425,31 +479,47 @@ export class FrontDeskInterfaceComponent implements OnInit {
   addOrSaveReason() {
     if(this.shouldSubmitForm) {
       if(this.addingReason) {
-        this.reasonSetToEditMode();
         // POST new reason to API
-        let reasonToAdd = 
+        /*let reasonToAdd = 
         `{
           "name": ${this.reasonForm.get("rname")?.value}, 
           "needsAppt": ${this.reasonForm.get("rappt")?.value}
-        }`;
+        }`;*/
+        let reasonToAdd = 
+        {
+          "name": this.reasonForm.get("rname")?.value, 
+          "needsAppt": this.reasonForm.get("rappt")?.value
+        };
 
         console.log("reasonToAdd: ", reasonToAdd);
 
-        this.apiService.createReason(reasonToAdd);
-        this.clearReasonForm();
+        this.apiService.createReason(reasonToAdd).subscribe(() => {
+          console.log("Reason successfully added.");
+          this.refreshData();
+          this.clearReasonForm();
+          this.reasonSetToEditMode();
+        });
       }
       else {
         // PUT existing reason in API
-        let reasonToUpdate = 
+        /*let reasonToUpdate = 
         `{
           "name": ${this.reasonForm.get("rname")?.value}, 
           "needsAppt": ${this.reasonForm.get("rappt")?.value}
-        }`;
+        }`;*/
+        let reasonToUpdate = 
+        {
+          "name": this.reasonForm.get("rname")?.value, 
+          "needsAppt": this.reasonForm.get("rappt")?.value
+        };
 
         console.log("reasonToUpdate: ", reasonToUpdate);
 
-        this.apiService.updateReason(this.selectedReason.id, reasonToUpdate);
-        this.clearReasonForm();
+        this.apiService.updateReason(this.selectedReason.id, reasonToUpdate).subscribe(() => {
+          console.log("Reason updated successfully.");
+          this.refreshData();
+          this.clearReasonForm();
+        });
       }
     }
   }
@@ -467,20 +537,22 @@ export class FrontDeskInterfaceComponent implements OnInit {
     //for(let [i, reason] of this.reasons.entries()) {
     for(let reason of this.reasons) {
       if(reason == this.selectedReason) {
+        console.log("Reason to delete: ", reason);
         // DELETE existing reason in API
-        this.apiService.deleteReason(this.selectedReason.id);
-
-        if(this.reasons[0]) {
-          this.selectedReason = this.reasons[0];
-        }
-
-        //this.reasons.splice(i, 1);
-        //this.selectedReason = new Reason(-1, "", false);
-        this.shouldSubmitForm = false;
-        this.updateReasonForm();
-        setTimeout(() => {
-          this.shouldSubmitForm = true;
-        }, 50);
+        this.apiService.deleteReason(this.selectedReason.id).subscribe(() => {
+          console.log("Reason successfully deleted.");
+          if(this.reasons[0]) {
+            this.selectedReason = this.reasons[0];
+          }
+  
+          //this.reasons.splice(i, 1);
+          //this.selectedReason = new Reason(-1, "", false);
+          this.shouldSubmitForm = false;
+          this.updateReasonForm();
+          setTimeout(() => {
+            this.shouldSubmitForm = true;
+          }, 50);
+        });
       }
     }
   }
@@ -536,23 +608,34 @@ export class FrontDeskInterfaceComponent implements OnInit {
   addAdvisor() {
     if(this.shouldSubmitForm) {
       // POST new advisor to API
-      let advisorToAdd = 
+      /*let advisorToAdd = 
       `{
         "firstName": ${this.addAdvisorForm.get("fname")?.value}, 
         "middleName": ${this.addAdvisorForm.get("mname")?.value}, 
         "lastName": ${this.addAdvisorForm.get("lname")?.value}, 
         "email": ${this.addAdvisorForm.get("email")?.value}, 
         "portraitURL": ${this.addAdvisorForm.get("portraitURL")?.value}
-      }`;
+      }`;*/
+      let advisorToAdd = 
+      {
+        "firstName": this.addAdvisorForm.get("fname")?.value, 
+        "middleName": this.addAdvisorForm.get("mname")?.value, 
+        "lastName": this.addAdvisorForm.get("lname")?.value, 
+        "email": this.addAdvisorForm.get("email")?.value, 
+        "portraitURL": this.addAdvisorForm.get("portraitURL")?.value
+      };
 
       console.log("advisorToAdd: ", advisorToAdd);
 
-      this.apiService.createAdvisor(advisorToAdd);
-      this.clearAddAdvisorForm();
-      this.deletePopup();
-      setTimeout(() => {
+      this.apiService.createAdvisor(advisorToAdd).subscribe(() => {
+        console.log("Advisor successfully added.");
+        this.clearAddAdvisorForm();
+        this.deletePopup();
         this.refreshData();
-      }, 100);
+      });
+      /*setTimeout(() => {
+        this.refreshData();
+      }, 100);*/
     }
   }
 

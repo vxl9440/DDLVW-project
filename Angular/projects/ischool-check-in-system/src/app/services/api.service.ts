@@ -57,10 +57,11 @@ export class ApiService {
   }
 
   public createAdvisor(advisor: any) {
-    let httpHeaders = new HttpHeaders({
+    /*let httpHeaders = new HttpHeaders({
       'Content-Type' : 'application/json'
     });
-    return this.httpClient.post(`${ environment.apiUrl }/meetingHost`, advisor, { headers: httpHeaders });
+    return this.httpClient.post(`${ environment.apiUrl }/meetingHost`, advisor, { headers: httpHeaders });*/
+    return this.httpClient.post(`${ environment.apiUrl }/meetingHost`, advisor);
   }
 
   public updateAdvisor(id: number, advisor: any) {
@@ -133,7 +134,7 @@ export class ApiService {
   }
 
   /* -------------------- ANALYTICS ENDPOINTS -------------------- */
-  getAnalyticsDownload(timeReq: any) {
+  public getAnalyticsDownload(timeReq: any) {
     return this.httpClient.get<any>(`${ environment.apiUrl }/analytics/download`, timeReq);
   }
   
