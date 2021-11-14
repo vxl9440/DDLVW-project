@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Advisor } from '../../models/advisor';
-import { Student } from '../../models/student';
 import { Reason } from '../../models/reason';
 
 import { ApiService } from '../../services/api.service';
@@ -126,22 +125,23 @@ export class StudentQueueInterfaceComponent implements OnInit {
   refreshData() {
     //this.getBannerText();
     this.connected = false;
-    this.apiService.getAllAdvisors().subscribe((data: Advisor[]) => {
+    this.apiService.getAllAdvisors().subscribe((advisorData: Advisor[]) => {
       //console.log("getAllAdvisors: ", data);
       console.log("Advisors acquired.");
 
       this.connected = true;
       this.timeUpdated = this.getCurrentTimeString();
-      this.advisors = data;
+      //this.advisors = data;
 
-      this.apiService.getAllStudentQueues().subscribe((data: any[]) => {
+      this.apiService.getAllStudentQueues().subscribe((studentData: any[]) => {
         //console.log("getAllStudentQueues: ", data);
         console.log("Student Queues acquired.");
 
+        this.advisors = advisorData;
         let i = 0;
         while(i < this.advisors.length) {
-          if(data[this.advisors[i].id]) {
-            this.advisors[i].studentQueue = data[this.advisors[i].id];
+          if(studentData[this.advisors[i].id]) {
+            this.advisors[i].studentQueue = studentData[this.advisors[i].id];
           }
 
           //this.advisors[i].studentQueue = data[this.advisors[i].id];
@@ -216,10 +216,13 @@ export class StudentQueueInterfaceComponent implements OnInit {
       setInterval(() => {
         if(this.aIndex < this.announcements.length) {
           this.aIndex++;
+          if(this.aIndex == this.announcements.length) {
+            this.aIndex = 0;
+          }
         }
-        else {
+        /*else {
           this.aIndex = 0;
-        }
+        }*/
       }, 10000);
     }
   }

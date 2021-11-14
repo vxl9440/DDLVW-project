@@ -165,25 +165,45 @@ export class FrontDeskInterfaceComponent implements OnInit {
   // refreshes all data from the API and takes appropriate actions on the page based on the data received
   refreshData() {
     // GET advisors
-    this.apiService.getAllAdvisors().subscribe((data: Advisor[]) => {
+    this.apiService.getAllAdvisors().subscribe((advisorData: Advisor[]) => {
       this.connected = true;
-      console.log("FETCHING ADVISORS: ", data);
-      this.advisors = data;
+      console.log("FETCHING ADVISORS: ", advisorData);
+      //this.advisors = data;
 
       // GET student queues
-      this.apiService.getAllStudentQueues().subscribe((data: any[]) => {
-        console.log("FETCHING STUDENT QUEUES: ", data);
+      this.apiService.getAllStudentQueues().subscribe((studentData: any[]) => {
+        console.log("FETCHING STUDENT QUEUES: ", studentData);
+
+        this.advisors = advisorData;
+        //console.log("this.advisors: ", this.advisors);
+        //let canKeepSelectedAdvisor = false;
 
         let i = 0;
         for(let advisor of this.advisors) {
-          if(data[advisor.id]) {
-            this.advisors[i].studentQueue = data[advisor.id];
+          console.log("this.advisors[0].id: ", this.advisors[0].id);
+          console.log("this.selectedAdvisor: ", this.selectedAdvisor);
+          if(studentData[advisor.id]) {
+            this.advisors[i].studentQueue = studentData[advisor.id];
           }
 
+          //setTimeout(() => {
+            if(advisor.id == this.selectedAdvisor.id) {
+              this.selectedAdvisor = advisor;
+              console.log("yoo");
+            }
+          //}, 50);
+          
           i++;
         }
 
-        this.selectedAdvisor = this.advisors[0];
+        if(this.selectedAdvisor.id == -1) {
+          this.selectedAdvisor = this.advisors[0];
+        }
+
+        /*if(!canKeepSelectedAdvisor) {
+          this.selectedAdvisor = this.advisors[0];
+        }*/
+
         this.updateAdvisorInfoForm();
       });
     });
@@ -220,28 +240,21 @@ export class FrontDeskInterfaceComponent implements OnInit {
     if(this.selectedAdvisor.studentQueue[i - 1]) {
       let studentItem = (document.getElementsByClassName("student-item")[i] as HTMLDivElement);
       studentItem.style.animation = "swap-student-up";
-      studentItem.style.animationDuration = "0.25s";
+      studentItem.style.animationDuration = "0.3s";
+      studentItem.style.animationFillMode = "forwards";
 
       let aboveStudentItem = (document.getElementsByClassName("student-item")[i - 1] as HTMLDivElement);
       aboveStudentItem.style.animation = "swap-student-down";
-      aboveStudentItem.style.animationDuration = "0.25s";
+      aboveStudentItem.style.animationDuration = "0.3s";
+      aboveStudentItem.style.animationFillMode = "forwards";
 
       setTimeout(() => {
-        studentItem.style.animation = "none";
-        aboveStudentItem.style.animation = "none";
-
-        /*let tempSwapStudent = this.selectedAdvisor.studentQueue[i - 1];
-        this.selectedAdvisor.studentQueue[i - 1] = this.selectedAdvisor.studentQueue[i];
-        this.selectedAdvisor.studentQueue[i] = tempSwapStudent;*/
+        //studentItem.style.animation = "none";
+        //aboveStudentItem.style.animation = "none";
 
         // PUT student into new queue position
         // The student position starts at 1, not 0 like the studentQueue array. 
         // Therefore, a 'newPosition' of 'i' is equivalent to studentQueue[i - 1].
-        /*let studentMoveInfo = 
-        `{
-          "username": ${this.selectedAdvisor.studentQueue[i].username},
-          "newPosition": ${i},
-        }`;*/
         let studentMoveInfo = 
         {
           "username": this.selectedAdvisor.studentQueue[i].username,
@@ -254,7 +267,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
           console.log("Student successfully moved up in queue.");
           this.refreshData();
         });
-      }, 250);
+      }, 300);
     }
   }
 
@@ -263,28 +276,20 @@ export class FrontDeskInterfaceComponent implements OnInit {
     if(this.selectedAdvisor.studentQueue[i + 1]) {
       let studentItem = (document.getElementsByClassName("student-item")[i] as HTMLDivElement);
       studentItem.style.animation = "swap-student-down";
-      studentItem.style.animationDuration = "0.25s";
+      studentItem.style.animationDuration = "0.3s";
+      studentItem.style.animationFillMode = "forwards";
 
       let belowStudentItem = (document.getElementsByClassName("student-item")[i + 1] as HTMLDivElement);
       belowStudentItem.style.animation = "swap-student-up";
-      belowStudentItem.style.animationDuration = "0.25s";
+      belowStudentItem.style.animationDuration = "0.3s";
+      belowStudentItem.style.animationFillMode = "forwards";
 
       setTimeout(() => {
-        studentItem.style.animation = "none";
-        belowStudentItem.style.animation = "none";
-
-        /*let tempSwapStudent = this.selectedAdvisor.studentQueue[i + 1];
-        this.selectedAdvisor.studentQueue[i + 1] = this.selectedAdvisor.studentQueue[i];
-        this.selectedAdvisor.studentQueue[i] = tempSwapStudent;*/
-
+        //studentItem.style.animation = "none";
+        //belowStudentItem.style.animation = "none";
         // PUT student into new queue position
         // The student position starts at 1, not 0 like the studentQueue array. 
         // Therefore, a 'newPosition' of 'i + 2' is equivalent to studentQueue[i + 1].
-        /*let studentMoveInfo = 
-        `{
-          "username": ${this.selectedAdvisor.studentQueue[i].username},
-          "newPosition": ${i + 2},
-        }`;*/
         let studentMoveInfo = 
         {
           "username": this.selectedAdvisor.studentQueue[i].username,
@@ -296,8 +301,15 @@ export class FrontDeskInterfaceComponent implements OnInit {
         this.apiService.moveStudentInQueue(this.selectedAdvisor.id, studentMoveInfo).subscribe(() => {
           console.log("Student successfully moved down in queue.");
           this.refreshData();
+          //studentItem.style.animation = "none";
+          //belowStudentItem.style.animation = "none";
         });
-      }, 250);
+
+        /*setTimeout(() => {
+          studentItem.style.animation = "none";
+          belowStudentItem.style.animation = "none";
+        }, 100);*/
+      }, 300);
     }
   }
   
@@ -446,7 +458,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
   uploadBannerImages() {
     const fd = new FormData();
     for(let file of this.selectedFiles) {
-      fd.append('image', file, file.name);
+      fd.append('announcement_files', file, file.name);
     }
     /*let fd = "[";
     for(let file of this.selectedFiles) {
@@ -655,7 +667,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
   addStudent() {
     if(this.shouldSubmitForm) {
       // POST new student to API
-      let studentToAdd = 
+      /*let studentToAdd = 
       `{
         "studentName": ${this.addStudentForm.get("name")?.value}, 
         "username": ${this.addStudentForm.get("username")?.value}, 
@@ -663,7 +675,16 @@ export class FrontDeskInterfaceComponent implements OnInit {
         "reasons": [], 
         "meetingHost": ${this.selectedAdvisor.id},
         "timeIn": ${new Date().toString()}
-      }`;
+      }`;*/
+      let studentToAdd = 
+      {
+        "studentName": this.addStudentForm.get("name")?.value, 
+        "username": this.addStudentForm.get("username")?.value, 
+        "appointment": false, 
+        "reasons": [], 
+        "meetingHost": this.selectedAdvisor.id,
+        "timeIn": new Date().toString()
+      };
 
       console.log("studentToAdd: ", studentToAdd);
     
@@ -785,6 +806,18 @@ export class FrontDeskInterfaceComponent implements OnInit {
       `Are you sure you want to delete ${advisorName}?`, 
       [
         ["YES", `listDeleteAdvisor(${i})`, "red"], 
+        ["NO", "deletePopup()", "gray"]
+      ]
+    );
+  }
+
+  // creates a popup box for deleting the banner images on the server
+  popupDeleteBannerImages() {
+    this.createConfirmPopup(
+      "Are You Sure?", 
+      `Are you sure you want to delete all banner images on the server?`, 
+      [
+        ["YES", `clearBanner()`, "red"], 
         ["NO", "deletePopup()", "gray"]
       ]
     );

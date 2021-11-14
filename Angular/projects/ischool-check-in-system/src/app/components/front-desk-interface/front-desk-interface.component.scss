@@ -99,6 +99,10 @@ input[type="submit"]:hover {
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25) inset;
 }
 
+.long-button {
+    width: 15vw;
+}
+
 /* -------------------- TOP BAR STUFF -------------------- */
 // contains page title and buttons
 .top-bar {
@@ -176,22 +180,28 @@ input[type="submit"]:hover {
 /* -------------------- STUDENT QUEUE MANAGER STUFF -------------------- */
 // animation for swapping student up in the queue
 @keyframes swap-student-up {
-    from {
+    0% {
         transform: translateY(0);
     }
-    to {
+    100% {
         transform: translateY(-60px);
     }
+    /*100% {
+        transform: translateY(-60px);
+    }*/
 }
 
 // animation for swapping student down in the queue
 @keyframes swap-student-down {
-    from {
+    0% {
         transform: translateY(0);
     }
-    to {
+    100% {
         transform: translateY(60px);
     }
+    /*100% {
+        transform: translateY(60px);
+    }*/
 }
 
 // the left-most area of the screen (the student queue manager)
