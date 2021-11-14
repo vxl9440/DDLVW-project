@@ -47,7 +47,7 @@ router.post('/', (req, res) => {
             return res.status(500).json(err);
         }
 
-        res.sendStatus(201);
+        res.status(201).send();
     });    
 });
 

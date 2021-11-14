@@ -3,38 +3,11 @@
     {
       "studentName": "Lowell Pence",
       "username": "lxp3901",
-      "timeIn": "2021-10-26T17:57:55Z"
-    },
-    {
-      "studentName": "John Doe",
-      "username": "jxd4502",
-      "timeIn": "2021-10-26T19:57:55Z",
-      "appointment": {
-        "startTime": "2021-10-26T20:00:00Z",
-        "endTime": "2021-10-26T20:15:00Z"
-      }
-    },
-    {
-      "studentName": "Lowell Pence",
-      "username": "lxp3901",
-      "timeIn": "2021-11-07T16:00:00",
+      "timeIn": "2021-11-14T17:13:55",
       "appointment": {},
       "reasons": [
-        "Change of Major",
-        "Freshman / Transfer"
+        "Personal Concerns"
       ]
-    }
-  ],
-  "6": [
-    {
-      "studentName": "Jane Smith",
-      "username": "jxs2043",
-      "timeIn": "2021-10-26T15:57:55Z"
-    },
-    {
-      "studentName": "Paul Davidson",
-      "username": "pxd3240",
-      "timeIn": "2021-10-26T16:09:55Z"
     }
   ]
 }

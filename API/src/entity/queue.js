@@ -20,18 +20,13 @@ function read() {
  * @returns SUCCESS or FAIL
  */
 function write(queue) {
-    const returnData = {
-        "message": "Success"
-    };
-
     try {
         writeFileSync(fileLocation, JSON.stringify(queue, null, 2));
     } catch (err) {
-        returnData['message'] = 'Fail';
-        return returnData;
+        return 500;
     }
 
-    return returnData;
+    return 200;
 }
 
 
@@ -63,16 +58,22 @@ export function getAllQueue() {
  * @returns SUCCESS or FAIL
  */
 export function insertStudentByAdvisorId(advisorId, data) {
+    // Queue.json must contain at least "{}"
     const queue = read();
-    const advisorQueue = queue[advisorId];
 
-    if (advisorQueue !== undefined && Array.isArray(advisorQueue)) {
-        const entry = {
-            'studentName': data['studentName'],
-            'username': data['username'],
-            'timeIn': data['timeIn']
-        }
+    const entry = {
+        'studentName': data['studentName'],
+        'username': data['username'],
+        'timeIn': data['timeIn']
+    }
 
+    if (queue[advisorId] == undefined) {
+        // need to initalize queue
+        queue[advisorId] = [];
+    }
+
+    if (queue[advisorId] !== undefined && Array.isArray(queue[advisorId])) {
+    
         if (data['appointment']) {
             entry['appointment'] = {
                 'startTime': data['startTime'],
@@ -84,11 +85,11 @@ export function insertStudentByAdvisorId(advisorId, data) {
             entry['reasons'] = data['reasons'];
         }
 
-        advisorQueue.push(entry);
+        queue[advisorId].push(entry);
         return write(queue);
     }
 
-    return { "error": "Error reading queue with provided advisor id." };
+    return 500;
 } 
 
 /**
@@ -127,22 +128,24 @@ export async function deleteStudentByAdvisorId(advisorId, data) {
     const advisorQueue = queue[advisorId];
     const studentUsername = data['username'];
     
-    if (advisorQueue !== undefined && studentUsername !== undefined) {
-        const removeIndex = advisorQueue.findIndex(student => student.username == studentUsername);
+    if (Array.isArray(advisorQueue) && studentUsername) {
+        const removeIndex = advisorQueue.findIndex(student => student.username === studentUsername);
         if (removeIndex > -1) {
             const timeIn = advisorQueue[removeIndex]['timeIn'];
             advisorQueue.splice(removeIndex, 1);
             try {
                 await checkOutStudent(studentUsername, advisorId, timeIn);
-                write(queue);
-                return { 'status': 'success' };
+               
+                return write(queue);
             } catch(err) {
-                return { 'error': err };
+                return 500;
             }
+        } else {
+            return 404; // couldn't find student
         }
     }
 
-    return { 'error': 'Failed to remove student'};
+    return 400;
 }
 
 function checkOutStudent(studentUsername, advisorId, timeIn) {

@@ -10,11 +10,10 @@ function constructReasonAssoc(sqls, sqlParams, reasons) {
 
 export function insertRegistration(data) {
     const sql = 'INSERT INTO registration(advisor_id,check_in_time,'+
-              'scheduled,student_username,student_name) VALUES'+
-              '(?,?,?,?,?)';
+              'scheduled,student_username,student_name) VALUES(?,?,?,?,?)';
 
     const advisorId   = parseInt(data['meetingHost']);
-    const timeIn      = getTimeStamp(new Date(data['timeIn']));
+    const timeIn      = getTimeStamp(data['timeIn']);
     const scheduled   = data['appointment'];
     const stuUsername = data['username'];
     const stuName     = data['studentName'];
@@ -28,8 +27,9 @@ export function insertRegistration(data) {
 }
 
 
-export function updateMeetingStartTime(data){
+export function updateMeetingStartTime(data) {
     const sql = 'UPDATE registration SET meeting_start_time = ? WHERE check_in_time = ?';
-    const sqlParam = [getTimeStamp(data['meetingStartTime']),getTimeStamp(data['timeIn'])];
-    return update(sql,sqlParam);
+    const sqlParam = [getTimeStamp(data['meetingStartTime']), getTimeStamp(data['timeIn'])];
+    
+    return update(sql, sqlParam);
 }

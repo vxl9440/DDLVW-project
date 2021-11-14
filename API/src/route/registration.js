@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { insertRegistration,updateMeetingStartTime } from '../entity/registration.js';
+import { insertRegistration, updateMeetingStartTime } from '../entity/registration.js';
 import { insertStudentByAdvisorId } from '../entity/queue.js';
 import { getReasonsByIds } from '../entity/reason.js';
 
@@ -8,24 +8,31 @@ const router = Router();
 router.post('/checkin', async (req, res) => { 
     try {
         const reqBody = req.body;
+        
+        // Inserts data into registration table (database transaction)
         await insertRegistration(reqBody);
+        
         // get reason names
         let reasons = [];
         if (reqBody.reasons && reqBody.reasons.length) {
             reasons = (await getReasonsByIds(reqBody.reasons)).map(row => row.reason);
         }
+
+        // TODO: if reqBody has appointment = true, then get the appointment data from Outlook
+        let appointment = {};
         
         const studentQueueRegistration = {
             'studentName': reqBody.studentName,
             'username': reqBody.username,
             'timeIn': reqBody.timeIn,
-            'appointment': {}, // TODO: Add appointment functionality
+            'appointment': appointment,
             'reasons': reasons
         };
 
-        insertStudentByAdvisorId(req.body.meetingHost, studentQueueRegistration);
+        // Insert data into the queue.json file
+        const status = insertStudentByAdvisorId(req.body.meetingHost, studentQueueRegistration);
         
-        res.sendStatus(201);
+        res.status(status).send();
 
     } catch(err) {
         res.status(500).json(err);

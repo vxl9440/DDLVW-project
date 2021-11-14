@@ -29,7 +29,9 @@ export function getCurrentDay (plusOne) {
 }
 
 
-export function getTimeStamp(d) {
+export function getTimeStamp(dateString) {
+    const d = new Date(dateString);
+    
     return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()} `+
            `${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`;
 }

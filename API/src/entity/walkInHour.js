@@ -44,7 +44,7 @@ export function addWalkInHours(advisorId, walkInHours) {
     for (const i in walkInHours) {
         const hours = walkInHours[i];
         queryPlaceHolder = queryPlaceHolder.concat('(?,?,?,?),');
-        hoursToInsert.push(hours['startTime'], hours['endTime'], hours['weekday'], advisorId);
+        hoursToInsert.push(hours['startTime'], hours['endTime'], hours['weekday'].toUpperCase(), advisorId);
     }
    
     const sql = `INSERT INTO walk_in_hour(start_time, end_time, weekday, advisor_id) VALUES ${ queryPlaceHolder.replace(/.$/, ";") }`;

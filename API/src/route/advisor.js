@@ -46,12 +46,12 @@ router.get('/queue', (req, res) => {
 
 
 router.put('/:id/queue', (req, res) => {
-    res.json(queue.adjustStudentPositionByAdvisorId(req.params.id,req.body)); 
+    res.status(queue.adjustStudentPositionByAdvisorId(req.params.id,req.body)).send(); 
 }); 
 
 
 router.delete('/:id/queue', async (req, res) => {
-    res.json(await queue.deleteStudentByAdvisorId(req.params.id, req.body));
+    res.status(await queue.deleteStudentByAdvisorId(req.params.id, req.body)).send();
 }); 
 
 
@@ -82,7 +82,7 @@ router.get('/:id', (req, res) => {
 router.post('/', (req, res) => {
     advisor.insertAdvisor(req.body)
         .then(success => res.json(success))
-        .catch(error => res.json(error));
+        .catch(error => res.json(error.error.sqlMessage));
 });
 
 //update advisor
