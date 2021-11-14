@@ -4,6 +4,7 @@ import { Student } from '../../models/student';
 import { Reason } from '../../models/reason';
 
 import { ApiService } from '../../services/api.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-student-queue-interface',
@@ -12,18 +13,24 @@ import { ApiService } from '../../services/api.service';
 })
 export class StudentQueueInterfaceComponent implements OnInit {
   title = 'student-queue-interface';
+  environment: any;
+
   advisors: Advisor[] = [];
-  maxStudentsInList: number = 14;
+  maxAdvisorsToShow: number = 5; // the maximum amount of advisors to show on the screen.
+  maxStudentsInList: number = 9; // the maximum amount of students to show in an advisor's student queue before ending the list with '...'
+  maxStudentNameLength: number = 15; // the maximum length that a student's first name can be before it is cut off
   connected: boolean = false;
   timeUpdated: string = "?";
-  bannerText: string = "";
+  //bannerText: string = "";
   /*this.bannerText = "This is an example of the bottom banner text. It should be large enough to be clearly legible by students looking at the interface, " + 
       "and should catch their attention without being annoying or distracting.";*/
-
+  announcements: string[] = [];
+  aIndex: number = 0; // the announcement index
+  isSlideshowRunning: boolean = false;
   reasons: Reason[] = [];
 
   constructor(private apiService: ApiService) {
-    
+    this.environment = environment;
   }
 
   ngOnInit() {
@@ -32,11 +39,7 @@ export class StudentQueueInterfaceComponent implements OnInit {
       new Student('Jane Doe', 'jwd2222', '2021-09-19T19:57:55+00:00'),
       new Student('Jill Smith', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'})
     ]});
-    this.advisors.push({id: 1, firstName: "Kevin", middleName: '', lastName: "Stiner", email: "rcs4321@rit.edu", portraitURL: "../assets/KevinStiner.png", studentQueue: [
-      new Student('Tim Bim', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
-      new Student('Rebecca Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Billy Mann', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'})
-    ]});
+    this.advisors.push({id: 1, firstName: "Melissa", middleName: '', lastName: "Hanna", email: "jnd1234@rit.edu", portraitURL: "../assets/MelissaHanna.png", studentQueue: []});
     this.advisors.push({id: 2, firstName: "Betty", middleName: '', lastName: "Hillman", email: "gym1324@rit.edu", portraitURL: "../assets/BettyHillman.png", studentQueue: [
       new Student('Tim Bim', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
       new Student('Rebecca Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
@@ -56,9 +59,8 @@ export class StudentQueueInterfaceComponent implements OnInit {
       new Student('Dani Tuu', 'jwd2222', '2021-09-19T19:57:55+00:00'),
       new Student('Moe Bo', 'jwd2222', '2021-09-19T19:57:55+00:00')
     ]});
-    this.advisors.push({id: 4, firstName: "Melissa", middleName: '', lastName: "Hanna", email: "jnd1234@rit.edu", portraitURL: "../assets/MelissaHanna.png", studentQueue: []});
-    this.advisors.push({id: 5, firstName: "Kristen", middleName: '', lastName: "Shinohara", email: "gym1324@rit.edu", portraitURL: "../assets/KristenShinohara.png", studentQueue: [
-      new Student('Tim Bim', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
+    this.advisors.push({id: 4, firstName: "Kristen", middleName: '', lastName: "Shinohara", email: "gym1324@rit.edu", portraitURL: "../assets/KristenShinohara.png", studentQueue: [
+      new Student('Timgirgheroihgeoriugherogwehrogirhewohowroihgwrohrpiyhgiwiroihorwohigwoirghoiwr Bim', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
       new Student('Rebecca Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
       new Student('Billy Mann', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
       new Student('Mikah Guell', 'jwd2222', '2021-09-19T19:57:55+00:00'),
@@ -76,8 +78,38 @@ export class StudentQueueInterfaceComponent implements OnInit {
       new Student('Larry Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
       new Student('Shima Plok', 'jwd2222', '2021-09-19T19:57:55+00:00'),
       new Student('Gus Juss', 'jwd2222', '2021-09-19T19:57:55+00:00')
+    ]});
+    this.advisors.push({id: 5, firstName: "Kevin", middleName: '', lastName: "Stiner", email: "rcs4321@rit.edu", portraitURL: "../assets/KevinStiner.png", studentQueue: [
+      new Student('Tim Bim', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
+      new Student('Rebecca Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Billy Mann', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'})
+    ]});
+    this.advisors.push({id: 6, firstName: "Kevin", middleName: '', lastName: "Stiner2", email: "rcs4321@rit.edu", portraitURL: "../assets/KevinStiner.png", studentQueue: [
+      new Student('Tim Bim', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
+      new Student('Rebecca Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Billy Mann', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'})
+    ]});
+    this.advisors.push({id: 7, firstName: "Kevin", middleName: '', lastName: "Stiner3", email: "rcs4321@rit.edu", portraitURL: "../assets/KevinStiner.png", studentQueue: [
+      new Student('Tim Bim', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
+      new Student('Rebecca Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
+      new Student('Billy Mann', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'})
     ]});*/
 
+    //this.announcements.push("../assets/person2.jpg");
+  }
+
+  ngAfterViewInit() {
+    /*setTimeout(() => {
+      if(!this.announcements || !this.announcements[0]) {
+        document.getElementsByClassName("advisor-area")[0].classList.add("full-width");
+        this.maxAdvisorsToShow = 7;
+        console.log(this.maxAdvisorsToShow);
+      }
+      else {
+        document.getElementsByClassName("advisor-area")[0].classList.remove("full-width");
+        this.maxAdvisorsToShow = 5;
+      }
+    }, 50);*/
     this.connect();
   }
   
@@ -96,12 +128,15 @@ export class StudentQueueInterfaceComponent implements OnInit {
     this.connected = false;
     this.apiService.getAllAdvisors().subscribe((data: Advisor[]) => {
       //console.log("getAllAdvisors: ", data);
+      console.log("Advisors acquired.");
+
       this.connected = true;
       this.timeUpdated = this.getCurrentTimeString();
       this.advisors = data;
 
       this.apiService.getAllStudentQueues().subscribe((data: any[]) => {
         //console.log("getAllStudentQueues: ", data);
+        console.log("Student Queues acquired.");
 
         let i = 0;
         while(i < this.advisors.length) {
@@ -115,11 +150,27 @@ export class StudentQueueInterfaceComponent implements OnInit {
       });
     });
 
-    this.apiService.getBannerInfo().subscribe((data: any) => {
+    /*this.apiService.getBannerInfo().subscribe((data: any) => {
       this.bannerText = data.bannerInfo;
       if(this.bannerText.length > 750) {
         this.bannerText = this.bannerText.slice(0, 746);
         this.bannerText += " ...";
+      }
+    });*/
+
+    this.apiService.getAnnouncements().subscribe((data: any) => {
+      console.log("Announcements: ", data);
+      //console.log("Announcements acquired.");
+
+      this.announcements = data;
+      if(!this.announcements || !this.announcements[0]) {
+        document.getElementsByClassName("advisor-area")[0].classList.add("full-width");
+        this.maxAdvisorsToShow = 7;
+      }
+      else {
+        document.getElementsByClassName("advisor-area")[0].classList.remove("full-width");
+        this.maxAdvisorsToShow = 5;
+        this.runAnnouncementsSlideshow();
       }
     });
   }
@@ -157,4 +208,19 @@ export class StudentQueueInterfaceComponent implements OnInit {
       this.bannerText += " ...";
     }
   }*/
+
+  runAnnouncementsSlideshow() {
+    if(!this.isSlideshowRunning) {
+      this.isSlideshowRunning = true;
+
+      setInterval(() => {
+        if(this.aIndex < this.announcements.length) {
+          this.aIndex++;
+        }
+        else {
+          this.aIndex = 0;
+        }
+      }, 10000);
+    }
+  }
 }

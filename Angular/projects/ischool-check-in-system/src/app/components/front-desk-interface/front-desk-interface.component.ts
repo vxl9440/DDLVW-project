@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { FormBuilder } from '@angular/forms';
 import { ApiService } from '../../services/api.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-front-desk-interface',
@@ -15,6 +16,9 @@ import { ApiService } from '../../services/api.service';
 })
 export class FrontDeskInterfaceComponent implements OnInit {
   title = 'front-desk-interface';
+  environment: any;
+  connected: boolean = false; // whether or not we are connected to the server
+
   advisors: Advisor[] = [];
   selectedAdvisor: Advisor = {id: -1, firstName: "", middleName: "", lastName: "", email: "", portraitURL: "", studentQueue: []};
   advisorInfoForm = this.formBuilder.group({
@@ -25,8 +29,10 @@ export class FrontDeskInterfaceComponent implements OnInit {
     portraitURL: ''
   });
 
-  bannerText: string = "";
-  bannerForm = this.formBuilder.group({ bannerText: '' });
+  /*bannerForm = this.formBuilder.group({
+    bannerFiles: []
+  });*/
+  selectedFiles: File[] = [];
 
   reasons: Reason[] = [];
   selectedReason: Reason = new Reason(-1, "", false);
@@ -59,10 +65,12 @@ export class FrontDeskInterfaceComponent implements OnInit {
 
   shouldSubmitForm: boolean = false;
 
-  constructor(private activatedRoute: ActivatedRoute, private authService: AuthService, private apiService: ApiService, private formBuilder: FormBuilder) {}
+  constructor(private activatedRoute: ActivatedRoute, private authService: AuthService, private apiService: ApiService, private formBuilder: FormBuilder) {
+    this.environment = environment;
+  }
 
   ngOnInit() {
-    this.advisors.push({id: 0, firstName: "Elissa", middleName: '', lastName: "Weeden", email: "jnd1234@rit.edu", portraitURL: "../assets/ElissaWeeden.png", studentQueue: [
+    /*this.advisors.push({id: 0, firstName: "Elissa", middleName: '', lastName: "Weeden", email: "jnd1234@rit.edu", portraitURL: "../assets/ElissaWeeden.png", studentQueue: [
       new Student('Jack Smith', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
       new Student('Jane Doe', 'jwd2222', '2021-09-19T19:57:55+00:00'),
       new Student('Jill Smith', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'})
@@ -111,14 +119,14 @@ export class FrontDeskInterfaceComponent implements OnInit {
       new Student('Larry Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
       new Student('Shima Plok', 'jwd2222', '2021-09-19T19:57:55+00:00'),
       new Student('Gus Juss', 'jwd2222', '2021-09-19T19:57:55+00:00')
-    ]});
+    ]});*/
 
     /*this.bannerText = "This is an example of the bottom banner text. It should be large enough to be clearly legible by students looking at the interface, " + 
       "and should catch their attention without being annoying or distracting.";
 
     this.updateBannerTextForm();*/
 
-    this.reasons.push(new Reason(0, "General Questions", false));
+    /*this.reasons.push(new Reason(0, "General Questions", false));
     this.reasons.push(new Reason(1, "Reason 1", true));
     this.reasons.push(new Reason(2, "Reason 2", false));
     this.reasons.push(new Reason(3, "Reason 3", true));
@@ -137,19 +145,19 @@ export class FrontDeskInterfaceComponent implements OnInit {
     this.reasons.push(new Reason(16, "Reason 16", false));
     this.reasons.push(new Reason(17, "Reason 17", true));
     this.reasons.push(new Reason(18, "Reason 18", false));
-    this.reasons.push(new Reason(19, "Reason 19", true));
+    this.reasons.push(new Reason(19, "Reason 19", true));*/
 
     //this.refreshData();
   }
 
   ngAfterViewInit() {
-    this.selectedAdvisor = this.advisors[0];
+    /*this.selectedAdvisor = this.advisors[0];
     this.updateAdvisorInfoForm();
 
     if(this.reasons && this.reasons[0]) {
       console.log("testing 1 2 3");
       this.reasonSetToEditMode();
-    }
+    }*/
     // everything above this is temporary - remove when testing with server
     this.refreshData();
   }
@@ -158,6 +166,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
   refreshData() {
     // GET advisors
     this.apiService.getAllAdvisors().subscribe((data: Advisor[]) => {
+      this.connected = true;
       console.log("FETCHING ADVISORS: ", data);
       this.advisors = data;
 
@@ -180,12 +189,12 @@ export class FrontDeskInterfaceComponent implements OnInit {
     });
 
     // GET banner text
-    this.apiService.getBannerInfo().subscribe((data: any) => {
+    /*this.apiService.getBannerInfo().subscribe((data: any) => {
       console.log("FETCHING BANNER INFO: ", data);
       this.bannerText = data;
       this.selectReason(0);
       this.updateBannerTextForm();
-    });
+    });*/
 
     // GET reasons
     this.apiService.getAllReasons().subscribe((data: Reason[]) => {
@@ -385,12 +394,30 @@ export class FrontDeskInterfaceComponent implements OnInit {
   }
 
   /* -------------------- BANNER INFO STUFF -------------------- */
-  updateBannerTextForm() {
-    this.bannerForm = this.formBuilder.group({ bannerText: this.bannerText });
+  onBannerFileSelected(event: any) {
+    //console.log(event);
+    this.selectedFiles = <File[]>event.target.files;
   }
 
-  saveBannerText() {
+  uploadBannerImages() {
+    const fd = new FormData();
+    for(let file of this.selectedFiles) {
+      fd.append('image', file, file.name);
+    }
 
+    console.log("Uploading images.");
+    this.apiService.createAnnouncements(fd);
+  }
+
+  /*uploadBannerImages() {
+    console.log("Uploading banner image(s).");
+    console.log("images: ", this.bannerForm.get("bannerFiles"));
+    //this.apiService.createAnnouncements();
+  }*/
+
+  clearBanner() {
+    console.log("Clearing banner.");
+    this.apiService.deleteAnnouncements();
   }
 
   /* -------------------- REASON MANAGER STUFF -------------------- */
@@ -498,8 +525,10 @@ export class FrontDeskInterfaceComponent implements OnInit {
   reasonSetToEditMode() {
     this.addingReason = false;
     this.selectReason(0);
-    document.getElementsByClassName("edit-reason-subtitle")[0].classList.remove("toggled-off");
-    document.getElementsByClassName("add-reason-subtitle")[0].classList.add("toggled-off");
+    setTimeout(() => {
+      document.getElementsByClassName("edit-reason-subtitle")[0].classList.remove("toggled-off");
+      document.getElementsByClassName("add-reason-subtitle")[0].classList.add("toggled-off");
+    }, 50);
   }
 
   /* -------------------- ADD ADVISOR STUFF -------------------- */
@@ -520,6 +549,10 @@ export class FrontDeskInterfaceComponent implements OnInit {
 
       this.apiService.createAdvisor(advisorToAdd);
       this.clearAddAdvisorForm();
+      this.deletePopup();
+      setTimeout(() => {
+        this.refreshData();
+      }, 100);
     }
   }
 

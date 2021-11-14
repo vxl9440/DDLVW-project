@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Advisor } from '../models/advisor';
 import { Student } from '../models/student';
 import { Reason } from '../models/reason';
@@ -57,7 +57,10 @@ export class ApiService {
   }
 
   public createAdvisor(advisor: any) {
-    return this.httpClient.post(`${ environment.apiUrl }/meetingHost`, advisor);
+    let httpHeaders = new HttpHeaders({
+      'Content-Type' : 'application/json'
+    });
+    return this.httpClient.post(`${ environment.apiUrl }/meetingHost`, advisor, { headers: httpHeaders });
   }
 
   public updateAdvisor(id: number, advisor: any) {
@@ -120,8 +123,9 @@ export class ApiService {
     return this.httpClient.get<any>(`${ environment.apiUrl }/announcements`);
   }
 
-  public createAnnouncements(files: any) {
-    return this.httpClient.post(`${ environment.apiUrl }/announcements`, files);
+  public createAnnouncements(formData: any) {
+    //return this.httpClient.post(`${ environment.apiUrl }/announcements`, files);
+    return this.httpClient.post(`${ environment.apiUrl }/announcements`, formData);
   }
 
   public deleteAnnouncements() {

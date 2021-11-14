@@ -25,7 +25,7 @@
       </div>
       <div *ngIf="!selectedAdvisor.studentQueue[0]" class="none-text-area"><h1>NONE</h1></div>
     </div>
-    <button class="add-button add-student-button" (click)="createAddStudentPopup()"><img src="../assets/icons/add_box_white_36dp.svg">Add Student</button>
+    <button *ngIf="connected" class="add-button add-student-button" (click)="createAddStudentPopup()"><img src="../assets/icons/add_box_white_36dp.svg">Add Student</button>
   </div>
 
   <!-- The Advisor List Manager -->
@@ -45,14 +45,14 @@
           <button class="x-button" (click)="popupDeleteAdvisor(i)"><img src="../assets/icons/x_white_36dp.svg"></button>
         </div>
         <div *ngIf="!advisors[0]" class="none-text-area"><h1>NONE</h1></div>
-        <div class="add-advisor-button"><button class="add-button" (click)="createAddAdvisorPopup()"><img src="../assets/icons/add_box_white_36dp.svg">Add Advisor</button></div>
+        <div *ngIf="connected" class="add-advisor-button"><button class="add-button" (click)="createAddAdvisorPopup()"><img src="../assets/icons/add_box_white_36dp.svg">Add Advisor</button></div>
       </div>
       <div class="advisor-info" *ngIf="selectedAdvisor.firstName || selectedAdvisor.lastName || selectedAdvisor.portraitURL">
         <img src="{{selectedAdvisor.portraitURL}}" alt="{{selectedAdvisor.portraitURL}}" onerror="this.src='../assets/icons/account_circle_white_36dp.svg'">
         <form [formGroup]="advisorInfoForm" (ngSubmit)="saveAdvisorInfo()">
           <div class="form-row">
             <label for="fname">First name: </label>
-            <input type="text" id="fname" formControlName="fname">
+            <input type="text" id="fname" formControlName="fname" required>
           </div>
           <div class="form-row">
             <label for="mname">Middle name: </label>
@@ -60,11 +60,11 @@
           </div>
           <div class="form-row">
             <label for="lname">Last name: </label>
-            <input type="text" id="lname" formControlName="lname">
+            <input type="text" id="lname" formControlName="lname" required>
           </div>
           <div class="form-row">
             <label for="email">Email: </label>
-            <input type="text" id="email" formControlName="email">
+            <input type="text" id="email" formControlName="email" required>
           </div>
           <div class="form-row">
             <label for="portraitURL">Photo URL: </label>
@@ -78,7 +78,7 @@
   <div class="vertical-line"></div>
   
   <!-- The Banner Info Manager -->
-  <div class="banner-info-manager">
+  <!--div class="banner-info-manager">
     <h2 class="section-label">Banner Info Manager</h2>
     <form [formGroup]="bannerForm" (ngSubmit)="saveBannerText()">
       <label for="bannerText">Banner text: </label>
@@ -86,8 +86,21 @@
       <div>*If the text doesn't fit in this box, it won't fit on the student queue screen!</div>
       <input class="add-button" type="submit" value="Save">
     </form>
+  </div-->
+  <div class="banner-info-manager">
+    <h2 class="section-label">Banner Info Manager</h2>
+    <!--form action="http://{{environment.apiUrl}}/api/announcements" method="post" enctype="multipart/form-data"-->
+    <!--form [formGroup]="bannerForm" (ngSubmit)="uploadBannerImages()"-->
+    <form (ngSubmit)="uploadBannerImages()">
+      <label for="bannerFiles">Banner images: </label>
+      <!--input type="file" name="bannerFiles" multiple accept="image/*" required-->
+      <input type="file" (change)="onBannerFileSelected($event)" multiple accept="image/*" required>
+      <input *ngIf="connected" class="add-button" type="submit" value="Upload">
+      <button *ngIf="connected" class="remove-button" (click)="clearBanner()">Clear Banner</button>
+    </form>
   </div>
 
+  <!-- The Various Popup Boxes -->
   <div class="popup-background-area">
     <!-- The Adjustable Confirmation Popup Box -->
     <div id="confirm" class="popup-box">
@@ -120,7 +133,7 @@
               <div class="popup-buttons-area" *ngIf="addingReason">
                 <input class="popup-button popup-green-button" type="submit" value="Add">
               </div>
-              <div class="popup-buttons-area" *ngIf="!addingReason">
+              <div class="popup-buttons-area" *ngIf="connected && !addingReason">
                 <input class="popup-button popup-green-button" type="submit" value="Save">
                 <button class="popup-button popup-red-button" (click)="deleteReason()">Delete</button>
               </div>
