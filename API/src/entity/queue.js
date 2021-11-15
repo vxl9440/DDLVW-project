@@ -123,11 +123,10 @@ function arrayMove(arr, from, to) {
  * @param {*} data contains student's username
  * @returns SUCCESS or FAIL
  */
-export async function deleteStudentByAdvisorId(advisorId, data) {
+export async function deleteStudentByAdvisorId(advisorId, studentUsername) {
     const queue = read();
     const advisorQueue = queue[advisorId];
-    const studentUsername = data['username'];
-    
+
     if (Array.isArray(advisorQueue) && studentUsername) {
         const removeIndex = advisorQueue.findIndex(student => student.username === studentUsername);
         if (removeIndex > -1) {

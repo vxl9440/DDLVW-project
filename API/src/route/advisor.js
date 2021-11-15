@@ -50,8 +50,8 @@ router.put('/:id/queue', (req, res) => {
 }); 
 
 
-router.delete('/:id/queue', async (req, res) => {
-    res.status(await queue.deleteStudentByAdvisorId(req.params.id, req.body)).send();
+router.delete('/:id/queue/:username', async (req, res) => {
+    res.status(await queue.deleteStudentByAdvisorId(req.params.id, req.params.username)).send();
 }); 
 
 

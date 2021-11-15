@@ -9,5 +9,37 @@
         "Personal Concerns"
       ]
     }
+  ],
+  "6": [
+    {
+      "studentName": "Harold Zebb",
+      "username": "hvz1234",
+      "timeIn": "2021-11-15T00:45:48",
+      "appointment": {},
+      "reasons": []
+    },
+    {
+      "studentName": "New Guy",
+      "username": "nyg1234",
+      "timeIn": "2021-11-15T00:45:55",
+      "appointment": {},
+      "reasons": []
+    },
+    {
+      "studentName": "Gary Loon",
+      "username": "gal1234",
+      "timeIn": "2021-11-15T00:46:13",
+      "appointment": {},
+      "reasons": []
+    }
+  ],
+  "8": [
+    {
+      "studentName": "Temp Student",
+      "username": "tes1234",
+      "timeIn": "2021-11-15T00:50:47",
+      "appointment": {},
+      "reasons": []
+    }
   ]
 }
