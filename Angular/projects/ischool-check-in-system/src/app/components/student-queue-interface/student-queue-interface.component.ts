@@ -15,6 +15,7 @@ export class StudentQueueInterfaceComponent implements OnInit {
   environment: any;
 
   advisors: Advisor[] = [];
+  enabledAdvisors: Advisor[] = [];
   maxAdvisorsToShow: number = 5; // the maximum amount of advisors to show on the screen.
   maxStudentsInList: number = 9; // the maximum amount of students to show in an advisor's student queue before ending the list with '...'
   maxStudentNameLength: number = 15; // the maximum length that a student's first name can be before it is cut off
@@ -144,8 +145,14 @@ export class StudentQueueInterfaceComponent implements OnInit {
             this.advisors[i].studentQueue = studentData[this.advisors[i].id];
           }
 
-          //this.advisors[i].studentQueue = data[this.advisors[i].id];
           i++;
+        }
+
+        this.enabledAdvisors = [];
+        for(let advisor of this.advisors) {
+          if(advisor.enabled) {
+            this.enabledAdvisors.push(advisor);
+          }
         }
       });
     });

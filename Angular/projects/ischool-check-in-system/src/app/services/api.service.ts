@@ -68,6 +68,10 @@ export class ApiService {
     return this.httpClient.delete(`${ environment.apiUrl }/meetingHost/${id}`);
   }
 
+  public toggleAdvisorEnabled(id: number) {
+    return this.httpClient.put(`${ environment.apiUrl }/meetingHost/${id}/toggleStatus`, {});
+  }
+
   /* -------------------- WALK-IN HOURS ENDPOINTS -------------------- */
   public getAdvisorWalkInHours(id: number) {
     return this.httpClient.get<any[]>(`${ environment.apiUrl }/meetingHost/${id}/walkInHours`);
@@ -98,10 +102,8 @@ export class ApiService {
     return this.httpClient.put(`${ environment.apiUrl }/meetingHost/${id}/queue`, studentMoveInfo);
   }
 
-  public deleteStudentFromQueue(id: number, studentUsername: any) {
-    //console.log("[API] id: ", id);
-    //console.log("[API] studentUsername: ", studentUsername);
-    return this.httpClient.delete(`${ environment.apiUrl }/meetingHost/${id}/queue`, studentUsername);
+  public deleteStudentFromQueue(id: number, studentUsername: string) {
+    return this.httpClient.delete(`${ environment.apiUrl }/meetingHost/${id}/queue/${studentUsername}`);
   }
 
   /* -------------------- REGISTRATION ENDPOINTS -------------------- */

@@ -19,9 +19,9 @@
         <div>
           <h3>{{student.studentName}}</h3>
         </div>
-        <button class="misc-button" (click)="queueMoveStudentUp(i)"><img src="../assets/icons/arrow_upward_white_36dp.svg"></button>
-        <button class="misc-button" (click)="queueMoveStudentDown(i)"><img src="../assets/icons/arrow_downward_white_36dp.svg"></button>
-        <button class="x-button" (click)="popupDeleteStudent(i)"><img src="../assets/icons/x_white_36dp.svg"></button>
+        <button class="misc-button" title="Swap student up" (click)="queueMoveStudentUp(i)"><img src="../assets/icons/arrow_upward_white_36dp.svg"></button>
+        <button class="misc-button" title="Swap student down" (click)="queueMoveStudentDown(i)"><img src="../assets/icons/arrow_downward_white_36dp.svg"></button>
+        <button class="x-button" title="Delete student" (click)="popupDeleteStudent(i)"><img src="../assets/icons/x_white_36dp.svg"></button>
       </div>
       <div *ngIf="!selectedAdvisor.studentQueue || !selectedAdvisor.studentQueue[0]" class="none-text-area"><h1>NONE</h1></div>
     </div>
@@ -42,7 +42,8 @@
           </div>
           <!--button class="misc-button" (click)="listMoveAdvisorUp(i)"><img src="../assets/icons/arrow_upward_white_36dp.svg"></button>
           <button class="misc-button" (click)="listMoveAdvisorDown(i)"><img src="../assets/icons/arrow_downward_white_36dp.svg"></button-->
-          <button class="x-button" (click)="popupDeleteAdvisor(i)"><img src="../assets/icons/x_white_36dp.svg"></button>
+          <button *ngIf="!advisor.enabled" class="x-button" title="Enable advisor" (click)="popupEnableAdvisor(i)"><img src="../assets/icons/x_white_36dp.svg"></button>
+          <button *ngIf="advisor.enabled" class="check-button" title="Disable advisor" (click)="popupDisableAdvisor(i)"><img src="../assets/icons/check_white_36dp.svg"></button>
         </div>
         <div *ngIf="!advisors[0]" class="none-text-area"><h1>NONE</h1></div>
         <div *ngIf="connected" class="add-advisor-button"><button class="add-button" (click)="createAddAdvisorPopup()"><img src="../assets/icons/add_box_white_36dp.svg">Add Advisor</button></div>

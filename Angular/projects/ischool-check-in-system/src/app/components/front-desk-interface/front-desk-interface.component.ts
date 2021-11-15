@@ -290,10 +290,11 @@ export class FrontDeskInterfaceComponent implements OnInit {
   // deletes a student from the selected advisor's student queue given the student id.
   queueDeleteStudent(i: number) {
     // DELETE student from queue
-    let studentToDelete = 
+    /*let studentToDelete = 
     {
       "username": this.selectedAdvisor.studentQueue[i].username
-    };
+    };*/
+    let studentToDelete = this.selectedAdvisor.studentQueue[i].username;
 
     console.log("studentToDelete: ", studentToDelete);
     console.log("selectedAdvisor.id: ", this.selectedAdvisor.id);
@@ -301,6 +302,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
     this.apiService.deleteStudentFromQueue(this.selectedAdvisor.id, studentToDelete).subscribe(() => {
       console.log("Student successfully deleted from queue.");
       this.deletePopup();
+      this.refreshData();
     });
   }
 
@@ -388,7 +390,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
   }*/
   
   // deletes an advisor from the list given their id
-  listDeleteAdvisor(i: number) {
+  /*listDeleteAdvisor(i: number) {
     if(this.advisors.length == 1) {
       this.selectedAdvisor = {id: -1, firstName: "", middleName: "", lastName: "", email: "", portraitURL: "", studentQueue: []};
     }
@@ -404,6 +406,15 @@ export class FrontDeskInterfaceComponent implements OnInit {
     // DELETE advisor from API
     this.apiService.deleteAdvisor(i).subscribe(() => {
       console.log("Advisor successfully deleted.");
+      this.refreshData();
+      this.deletePopup();
+    });
+  }*/
+
+  // enables or disables an advisor
+  toggleAdvisorEnabled(i: number) {
+    this.apiService.toggleAdvisorEnabled(i).subscribe(() => {
+      console.log("Advisor successfully enabled/disabled.");
       this.refreshData();
       this.deletePopup();
     });
@@ -724,7 +735,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
   }
 
   // creates a popup box for deleting an advisor from the advisor list
-  popupDeleteAdvisor(i: number) {
+  /*popupDeleteAdvisor(i: number) {
     let advisorName = `${this.advisors[i].firstName} ${this.advisors[i].lastName}`;
 
     this.createConfirmPopup(
@@ -732,6 +743,34 @@ export class FrontDeskInterfaceComponent implements OnInit {
       `Are you sure you want to delete ${advisorName}?`, 
       [
         ["YES", `listDeleteAdvisor(${this.advisors[i].id})`, "red"], 
+        ["NO", "deletePopup()", "gray"]
+      ]
+    );
+  }*/
+
+  // creates a popup box for enabling an advisor
+  popupEnableAdvisor(i: number) {
+    let advisorName = `${this.advisors[i].firstName} ${this.advisors[i].lastName}`;
+
+    this.createConfirmPopup(
+      "Are You Sure?", 
+      `Are you sure you want to enable ${advisorName} on the Student Queue Display?`, 
+      [
+        ["YES", `toggleAdvisorEnabled(this.advisors[${i}].id)`, "green"], 
+        ["NO", "deletePopup()", "gray"]
+      ]
+    );
+  }
+
+  // creates a popup box for disabling an advisor
+  popupDisableAdvisor(i: number) {
+    let advisorName = `${this.advisors[i].firstName} ${this.advisors[i].lastName}`;
+
+    this.createConfirmPopup(
+      "Are You Sure?", 
+      `Are you sure you want to disable ${advisorName} on the Student Queue Display?`, 
+      [
+        ["YES", `toggleAdvisorEnabled(this.advisors[${i}].id)`, "red"], 
         ["NO", "deletePopup()", "gray"]
       ]
     );

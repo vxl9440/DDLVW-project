@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="advisor-area">
-      <div class="advisor-box" *ngFor="let advisor of advisors | slice:0:maxAdvisorsToShow">
+      <div class="advisor-box" *ngFor="let advisor of enabledAdvisors | slice:0:maxAdvisorsToShow">
         <div class="advisor-info">
           <div class="advisor-img-background">
             <img class="advisor-img" src="{{advisor.portraitURL}}" alt="{{advisor.portraitURL}}" onerror="this.onerror=null; this.src='../assets/icons/account_circle_white_36dp.svg'">
