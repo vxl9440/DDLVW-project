@@ -57,10 +57,6 @@ export class ApiService {
   }
 
   public createAdvisor(advisor: any) {
-    /*let httpHeaders = new HttpHeaders({
-      'Content-Type' : 'application/json'
-    });
-    return this.httpClient.post(`${ environment.apiUrl }/meetingHost`, advisor, { headers: httpHeaders });*/
     return this.httpClient.post(`${ environment.apiUrl }/meetingHost`, advisor);
   }
 
@@ -103,6 +99,8 @@ export class ApiService {
   }
 
   public deleteStudentFromQueue(id: number, studentUsername: any) {
+    //console.log("[API] id: ", id);
+    //console.log("[API] studentUsername: ", studentUsername);
     return this.httpClient.delete(`${ environment.apiUrl }/meetingHost/${id}/queue`, studentUsername);
   }
 

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Advisor } from '../../models/advisor';
-import { Student } from '../../models/student';
 import { Reason } from '../../models/reason';
 
 import { ActivatedRoute } from '@angular/router';
@@ -29,10 +28,8 @@ export class FrontDeskInterfaceComponent implements OnInit {
     portraitURL: ''
   });
 
-  /*bannerForm = this.formBuilder.group({
-    bannerFiles: []
-  });*/
   selectedFiles: File[] = [];
+  imagesOnServer: any[] = [];
 
   reasons: Reason[] = [];
   selectedReason: Reason = new Reason(-1, "", false);
@@ -121,11 +118,6 @@ export class FrontDeskInterfaceComponent implements OnInit {
       new Student('Gus Juss', 'jwd2222', '2021-09-19T19:57:55+00:00')
     ]});*/
 
-    /*this.bannerText = "This is an example of the bottom banner text. It should be large enough to be clearly legible by students looking at the interface, " + 
-      "and should catch their attention without being annoying or distracting.";
-
-    this.updateBannerTextForm();*/
-
     /*this.reasons.push(new Reason(0, "General Questions", false));
     this.reasons.push(new Reason(1, "Reason 1", true));
     this.reasons.push(new Reason(2, "Reason 2", false));
@@ -148,6 +140,8 @@ export class FrontDeskInterfaceComponent implements OnInit {
     this.reasons.push(new Reason(19, "Reason 19", true));*/
 
     //this.refreshData();
+    //let timeIn = new Date().toISOString();
+    //console.log(timeIn.slice(0, timeIn.length - 5));
   }
 
   ngAfterViewInit() {
@@ -168,30 +162,22 @@ export class FrontDeskInterfaceComponent implements OnInit {
     this.apiService.getAllAdvisors().subscribe((advisorData: Advisor[]) => {
       this.connected = true;
       console.log("FETCHING ADVISORS: ", advisorData);
-      //this.advisors = data;
 
       // GET student queues
       this.apiService.getAllStudentQueues().subscribe((studentData: any[]) => {
         console.log("FETCHING STUDENT QUEUES: ", studentData);
 
         this.advisors = advisorData;
-        //console.log("this.advisors: ", this.advisors);
-        //let canKeepSelectedAdvisor = false;
 
         let i = 0;
         for(let advisor of this.advisors) {
-          console.log("this.advisors[0].id: ", this.advisors[0].id);
-          console.log("this.selectedAdvisor: ", this.selectedAdvisor);
           if(studentData[advisor.id]) {
             this.advisors[i].studentQueue = studentData[advisor.id];
           }
 
-          //setTimeout(() => {
-            if(advisor.id == this.selectedAdvisor.id) {
-              this.selectedAdvisor = advisor;
-              console.log("yoo");
-            }
-          //}, 50);
+          if(advisor.id == this.selectedAdvisor.id) {
+            this.selectedAdvisor = advisor;
+          }
           
           i++;
         }
@@ -200,21 +186,15 @@ export class FrontDeskInterfaceComponent implements OnInit {
           this.selectedAdvisor = this.advisors[0];
         }
 
-        /*if(!canKeepSelectedAdvisor) {
-          this.selectedAdvisor = this.advisors[0];
-        }*/
-
         this.updateAdvisorInfoForm();
       });
     });
 
-    // GET banner text
-    /*this.apiService.getBannerInfo().subscribe((data: any) => {
-      console.log("FETCHING BANNER INFO: ", data);
-      this.bannerText = data;
-      this.selectReason(0);
-      this.updateBannerTextForm();
-    });*/
+    // GET banner image names
+    this.apiService.getAnnouncements().subscribe((data: any[]) => {
+      console.log("FETCHING BANNER IMAGE NAMES: ", data);
+      this.imagesOnServer = data;
+    });
 
     // GET reasons
     this.apiService.getAllReasons().subscribe((data: Reason[]) => {
@@ -287,6 +267,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
       setTimeout(() => {
         //studentItem.style.animation = "none";
         //belowStudentItem.style.animation = "none";
+
         // PUT student into new queue position
         // The student position starts at 1, not 0 like the studentQueue array. 
         // Therefore, a 'newPosition' of 'i + 2' is equivalent to studentQueue[i + 1].
@@ -301,34 +282,24 @@ export class FrontDeskInterfaceComponent implements OnInit {
         this.apiService.moveStudentInQueue(this.selectedAdvisor.id, studentMoveInfo).subscribe(() => {
           console.log("Student successfully moved down in queue.");
           this.refreshData();
-          //studentItem.style.animation = "none";
-          //belowStudentItem.style.animation = "none";
         });
-
-        /*setTimeout(() => {
-          studentItem.style.animation = "none";
-          belowStudentItem.style.animation = "none";
-        }, 100);*/
       }, 300);
     }
   }
   
+  // deletes a student from the selected advisor's student queue given the student id.
   queueDeleteStudent(i: number) {
     // DELETE student from queue
-    /*let studentToDelete = 
-    `{
-      "username": ${this.selectedAdvisor.studentQueue[i].username}
-    }`;*/
     let studentToDelete = 
     {
       "username": this.selectedAdvisor.studentQueue[i].username
     };
 
     console.log("studentToDelete: ", studentToDelete);
+    console.log("selectedAdvisor.id: ", this.selectedAdvisor.id);
 
     this.apiService.deleteStudentFromQueue(this.selectedAdvisor.id, studentToDelete).subscribe(() => {
       console.log("Student successfully deleted from queue.");
-      //this.selectedAdvisor.studentQueue.splice(i, 1);
       this.deletePopup();
     });
   }
@@ -354,15 +325,6 @@ export class FrontDeskInterfaceComponent implements OnInit {
   // saves the modified advisor info to the API from the advisor info form
   saveAdvisorInfo() {
     // PUT updated advisor info into advisor info on server
-    /*let advisorInfoToUpdate = 
-    `{
-      "firstName": ${this.advisorInfoForm.get("fname")?.value},
-      "middleName": ${this.advisorInfoForm.get("mname")?.value},
-      "lastName": ${this.advisorInfoForm.get("lname")?.value},
-      "email": ${this.advisorInfoForm.get("email")?.value},
-      "portraitURL": ${this.advisorInfoForm.get("portraitURL")?.value},
-      "enabled": true
-    }`;*/
     let advisorInfoToUpdate = 
     {
       "firstName": this.advisorInfoForm.get("fname")?.value,
@@ -445,25 +407,20 @@ export class FrontDeskInterfaceComponent implements OnInit {
       this.refreshData();
       this.deletePopup();
     });
-    // temp
-    //this.advisors.splice(i, 1);
   }
 
   /* -------------------- BANNER INFO STUFF -------------------- */
+  // runs whenever images are selected or unselected (?)
   onBannerFileSelected(event: any) {
-    //console.log(event);
     this.selectedFiles = <File[]>event.target.files;
   }
 
+  // uploads any selected images to the server to be used as banner images on the Student Queue Interface
   uploadBannerImages() {
     const fd = new FormData();
     for(let file of this.selectedFiles) {
       fd.append('announcement_files', file, file.name);
     }
-    /*let fd = "[";
-    for(let file of this.selectedFiles) {
-      fd.append('image', file, file.name);
-    }*/
 
     console.log("Uploading image(s)...");
     this.apiService.createAnnouncements(fd).subscribe(() => {
@@ -472,17 +429,13 @@ export class FrontDeskInterfaceComponent implements OnInit {
     });
   }
 
-  /*uploadBannerImages() {
-    console.log("Uploading banner image(s).");
-    console.log("images: ", this.bannerForm.get("bannerFiles"));
-    //this.apiService.createAnnouncements();
-  }*/
-
+  // deletes all banner images from the server
   clearBanner() {
     console.log("Deleting all banner images...");
     this.apiService.deleteAnnouncements().subscribe(() => {
       console.log("Banner image(s) successfully deleted.");
       this.refreshData();
+      this.deletePopup();
     });
   }
 
@@ -492,11 +445,6 @@ export class FrontDeskInterfaceComponent implements OnInit {
     if(this.shouldSubmitForm) {
       if(this.addingReason) {
         // POST new reason to API
-        /*let reasonToAdd = 
-        `{
-          "name": ${this.reasonForm.get("rname")?.value}, 
-          "needsAppt": ${this.reasonForm.get("rappt")?.value}
-        }`;*/
         let reasonToAdd = 
         {
           "name": this.reasonForm.get("rname")?.value, 
@@ -514,11 +462,6 @@ export class FrontDeskInterfaceComponent implements OnInit {
       }
       else {
         // PUT existing reason in API
-        /*let reasonToUpdate = 
-        `{
-          "name": ${this.reasonForm.get("rname")?.value}, 
-          "needsAppt": ${this.reasonForm.get("rappt")?.value}
-        }`;*/
         let reasonToUpdate = 
         {
           "name": this.reasonForm.get("rname")?.value, 
@@ -528,7 +471,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
         console.log("reasonToUpdate: ", reasonToUpdate);
 
         this.apiService.updateReason(this.selectedReason.id, reasonToUpdate).subscribe(() => {
-          console.log("Reason updated successfully.");
+          console.log("Reason successfully updated.");
           this.refreshData();
           this.clearReasonForm();
         });
@@ -546,7 +489,6 @@ export class FrontDeskInterfaceComponent implements OnInit {
 
   // deletes the selected reason from the API
   deleteReason() {
-    //for(let [i, reason] of this.reasons.entries()) {
     for(let reason of this.reasons) {
       if(reason == this.selectedReason) {
         console.log("Reason to delete: ", reason);
@@ -557,7 +499,6 @@ export class FrontDeskInterfaceComponent implements OnInit {
             this.selectedReason = this.reasons[0];
           }
   
-          //this.reasons.splice(i, 1);
           //this.selectedReason = new Reason(-1, "", false);
           this.shouldSubmitForm = false;
           this.updateReasonForm();
@@ -620,14 +561,6 @@ export class FrontDeskInterfaceComponent implements OnInit {
   addAdvisor() {
     if(this.shouldSubmitForm) {
       // POST new advisor to API
-      /*let advisorToAdd = 
-      `{
-        "firstName": ${this.addAdvisorForm.get("fname")?.value}, 
-        "middleName": ${this.addAdvisorForm.get("mname")?.value}, 
-        "lastName": ${this.addAdvisorForm.get("lname")?.value}, 
-        "email": ${this.addAdvisorForm.get("email")?.value}, 
-        "portraitURL": ${this.addAdvisorForm.get("portraitURL")?.value}
-      }`;*/
       let advisorToAdd = 
       {
         "firstName": this.addAdvisorForm.get("fname")?.value, 
@@ -645,9 +578,6 @@ export class FrontDeskInterfaceComponent implements OnInit {
         this.deletePopup();
         this.refreshData();
       });
-      /*setTimeout(() => {
-        this.refreshData();
-      }, 100);*/
     }
   }
 
@@ -667,15 +597,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
   addStudent() {
     if(this.shouldSubmitForm) {
       // POST new student to API
-      /*let studentToAdd = 
-      `{
-        "studentName": ${this.addStudentForm.get("name")?.value}, 
-        "username": ${this.addStudentForm.get("username")?.value}, 
-        "appointment": false, 
-        "reasons": [], 
-        "meetingHost": ${this.selectedAdvisor.id},
-        "timeIn": ${new Date().toString()}
-      }`;*/
+      let timeIn = new Date().toISOString();
       let studentToAdd = 
       {
         "studentName": this.addStudentForm.get("name")?.value, 
@@ -683,13 +605,17 @@ export class FrontDeskInterfaceComponent implements OnInit {
         "appointment": false, 
         "reasons": [], 
         "meetingHost": this.selectedAdvisor.id,
-        "timeIn": new Date().toString()
+        "timeIn": timeIn.slice(0, timeIn.length - 5)
       };
 
       console.log("studentToAdd: ", studentToAdd);
     
-      this.apiService.checkInStudent(studentToAdd);
-      this.clearAddStudentForm();
+      this.apiService.checkInStudent(studentToAdd).subscribe(() => {
+        console.log("Student successfully added.");
+        this.clearAddStudentForm();
+        this.deletePopup();
+        this.refreshData();
+      });
     }
   }
 
@@ -805,7 +731,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
       "Are You Sure?", 
       `Are you sure you want to delete ${advisorName}?`, 
       [
-        ["YES", `listDeleteAdvisor(${i})`, "red"], 
+        ["YES", `listDeleteAdvisor(${this.advisors[i].id})`, "red"], 
         ["NO", "deletePopup()", "gray"]
       ]
     );

@@ -89,15 +89,22 @@
   </div-->
   <div class="banner-info-manager">
     <h2 class="section-label">Banner Info Manager</h2>
-    <!--form action="http://{{environment.apiUrl}}/api/announcements" method="post" enctype="multipart/form-data"-->
-    <!--form [formGroup]="bannerForm" (ngSubmit)="uploadBannerImages()"-->
-    <form (ngSubmit)="uploadBannerImages()">
-      <label for="announcement_files">Banner Images: </label>
-      <!--input type="file" name="bannerFiles" multiple accept="image/*" required-->
-      <input type="file" name="announcement_files" (change)="onBannerFileSelected($event)" multiple accept="image/*" required>
-      <input *ngIf="connected" class="add-button" type="submit" value="Upload">
-      <button *ngIf="connected" class="remove-button long-button" (click)="popupDeleteBannerImages()">Delete All Banner Images</button>
-    </form>
+    <div class="banner-info-stuff">
+      <div class="banner-info-item">
+        <h3>Images currently on the server:</h3>
+        <ul>
+          <li *ngFor="let image of imagesOnServer">{{image}}</li>
+          <li  *ngIf="!imagesOnServer || !imagesOnServer[0]">None</li>
+        </ul>
+      </div>
+      <form (ngSubmit)="uploadBannerImages()">
+        <label for="announcement_files"><h3>Banner Images: </h3></label>
+        <input type="file" name="announcement_files" (change)="onBannerFileSelected($event)" multiple accept="image/*" required>
+        <input *ngIf="connected" class="add-button" type="submit" value="Upload">
+        <button *ngIf="connected" class="remove-button long-button" (click)="popupDeleteBannerImages()">Delete All Banner Images</button>
+      </form>
+      <div class="banner-info-item"></div>
+    </div>
   </div>
 
   <!-- The Various Popup Boxes -->
