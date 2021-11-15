@@ -140,12 +140,12 @@ export function updateAdvisor(data, targetId) {
 
 
 /**
- * delete a advisor from DB
+ * toggle an advisor's enabled status
  * @param {*} targetId advisor id
  * @returns SUCCESS or FAIL
  */
-export function deleteAdvisor(targetId) {
-    const sql = 'DELETE FROM advisor WHERE advisor_id = ?';
+export function toggleStatus(targetId) {
+    const sql = 'UPDATE advisor SET enabled = !enabled WHERE advisor_id = ?';
 
-    return _delete(sql, [parseInt(targetId)]);
+    return update(sql, [parseInt(targetId)]);
 }

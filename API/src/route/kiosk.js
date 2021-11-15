@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getAllReasons } from '../entity/reason.js';
+import { getAllReasons, getReasonsByIds } from '../entity/reason.js';
 import { getAdvisorByWalkInAvailability } from '../entity/advisor.js';
 import { getStudentData } from '../util/ldap.js';
 import { insertRegistration } from '../entity/registration.js';
@@ -35,7 +35,7 @@ router.get('/student/:id', async (req, res) => {
 });
 
 // registration/checkin
-router.post('/checkin', async (req, res) => { 
+router.post('/registration/checkin', async (req, res) => { 
     try {
         const reqBody = req.body;
         

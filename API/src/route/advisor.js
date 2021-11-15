@@ -92,9 +92,9 @@ router.put('/:id', (req, res) => {
         .catch(error => res.json(error));
 });
 
-//delete advisor
-router.delete('/:id', (req, res) => {
-    advisor.deleteAdvisor(req.params.id)
+//toggle advisor enabled status
+router.put('/:id/toggleStatus', (req, res) => {
+    advisor.toggleStatus(req.params.id)
         .then(success => res.json(success))
         .catch(error => res.json(error));
 });
