@@ -142,6 +142,9 @@ export class FrontDeskInterfaceComponent implements OnInit {
     //this.refreshData();
     //let timeIn = new Date().toISOString();
     //console.log(timeIn.slice(0, timeIn.length - 5));
+    
+    // testing different way of formatting time
+    //console.log(new Date().toISOString()/*.split("Z")[0]*/);
   }
 
   ngAfterViewInit() {
@@ -616,7 +619,8 @@ export class FrontDeskInterfaceComponent implements OnInit {
         "appointment": false, 
         "reasons": [], 
         "meetingHost": this.selectedAdvisor.id,
-        "timeIn": timeIn.slice(0, timeIn.length - 5)
+        //"timeIn": timeIn.slice(0, timeIn.length - 5)
+        "timeIn": timeIn
       };
 
       console.log("studentToAdd: ", studentToAdd);
