@@ -9,11 +9,13 @@ import SwiftUI
 
 struct DeniedScreen: View {
 	
+	let reasonMessage: String
 	@EnvironmentObject var sessionManager: SessionManager
+	
 	
     var body: some View {
 		VStack {
-			Text("Due to your provided visit reasons, you will need to schedule an appointment and come back later.")
+			Text(reasonMessage)
 				.padding(.horizontal, 100)
 				.font(.system(size: 60))
 				.multilineTextAlignment(.center)
@@ -35,7 +37,7 @@ struct DeniedScreen: View {
 
 struct DeniedScreen_Previews: PreviewProvider {
     static var previews: some View {
-        DeniedScreen()
+		DeniedScreen(reasonMessage: CheckInPhase.Resolution.DeniedReasons.reasonRequiresAppt.message())
 			.previewInterfaceOrientation(.landscapeLeft)
     }
 }

@@ -9,8 +9,6 @@ import SwiftUI
 
 struct Card: ViewModifier {
 	
-	//@Environment(\.colorScheme) private var colorScheme
-	
 	var cornerRadius: Double = 15
 	var width: CGFloat? = 1000
 	var height: CGFloat? = 800

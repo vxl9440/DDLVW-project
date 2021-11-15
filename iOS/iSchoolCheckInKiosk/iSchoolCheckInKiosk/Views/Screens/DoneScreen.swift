@@ -13,8 +13,8 @@ struct DoneScreen: View {
 	
     var body: some View {
 		switch resolution {
-			case .denied:
-				DeniedScreen()
+			case let .denied(reason):
+				DeniedScreen(reasonMessage: reason.message())
 			case .confirmed:
 				ConfirmationScreen()
 		}

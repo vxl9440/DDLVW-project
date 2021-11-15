@@ -52,7 +52,7 @@ final class CheckInSession: ObservableObject {
 	}
 	
 
-	func proceed() {
+	func proceed() async {
 		if phase == .identification {
 			startTimer()
 		} else {
@@ -60,19 +60,51 @@ final class CheckInSession: ObservableObject {
 		}
 		
 		if student?.appointment != nil {
-			phase = .done(.confirmed)
+			await attemptRegistration()
 		} else if phase == .advisors {
 			phase = .reasons
 		} else if phase == .reasons {
 			// check if reasons contains a requires appointment reason
 			if (reasons.contains(where: { $0.needsAppt })) {
-				phase = .done(.denied)
+				phase = .done(.denied(.reasonRequiresAppt))
 			} else {
-				phase = .done(.confirmed)
+				await attemptRegistration()
 			}
 		} else {
 			phase = .advisors
 		}
+	}
+	
+	
+	private func attemptRegistration() async {
+		if let student = student, let advisor = advisor {
+			if await submitRegistration(for: student, and: advisor) {
+				phase = .done(.confirmed)
+			} else {
+				phase = .done(.denied(.networkError))
+			}
+		} else {
+			phase = .done(.denied(.missingData))
+		}
+	}
+	
+	
+	private func submitRegistration(for student: Student, and advisor: Advisor) async -> Bool {
+		
+		let reasonIDs = Array(reasons).map { $0.id }
+		
+		if let studentName = student.studentName {
+			let registration = Registration(studentName: studentName,
+											username: student.studentUsername,
+											appointment: student.hasAppt,
+											reasons: reasonIDs,
+											meetingHost: advisor.id,
+											timeIn: Date.timeIn)
+		
+			return await NetworkManager.checkIn(with: registration)
+		}
+		
+		return false
 	}
 	
 	
@@ -95,9 +127,9 @@ final class CheckInSession: ObservableObject {
 	}
 	
 	
-	func selectAdvisor(_ advisor: Advisor) {
+	func selectAdvisor(_ advisor: Advisor) async {
 		self.advisor = advisor
-		proceed()
+		await proceed()
 	}
 	
 	

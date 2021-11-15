@@ -26,6 +26,7 @@ enum AlertContext {
 	static let cardReaderError = AlertItem(title: AlertTitle.cardReaderError, message: AlertMessage.cardReaderError)
 	static let identificationError = AlertItem(title: AlertTitle.identificationError, message: AlertMessage.nextStep)
 	static let noAvailableAdvisor = AlertItem(title: AlertTitle.noAdvisors, message: AlertMessage.noAdvisors)
+	static let systemError = AlertItem(title: AlertTitle.systemErr, message: AlertMessage.nextStep)
 }
 
 
@@ -34,6 +35,7 @@ fileprivate enum AlertTitle {
 	static let cardReaderError = "Card Reader Error"
 	static let identificationError = "Error Identifying Student"
 	static let noAdvisors = "No Advisors"
+	static let systemErr = "There was an error processing request"
 }
 
 

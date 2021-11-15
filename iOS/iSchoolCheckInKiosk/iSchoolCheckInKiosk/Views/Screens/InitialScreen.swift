@@ -17,6 +17,7 @@ struct InitialScreen: View {
 	@State private var advisors: [Advisor] = []
 
 	let focusCheck = Timer.publish(every: 5, tolerance: 5, on: .main, in: .common).autoconnect()
+	let advisorRefresh = Timer.publish(every: 30, tolerance: 30, on: .main, in: .common).autoconnect()
 	
 	var body: some View {
 		HStack {
@@ -24,15 +25,15 @@ struct InitialScreen: View {
 			CardSwipe
 			Spacer()
 			WalkInHoursView(advisors: advisors)
-			
 		}
-		.task { advisors = await NetworkManager.fetchAvailableAdivsors() }
+		.task { await updateAdvisorList() }
+		.onReceive(advisorRefresh) { _ in Task { await updateAdvisorList() } }
 	}
 	
 	var CardSwipe: some View {
 		VStack {
 			
-			// Not actually a tangible view - just using as a UIResponder
+			// Not actually a visible UI element - just using as a UIResponder
 			StudentIDSwipeListener(inputHandler: sessionManager.inputHandler)
 				.frame(width: 0, height: 0)
 				.focused($isFocused)
@@ -70,6 +71,11 @@ struct InitialScreen: View {
 					.frame(width: 30, height: 30)
 			}
 		}
+	}
+	
+	
+	private func updateAdvisorList() async {
+		advisors = await NetworkManager.fetchAvailableAdivsors(errorIfFail: false)
 	}
 }
 

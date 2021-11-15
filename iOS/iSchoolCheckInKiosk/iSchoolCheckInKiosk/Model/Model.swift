@@ -17,15 +17,6 @@ struct Advisor: Identifiable, Decodable {
 	let walkInHours: [WalkInHours]?
 }
 
-struct WalkInHours: Identifiable, Decodable {
-	let id: Int
-	let startTime: String
-	let endTime: String
-	let weekday: String
-	
-	var start: String { startTime.to12HrTime }
-	var end: String { endTime.to12HrTime }
-}
 
 extension Advisor {
 	
@@ -40,16 +31,32 @@ extension Advisor {
 }
 
 
+struct WalkInHours: Identifiable, Decodable {
+	let id: Int
+	let startTime: String
+	let endTime: String
+	let weekday: String
+	
+	var start: String { startTime.to12HrTime }
+	var end: String { endTime.to12HrTime }
+}
+
+
 struct Student: Identifiable, Decodable {
 	let id = UUID()
 	let studentName: String?
 	let studentUsername: String
 	let appointment: Appointment?
 	
+	var hasAppt: Bool {
+		return appointment != nil
+	}
+	
 	private enum CodingKeys: String, CodingKey {
 		case studentName, studentUsername, appointment
 	}
 }
+
 
 struct Appointment: Decodable {
 	let advisorName: String
@@ -62,4 +69,14 @@ struct Reason: Identifiable, Hashable, Decodable {
 	let id: Int
 	let name: String
 	let needsAppt: Bool
+}
+
+
+struct Registration: Encodable {
+	let studentName: String
+	let username: String
+	let appointment: Bool
+	let reasons: [Int]
+	let meetingHost: Int
+	let timeIn: String
 }

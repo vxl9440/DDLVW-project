@@ -55,7 +55,7 @@ struct NavControls: View {
 			
 			Spacer()
 			
-			Button { session.proceed() } label: {
+			Button { Task { await session.proceed() } } label: {
 				HStack {
 					ButtonText("Next")
 					Image(systemName: SFSymbols.arrowForward)

@@ -15,11 +15,11 @@
 		882DA9E726FD351600EAEA8B /* Strings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 882DA9E626FD351600EAEA8B /* Strings.plist */; };
 		882DA9EB26FD364200EAEA8B /* BusinessRules.plist in Resources */ = {isa = PBXBuildFile; fileRef = 882DA9EA26FD364200EAEA8B /* BusinessRules.plist */; };
 		882DA9ED26FD3CE900EAEA8B /* BusinessRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882DA9EC26FD3CE900EAEA8B /* BusinessRules.swift */; };
-		883DBB4E26F53192007DD2D5 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 883DBB4D26F53192007DD2D5 /* WebView.swift */; };
 		883DBB5026F5529B007DD2D5 /* IDCardGraphic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 883DBB4F26F5529B007DD2D5 /* IDCardGraphic.swift */; };
 		883DBB5526F555A4007DD2D5 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 883DBB5426F555A4007DD2D5 /* HeaderView.swift */; };
 		883DBB5726F556E9007DD2D5 /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 883DBB5626F556E9007DD2D5 /* SessionManager.swift */; };
 		883DBB5C26F55BA5007DD2D5 /* CheckInPhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 883DBB5B26F55BA5007DD2D5 /* CheckInPhase.swift */; };
+		883E9A8C274205C10039F2FD /* Date+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 883E9A8B274205C10039F2FD /* Date+Ext.swift */; };
 		8875187526E58491002046E2 /* CheckInSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8875187426E58491002046E2 /* CheckInSession.swift */; };
 		889559CF26E27C14005490A6 /* InitialScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889559CE26E27C14005490A6 /* InitialScreen.swift */; };
 		889559D126E27C25005490A6 /* ReasonsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 889559D026E27C25005490A6 /* ReasonsScreen.swift */; };
@@ -50,11 +50,11 @@
 		882DA9E626FD351600EAEA8B /* Strings.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Strings.plist; sourceTree = "<group>"; };
 		882DA9EA26FD364200EAEA8B /* BusinessRules.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BusinessRules.plist; sourceTree = "<group>"; };
 		882DA9EC26FD3CE900EAEA8B /* BusinessRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessRules.swift; sourceTree = "<group>"; };
-		883DBB4D26F53192007DD2D5 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 		883DBB4F26F5529B007DD2D5 /* IDCardGraphic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDCardGraphic.swift; sourceTree = "<group>"; };
 		883DBB5426F555A4007DD2D5 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		883DBB5626F556E9007DD2D5 /* SessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
 		883DBB5B26F55BA5007DD2D5 /* CheckInPhase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInPhase.swift; sourceTree = "<group>"; };
+		883E9A8B274205C10039F2FD /* Date+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Ext.swift"; sourceTree = "<group>"; };
 		8875187426E58491002046E2 /* CheckInSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckInSession.swift; sourceTree = "<group>"; };
 		889559CE26E27C14005490A6 /* InitialScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialScreen.swift; sourceTree = "<group>"; };
 		889559D026E27C25005490A6 /* ReasonsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReasonsScreen.swift; sourceTree = "<group>"; };
@@ -105,6 +105,7 @@
 				88195FE226FFB3F1008A286A /* PreviewContent.swift */,
 				889559DB26E27DFA005490A6 /* Constants.swift */,
 				88F1A932271221D100BCE624 /* String+Ext.swift */,
+				883E9A8B274205C10039F2FD /* Date+Ext.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -158,7 +159,6 @@
 			isa = PBXGroup;
 			children = (
 				889559DF26E2A7D4005490A6 /* ReasonView.swift */,
-				883DBB4D26F53192007DD2D5 /* WebView.swift */,
 				883DBB4F26F5529B007DD2D5 /* IDCardGraphic.swift */,
 				883DBB5426F555A4007DD2D5 /* HeaderView.swift */,
 				88C7CDF32727298400C97629 /* WalkInHoursView.swift */,
@@ -285,7 +285,6 @@
 				88195FDF26FF9FC9008A286A /* AlertItem.swift in Sources */,
 				8875187526E58491002046E2 /* CheckInSession.swift in Sources */,
 				889559D126E27C25005490A6 /* ReasonsScreen.swift in Sources */,
-				883DBB4E26F53192007DD2D5 /* WebView.swift in Sources */,
 				889559CF26E27C14005490A6 /* InitialScreen.swift in Sources */,
 				88F43987272649230058394D /* DoneScreen.swift in Sources */,
 				889559D526E27C57005490A6 /* MeetingHostScreen.swift in Sources */,
@@ -301,6 +300,7 @@
 				883DBB5C26F55BA5007DD2D5 /* CheckInPhase.swift in Sources */,
 				889559D726E27C63005490A6 /* DeniedScreen.swift in Sources */,
 				88C7CDF42727298400C97629 /* WalkInHoursView.swift in Sources */,
+				883E9A8C274205C10039F2FD /* Date+Ext.swift in Sources */,
 				883DBB5026F5529B007DD2D5 /* IDCardGraphic.swift in Sources */,
 				882DA9E526FCF98D00EAEA8B /* TextStyles.swift in Sources */,
 				88F1A931271216F500BCE624 /* SwipeInputHandler.swift in Sources */,

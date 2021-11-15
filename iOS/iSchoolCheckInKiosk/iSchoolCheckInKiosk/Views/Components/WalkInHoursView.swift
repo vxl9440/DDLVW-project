@@ -18,15 +18,24 @@ struct WalkInHoursView: View {
 	let advisors: [Advisor]
 	
     var body: some View {
-		VStack(alignment: .leading) {
+		VStack {
 			Title("Current Walk In Hours")
 				.padding()
 			
-			ScrollView {
-				ForEach(advisors.withHours()) { advisor in
-					AdvisorScheduleCell(advisor: advisor)
+			if advisors.count == 0 {
+				Spacer()
+				Text("No Advisors With Current Walk-In Hours")
+					.font(.custom(Font.primary, size: 22))
+					.foregroundColor(.secondary)
+				Spacer()
+			} else {
+				ScrollView {
+					ForEach(advisors.withHours()) { advisor in
+						AdvisorScheduleCell(advisor: advisor)
+					}
 				}
 			}
+			
 		}
 		.background(Color(uiColor: .systemGray6))
 		.cornerRadius(14)

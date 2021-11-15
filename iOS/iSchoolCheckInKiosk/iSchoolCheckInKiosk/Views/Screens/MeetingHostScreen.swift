@@ -29,7 +29,9 @@ struct MeetingHostScreen: View {
 				LazyVGrid(columns: columns) {
 					ForEach(advisors) { advisor in
 						Button {
-							session.selectAdvisor(advisor)
+							Task {
+								await session.selectAdvisor(advisor)
+							}
 						} label: {
 							MeetingHostCell(advisor: advisor)
 								.frame(height: 340)

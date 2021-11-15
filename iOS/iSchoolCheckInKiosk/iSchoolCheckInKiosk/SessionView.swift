@@ -19,13 +19,8 @@ import SwiftUI
 
 struct SessionView: View {
     
-	// TODO: Initialize a session for each iteration of a session
-	// when form resets, nullify session and wait for action before creating the next one
 	@ObservedObject var session: CheckInSession
-	
 	@EnvironmentObject var sessionManager: SessionManager
-
-	// Used to present alerts
 	@StateObject private var errorManager = ErrorManager.shared
 	
 	
