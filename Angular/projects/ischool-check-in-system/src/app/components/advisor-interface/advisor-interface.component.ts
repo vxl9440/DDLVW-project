@@ -113,100 +113,65 @@ export class AdvisorInterfaceComponent implements OnInit {
         this.advisor = advisorData[2]; // for testing only - when uncommenting code above, remove this
         //this.advisor = advisorData.advisor; // uncomment when done testing/demoing
 
-        //if(studentData[this.advisor.id]) {
-          this.advisor.studentQueue = studentData[this.advisor.id];
+        this.advisor.studentQueue = studentData[this.advisor.id];
 
-          /*let i = 0;
-          for(let student of this.advisor.studentQueue) {
-            console.log("student.username: ", student.username);
-            console.log("this.selectedStudent.username: ", this.selectedStudent.username);
-            console.log("---------------------------------");
-            if(student.username == this.selectedStudent.username) {
-              this.selectedStudent = student;
-              (document.getElementsByClassName("student-item-bar")[i] as HTMLDivElement).classList.add("selected-student");
-              //this.setSelectedStudent(i);
+        if(this.selectedStudent.id && this.selectedStudent.id == -1 && this.advisor.studentQueue && this.advisor.studentQueue[0]) {
+          this.selectedStudent = this.advisor.studentQueue[0];
+        }
+
+        // GET walk-in hours data
+        this.apiService.getAdvisorWalkInHours(this.advisor.id).subscribe((data: any[]) => {
+          console.log("FETCHING WALK-IN DATA: ", data);
+          if(data) {
+            this.walkInDataExists = true;
+          }
+          else {
+            this.walkInDataExists = false;
+          }
+
+          let mondayInfo = ["", ""];
+          let tuesdayInfo = ["", ""];
+          let wednesdayInfo = ["", ""];
+          let thursdayInfo = ["", ""];
+          let fridayInfo = ["", ""];
+
+          for(let day of data) {
+            switch(day.weekday) {
+              case 'MON':
+                mondayInfo[0] = this.checkTimeLength(day.startTime);
+                mondayInfo[1] = this.checkTimeLength(day.endTime);
+                break;
+              case 'TUE':
+                tuesdayInfo[0] = this.checkTimeLength(day.startTime);
+                tuesdayInfo[1] = this.checkTimeLength(day.endTime);
+                break;
+              case 'WED':
+                wednesdayInfo[0] = this.checkTimeLength(day.startTime);
+                wednesdayInfo[1] = this.checkTimeLength(day.endTime);
+                break;
+              case 'THU':
+                thursdayInfo[0] = this.checkTimeLength(day.startTime);
+                thursdayInfo[1] = this.checkTimeLength(day.endTime);
+                break;
+              case 'FRI':
+                fridayInfo[0] = this.checkTimeLength(day.startTime);
+                fridayInfo[1] = this.checkTimeLength(day.endTime);
+                break;
             }
-
-            i++;
-          }*/
-
-          if(this.selectedStudent.id && this.selectedStudent.id == -1 && this.advisor.studentQueue && this.advisor.studentQueue[0]) {
-            this.selectedStudent = this.advisor.studentQueue[0];
-
-            /*setTimeout(() => {
-              (document.getElementsByClassName("student-item-bar")[0] as HTMLDivElement).classList.add("selected-student");
-            }, 50);*/
           }
 
-          console.log("selectedStudent: ", this.selectedStudent);
-
-          /*if(this.advisor.studentQueue[0]) {
-            this.selectedStudent = this.advisor.studentQueue[0];
-            console.log("selectedStudent: ", this.selectedStudent);
-            setTimeout(() => {
-              (document.getElementsByClassName("student-item-bar")[0] as HTMLDivElement).classList.add("selected-student");
-            }, 50);
-          }*/
-        //}
-      });
-
-      // GET reasons
-      /*this.apiService.getAllReasons().subscribe((data: Reason[]) => {
-        console.log("FETCHING REASONS: ", data);
-      });*/
-
-      // GET walk-in hours data
-      this.apiService.getAdvisorWalkInHours(this.advisor.id).subscribe((data: any[]) => {
-        console.log("FETCHING WALK-IN DATA: ", data);
-        if(data) {
-          this.walkInDataExists = true;
-        }
-        else {
-          this.walkInDataExists = false;
-        }
-
-        let mondayInfo = ["", ""];
-        let tuesdayInfo = ["", ""];
-        let wednesdayInfo = ["", ""];
-        let thursdayInfo = ["", ""];
-        let fridayInfo = ["", ""];
-
-        for(let day of data) {
-          switch(day.weekday) {
-            case 'MON':
-              mondayInfo[0] = this.checkTimeLength(day.startTime);
-              mondayInfo[1] = this.checkTimeLength(day.endTime);
-              break;
-            case 'TUE':
-              tuesdayInfo[0] = this.checkTimeLength(day.startTime);
-              tuesdayInfo[1] = this.checkTimeLength(day.endTime);
-              break;
-            case 'WED':
-              wednesdayInfo[0] = this.checkTimeLength(day.startTime);
-              wednesdayInfo[1] = this.checkTimeLength(day.endTime);
-              break;
-            case 'THU':
-              thursdayInfo[0] = this.checkTimeLength(day.startTime);
-              thursdayInfo[1] = this.checkTimeLength(day.endTime);
-              break;
-            case 'FRI':
-              fridayInfo[0] = this.checkTimeLength(day.startTime);
-              fridayInfo[1] = this.checkTimeLength(day.endTime);
-              break;
-          }
-        }
-
-        this.walkInHoursForm = this.formBuilder.group({
-          mondayStart: mondayInfo[0],
-          mondayEnd: mondayInfo[1],
-          tuesdayStart: tuesdayInfo[0],
-          tuesdayEnd: tuesdayInfo[1],
-          wednesdayStart: wednesdayInfo[0],
-          wednesdayEnd: wednesdayInfo[1],
-          thursdayStart: thursdayInfo[0],
-          thursdayEnd: thursdayInfo[1],
-          fridayStart: fridayInfo[0],
-          fridayEnd: fridayInfo[1]
+          this.walkInHoursForm = this.formBuilder.group({
+            mondayStart: mondayInfo[0],
+            mondayEnd: mondayInfo[1],
+            tuesdayStart: tuesdayInfo[0],
+            tuesdayEnd: tuesdayInfo[1],
+            wednesdayStart: wednesdayInfo[0],
+            wednesdayEnd: wednesdayInfo[1],
+            thursdayStart: thursdayInfo[0],
+            thursdayEnd: thursdayInfo[1],
+            fridayStart: fridayInfo[0],
+            fridayEnd: fridayInfo[1]
+          });
         });
       });
     });
@@ -215,6 +180,19 @@ export class AdvisorInterfaceComponent implements OnInit {
     /*this.advisorWalkInHours = this.getWalkInHoursInfo(this.advisor.id);
     this.setWalkInInfo();*/
   }
+
+  /*refreshStudentQueue() {
+    // GET student queue
+    this.apiService.getAllStudentQueues().subscribe((studentData: any[]) => {
+      console.log("FETCHING STUDENT QUEUES: ", studentData);
+      
+      this.advisor.studentQueue = studentData[this.advisor.id];
+
+      if(this.selectedStudent.id && this.selectedStudent.id == -1 && this.advisor.studentQueue && this.advisor.studentQueue[0]) {
+        this.selectedStudent = this.advisor.studentQueue[0];
+      }
+    });
+  }*/
 
   /*// gets the advisor's walk-in hours info
   getWalkInHoursInfo(id: number) {
@@ -339,62 +317,59 @@ export class AdvisorInterfaceComponent implements OnInit {
   updateWalkInInfo() {
     let walkInData = [
       {
-        id: 0,
+        //id: 0,
         startTime: this.walkInHoursForm.get('mondayStart')?.value,
-        endTime: this.walkInHoursForm.get('mondayStart')?.value,
+        endTime: this.walkInHoursForm.get('mondayEnd')?.value,
         weekday: 'MON'
       },
       {
-        id: 0,
+        //id: 0,
         startTime: this.walkInHoursForm.get('tuesdayStart')?.value,
-        endTime: this.walkInHoursForm.get('tuesdayStart')?.value,
+        endTime: this.walkInHoursForm.get('tuesdayEnd')?.value,
         weekday: 'TUE'
       },
       {
-        id: 0,
+        //id: 0,
         startTime: this.walkInHoursForm.get('wednesdayStart')?.value,
-        endTime: this.walkInHoursForm.get('wednesdayStart')?.value,
+        endTime: this.walkInHoursForm.get('wednesdayEnd')?.value,
         weekday: 'WED'
       },
       {
-        id: 0,
+        //id: 0,
         startTime: this.walkInHoursForm.get('thursdayStart')?.value,
-        endTime: this.walkInHoursForm.get('thursdayStart')?.value,
+        endTime: this.walkInHoursForm.get('thursdayEnd')?.value,
         weekday: 'THU'
       },
       {
-        id: 0,
+        //id: 0,
         startTime: this.walkInHoursForm.get('fridayStart')?.value,
-        endTime: this.walkInHoursForm.get('fridayStart')?.value,
+        endTime: this.walkInHoursForm.get('fridayEnd')?.value,
         weekday: 'FRI'
       }
     ];
 
-    if(this.walkInDataExists) {
+    /*if(this.walkInDataExists) {
       //PUT walk-in hours data
       this.apiService.updateAdvisorWalkInHours(this.advisor.id, walkInData);
     }
     else {
       //POST walk-in hours data
       this.apiService.createAdvisorWalkInHours(this.advisor.id, walkInData);
-    }
+    }*/
 
-    this.refreshData();
+
+    this.apiService.deleteAdvisorWalkInHours(this.advisor.id).subscribe(() => {
+      console.log("Advisor Walk-In Hours successfully deleted.");
+      this.apiService.createAdvisorWalkInHours(this.advisor.id, walkInData).subscribe(() => {
+        console.log("Advisor Walk-In Hours successfully created.");
+        this.refreshData();
+      });
+    });
   }
 
   // sets selected student info in the typescript and html
   setSelectedStudent(i: number) {
-    /*if((document.getElementsByClassName("selected-student")[0] as HTMLDivElement)) {
-      (document.getElementsByClassName("selected-student")[0] as HTMLDivElement).classList.remove("selected-student");
-    }
-    console.log("```````````````````");
-    console.log("this.selectedStudent: ", this.selectedStudent);
-    console.log("this.advisor.studentQueue[i]: ", this.advisor.studentQueue[i]);
-    console.log(document.getElementsByClassName("student-item-bar")[i] as HTMLDivElement);
-    console.log("i: ", i);
-    console.log("```````````````````");*/
     this.selectedStudent = this.advisor.studentQueue[i];
-    //(document.getElementsByClassName("student-item-bar")[i] as HTMLDivElement).classList.add("selected-student");
   }
 
   // starts a meeting with the currently selected student
@@ -507,7 +482,15 @@ export class AdvisorInterfaceComponent implements OnInit {
       let aboveStudentItem = (document.getElementsByClassName("student-item")[i - 1] as HTMLDivElement);
       aboveStudentItem.style.animation = "swap-student-down";
       aboveStudentItem.style.animationDuration = "0.3s";
-      studentItem.style.animationFillMode = "forwards";
+      aboveStudentItem.style.animationFillMode = "forwards";
+
+      // makes sure the meeting student swaps for any ongoing meetings if needed
+      if(i - 1 == this.meetingStudentIndex) {
+        this.meetingStudentIndex = i;
+      }
+      else if(i == this.meetingStudentIndex) {
+        this.meetingStudentIndex = i - 1;
+      }
 
       // wait until animation completes, then actually swap students in database
       setTimeout(() => {
@@ -529,10 +512,7 @@ export class AdvisorInterfaceComponent implements OnInit {
           console.log("Student successfully moved up in queue.");
           // refresh data to reflect change in database
           this.refreshData();
-
-          /*if(this.selectedStudent.username == studentMoveInfo.username) {
-            this.setSelectedStudent(i - 1);
-          }*/
+          //this.refreshStudentQueue();
         });
       }, 300);
     }
@@ -552,7 +532,15 @@ export class AdvisorInterfaceComponent implements OnInit {
       let belowStudentItem = (document.getElementsByClassName("student-item")[i + 1] as HTMLDivElement);
       belowStudentItem.style.animation = "swap-student-up";
       belowStudentItem.style.animationDuration = "0.3s";
-      studentItem.style.animationFillMode = "forwards";
+      belowStudentItem.style.animationFillMode = "forwards";
+
+      // makes sure the meeting student swaps for any ongoing meetings if needed
+      if(i + 1 == this.meetingStudentIndex) {
+        this.meetingStudentIndex = i;
+      }
+      else if(i == this.meetingStudentIndex) {
+        this.meetingStudentIndex = i + 1;
+      }
 
       // wait until animation completes, then actually swap students in database
       setTimeout(() => {
@@ -574,12 +562,7 @@ export class AdvisorInterfaceComponent implements OnInit {
           console.log("Student successfully moved down in queue.");
           // refresh data to reflect change in database
           this.refreshData();
-
-          console.log("selectedStudent: ", this.selectedStudent);
-
-          /*if(this.selectedStudent.username == studentMoveInfo.username) {
-            this.setSelectedStudent(i + 1);
-          }*/
+          //this.refreshStudentQueue();
         });
       }, 300);
     }

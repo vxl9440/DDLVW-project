@@ -10,8 +10,8 @@
     <div class="student-queue-manager">
       <h2>Students Checked In</h2>
       <div class="student-queue-stuff">
-        <div class="student-item" *ngFor="let student of advisor.studentQueue; let i = index;" [ngClass]="{'meeting-student-item':meetingInProgress && meetingStudent == student}">
-          <div class="student-item-bar" [ngClass]="{'selected-student':selectedStudent == student}" (click)="setSelectedStudent(i)">
+        <div class="student-item" *ngFor="let student of advisor.studentQueue; let i = index;" [ngClass]="{'meeting-student-item':meetingInProgress && meetingStudent.username == student.username}">
+          <div class="student-item-bar" [ngClass]="{'selected-student':selectedStudent.username == student.username}" (click)="setSelectedStudent(i)">
             <h3>{{student.studentName}}</h3><div *ngIf="!student.appointment || !student.appointment.startTime">W</div><div *ngIf="student.appointment && student.appointment.startTime">A</div>
           </div>
           <button class="misc-button" (click)="queueMoveStudentUp(i)"><img src="../assets/icons/arrow_upward_white_36dp.svg"></button>
@@ -42,7 +42,7 @@
 
       <!--div class="meeting-clock" *ngIf="meetingInProgress">{{meetingDuration}}</div-->
       <button class="meeting-button green-button" *ngIf="!meetingInProgress && advisor.studentQueue && advisor.studentQueue[0]" (click)="startMeeting()">Start Meeting</button>
-      <button class="meeting-button red-button" *ngIf="meetingInProgress && meetingStudent == selectedStudent" (click)="popupEndMeeting(meetingStudentIndex)">{{meetingDuration}}</button>
+      <button class="meeting-button red-button" *ngIf="meetingInProgress && meetingStudent.username == selectedStudent.username" (click)="popupEndMeeting(meetingStudentIndex)">{{meetingDuration}}</button>
       <!--button class="meeting-button red-button" *ngIf="meetingInProgress && meetingStudent == selectedStudent" (click)="endMeeting()" (mouseenter)="showEndMeetingText()" (mouseleave)="stopShowingEndMeetingText()">{{meetingDuration}}</button-->
       <div *ngIf="!advisor.studentQueue || !advisor.studentQueue[0]" class="none-text-area"><h1>NONE</h1></div>
     </div>
