@@ -144,7 +144,9 @@ export class FrontDeskInterfaceComponent implements OnInit {
     //console.log(timeIn.slice(0, timeIn.length - 5));
     
     // testing different way of formatting time
-    //console.log(new Date().toISOString()/*.split("Z")[0]*/);
+    /*console.log(new Date().toISOString());
+    let timeArray = new Date().toISOString().split(".");
+    console.log(timeArray[0] + timeArray[1][timeArray[1].length - 1]);*/
   }
 
   ngAfterViewInit() {
@@ -185,7 +187,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
           i++;
         }
 
-        if(this.selectedAdvisor.id == -1) {
+        if(this.selectedAdvisor.id == -1 && this.advisors && this.advisors[0]) {
           this.selectedAdvisor = this.advisors[0];
         }
 
@@ -241,7 +243,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
         let studentMoveInfo = 
         {
           "username": this.selectedAdvisor.studentQueue[i].username,
-          "newPosition": i,
+          "newPosition": i
         };
 
         console.log("studentMoveInfo: ", studentMoveInfo);
@@ -277,7 +279,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
         let studentMoveInfo = 
         {
           "username": this.selectedAdvisor.studentQueue[i].username,
-          "newPosition": i + 2,
+          "newPosition": i + 2
         };
 
         console.log("studentMoveInfo: ", studentMoveInfo);
@@ -611,7 +613,8 @@ export class FrontDeskInterfaceComponent implements OnInit {
   addStudent() {
     if(this.shouldSubmitForm) {
       // POST new student to API
-      let timeIn = new Date().toISOString();
+      //let timeIn = new Date().toISOString();
+      let timeArray = new Date().toISOString().split(".");
       let studentToAdd = 
       {
         "studentName": this.addStudentForm.get("name")?.value, 
@@ -620,7 +623,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
         "reasons": [], 
         "meetingHost": this.selectedAdvisor.id,
         //"timeIn": timeIn.slice(0, timeIn.length - 5)
-        "timeIn": timeIn
+        "timeIn": timeArray[0] + timeArray[1][timeArray[1].length - 1] // the current time minus any fractional millisecond stuff (but still retaining the timezone identifier)
       };
 
       console.log("studentToAdd: ", studentToAdd);
