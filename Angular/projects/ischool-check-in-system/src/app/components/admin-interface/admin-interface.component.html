@@ -1,1 +1,21 @@
-<p>admin-interface works!</p>
+<div class="grid-container">
+    <div class="top-bar">
+        <img src="../assets/icons/RIT_hor_w.svg">
+        <div class="center-info">
+            <h1>School of Information</h1>
+            <h2>Admin Panel</h2>
+        </div>
+        <div class="blank-div"></div>
+    </div>
+
+    <div>
+        <h1>Analytics Dashboard</h1>
+        <form [formGroup]="dateRangeForm" (ngSubmit)="getData()">
+            <label for="timeStart">Date Range</label>
+            <input type="date" id="timeStart" formControlName="timeStart"> to <input type="date" id="timeEnd" formControlName="timeEnd"><br>
+            <input class="meeting-button green-button" type="submit" value="Submit">
+        </form>
+    </div>
+
+    <div class="bottom-bar"></div>
+</div>
