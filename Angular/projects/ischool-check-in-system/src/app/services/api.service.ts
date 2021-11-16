@@ -139,7 +139,7 @@ export class ApiService {
 
   /* -------------------- ANALYTICS ENDPOINTS -------------------- */
   public getAnalyticsDownload(from: string, to: string) {
-    return this.httpClient.get<any>(`${ environment.apiUrl }/analytics/download?from=${ from }&to=${ to }`);
+    window.open(`${ environment.apiUrl }/analytics/download?from=${ from }&to=${ to }`);
   }
   
   public getAnalyticsAvgWaitingTime(from: string, to: string) {
