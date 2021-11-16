@@ -2,51 +2,39 @@ import { Router } from 'express';
 import * as analytics from '../entity/analytics.js';
 const router = Router();
 
-// This API for testing
-// router.get('/downloadTest/:from/:to', (req, res) => {
-//     const data = {
-//         'from': req.params.from,
-//         'to': req.params.to
-//     }
-//     analytics.constructFile(data)
-//         .then((file) => {
-//             if(file['status'] === -1){
-//                 res.json({'message': 'Server error'});
-//             } else {
-//                 res.download(file['fileLocation']);
-//             }
-//         })
-//         .catch(err => res.json(err));
-// }); 
 
-// real one
 router.get('/download', (req, res) => {
-    analytics.constructFile(req.body)
+    console.log(req.query);
+    analytics.constructFile(req.query.from, req.query.to)
         .then((file) => {
-            if (file['status'] === -1) {
-                res.json({'message': 'Server error'});
-            } else {
-                res.download(file['fileLocation']);
-            }
+            console.log("Sending file for download", file);
+            res.download(file, 'report.csv', function (err) {
+                if (err) {
+                    res.status(404);
+                }
+            });
         })
-        .catch(err => res.json(err));
+        .catch(err => {
+            console.log(err);
+            res.status(404).json(err);
+        });
 }); 
 
 
 router.get('/avgWaitingTime', (req, res) => {
-    analytics.getAvgWaitingTime(req.body)
+    analytics.getAvgWaitingTime(req.query.from, req.query.to)
         .then(value => res.json(value))
         .catch(err => res.json(err));
 }); 
 
 router.get('/avgStudentPerDay', (req, res) => {
-    analytics.getAvgStudentPerDay(req.body)
+    analytics.getAvgStudentPerDay(req.query.from, req.query.to)
         .then(value => res.json(value))
         .catch(err => res.json(err));
 }); 
 
 router.get('/mostCommonReason', (req, res) => {
-    analytics.getMostCommonReason(req.body)
+    analytics.getMostCommonReason(req.query.from, req.query.to)
         .then(value => res.json(value))
         .catch(err => res.json(err));
 }); 

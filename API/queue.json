@@ -10,34 +10,47 @@
       ]
     }
   ],
-  "6": [
+  "6": [],
+  "8": [
     {
-      "studentName": "Harold Zebb",
-      "username": "hvz1234",
-      "timeIn": "2021-11-15T00:45:48",
+      "studentName": "Bear Grylls",
+      "username": "bmg1234",
+      "timeIn": "2021-11-16T00:55:14Z",
+      "appointment": {},
+      "reasons": []
+    },
+    {
+      "studentName": "Mark Markinson",
+      "username": "mmm1234",
+      "timeIn": "2021-11-16T00:55:43Z",
       "appointment": {},
       "reasons": []
     },
     {
       "studentName": "New Guy",
       "username": "nyg1234",
-      "timeIn": "2021-11-15T00:45:55",
+      "timeIn": "2021-11-16T02:13:12Z",
       "appointment": {},
       "reasons": []
     },
     {
-      "studentName": "Gary Loon",
-      "username": "gal1234",
-      "timeIn": "2021-11-15T00:46:13",
+      "studentName": "Harold Zebb",
+      "username": "hvz1234",
+      "timeIn": "2021-11-16T02:13:18Z",
       "appointment": {},
       "reasons": []
-    }
-  ],
-  "8": [
+    },
     {
-      "studentName": "Temp Student",
-      "username": "tes1234",
-      "timeIn": "2021-11-15T00:50:47",
+      "studentName": "Rachel Muu",
+      "username": "rem1234",
+      "timeIn": "2021-11-16T02:13:22Z",
+      "appointment": {},
+      "reasons": []
+    },
+    {
+      "studentName": "Anthony Tonison",
+      "username": "ant1234",
+      "timeIn": "2021-11-16T02:13:28Z",
       "appointment": {},
       "reasons": []
     }

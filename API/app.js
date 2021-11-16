@@ -8,6 +8,7 @@ import kioskRouter from './src/route/kiosk.js';
 import registrationRouter from './src/route/registration.js';
 import analyticsRouter from './src/route/analytics.js';
 import proxy from 'express-http-proxy';
+import cors from 'cors';
 
 const port = 8080;
 const app  = express();
@@ -16,13 +17,27 @@ const app  = express();
 app.use(express.static('public/'));
 
 // TODO: change this header if deploying to production
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "http://localhost:4200");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-    res.header("Access-Control-Allow-Credentials", true);
-    res.header("Access-Control-Allow-Methods", "POST, DELETE, GET, PUT");
-    next();
-});
+app.use(
+    cors({ 
+        origin: "*", 
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+        allowedHeaders: [
+            'Content-Type', 
+            'Authorization', 
+            'Origin', 
+            'x-access-token', 
+            'XSRF-TOKEN',
+            'X-PINGOTHER',
+            'X-Requested-With',
+            'Accept',
+            'Access-Control-Request-Method',
+            'Access-Control-Request-Headers'
+        ], 
+        preflightContinue: false,
+        credentials: true,
+        optionsSuccessStatus: 204
+    })
+);
 
 // Add JWT Authorization middleware first
 // app.use(jwt({ secret: 'ischool', algorithms: ['HS256'] })
@@ -31,13 +46,13 @@ app.use(function(req, res, next) {
 //     ]})
 // );
 
-app.use((err, req, res, next) => {
-    if (err.name === 'UnauthorizedError') {
-        res.status(err.status).send({ message: err.message });
-        return;
-    }
-    next();
-});
+// app.use((err, req, res, next) => {
+//     if (err.name === 'UnauthorizedError') {
+//         res.status(err.status).send({ message: err.message });
+//         return;
+//     }
+//     next();
+// });
 
 // forward request to the PHP script which will redirect to Shib auth
 // then it will return a JWT

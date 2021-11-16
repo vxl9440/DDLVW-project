@@ -6,7 +6,6 @@ import { fileURLToPath } from 'url';
 import { v1 } from 'uuid';
 
 const __dirname = fileURLToPath(import.meta.url);
-const filePath = path.resolve(__dirname, '../../../');
 
 
 /**
@@ -55,27 +54,24 @@ function constructLine(record){
  * @returns an object contains file locatiion
  */
 function createFile(content) {
-    const fileLocation = path.resolve(__dirname, '../../../'+v1()+'.csv');
-    try {
-        writeFileSync(fileLocation, content)
-    } catch (err) {
-        return {
-            'status' : -1
-        };
-    }
-    return {
-       'status': 1,
-       'fileLocation': fileLocation 
-    };
+    return new Promise((resolve, reject) => {
+        const fileLocation = path.resolve(__dirname, '../../../csv/'+v1()+'.csv');
+        try {
+            writeFileSync(fileLocation, content);
+            resolve(fileLocation);
+        } catch (err) {
+            reject(err);
+        }
+    });
 }
 
 /**
  * 
- * @param {*} data contains from and to
+ * @param {*} from, to are both string dates like 'YYYY-MM-DD'
  * @returns a csv file
  */
-export async function constructFile(data) {
-   const records = await getRecords(data['from'],data['to']);
+export async function constructFile(from, to) {
+   const records = await getRecords(from, to);
 //    return an empty object if records is empty
    if (records.length === 0) return {};
    var flag = records[0]['registrationId'];
@@ -94,25 +90,25 @@ export async function constructFile(data) {
    return createFile(content);
 }
 
-export function getAvgWaitingTime(data){
+export function getAvgWaitingTime(from, to){
     const sql = `SELECT FORMAT(FLOOR(AVG(TIME_TO_SEC(meeting_start_time) - TIME_TO_SEC(check_in_time))),0) AS 'value' 
                 FROM registration
                 WHERE check_in_time BETWEEN ? AND ?;`;
-    const sqlParam = [data['from']+' 00:00:00',data['to']+ ' 23:59:59'];
+    const sqlParam = [from+' 00:00:00', to+ ' 23:59:59'];
     return select(sql,sqlParam);
 }
 
-export function getAvgStudentPerDay(data){
+export function getAvgStudentPerDay(from, to){
     const sql = `SELECT FORMAT(FLOOR(AVG(t.cnt)),0) AS 'value'
                  FROM (SELECT DATE(check_in_time),check_in_time AS 'cit', COUNT(*) AS 'cnt' 
                        FROM registration 
                        GROUP BY DATE(check_in_time)) t 
                  WHERE t.cit BETWEEN ? AND ?;`;
-    const sqlParam = [data['from']+' 00:00:00',data['to']+ ' 23:59:59'];
+    const sqlParam = [from+' 00:00:00', to+ ' 23:59:59'];
     return select(sql,sqlParam);
 }
 
-export function getMostCommonReason(data){
+export function getMostCommonReason(from, to){
     const sql = `SELECT re.reason_name AS 'value'
                  FROM (SELECT rra.reason_id,COUNT(rra.reason_id) AS cnt
                       FROM registration_reason_assoc rra INNER JOIN registration reg
@@ -120,6 +116,6 @@ export function getMostCommonReason(data){
                       GROUP BY rra.reason_id
                       ORDER BY COUNT(rra.reason_id) DESC LIMIT 1) t INNER JOIN reason re
                  ON t.reason_id = re.reason_id;`;
-    const sqlParam = [data['from']+' 00:00:00',data['to']+ ' 23:59:59'];
+    const sqlParam = [from +' 00:00:00', to+ ' 23:59:59'];
     return select(sql,sqlParam);
 }
