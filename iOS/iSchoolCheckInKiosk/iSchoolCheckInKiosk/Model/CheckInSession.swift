@@ -116,7 +116,7 @@ final class CheckInSession: ObservableObject {
 		}
 	}
 	
-	
+	// TODO: Use this on Initial screen
 	func getAvailableAdvisors() async -> [Advisor] {
 		let advisors = await NetworkManager.fetchAvailableAdivsors()
 		if advisors.isEmpty {
