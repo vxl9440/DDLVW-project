@@ -175,10 +175,6 @@ export class AdvisorInterfaceComponent implements OnInit {
         });
       });
     });
-    
-    // get/set walk-in hours info
-    /*this.advisorWalkInHours = this.getWalkInHoursInfo(this.advisor.id);
-    this.setWalkInInfo();*/
   }
 
   /*refreshStudentQueue() {
@@ -192,33 +188,6 @@ export class AdvisorInterfaceComponent implements OnInit {
         this.selectedStudent = this.advisor.studentQueue[0];
       }
     });
-  }*/
-
-  /*// gets the advisor's walk-in hours info
-  getWalkInHoursInfo(id: number) {
-    // GET /meetingHost/{id}/walkInHours
-    return [{
-        startTime: "13:00:00",
-        endTime: "14:30:00",
-        weekday: "Mon"
-      }, {
-        startTime: "11:00:00",
-        endTime: "14:00:00",
-        weekday: "Tue"
-      }, {
-        startTime: "13:00:00",
-        endTime: "14:30:00",
-        weekday: "Wed"
-      }, {
-        startTime: "9:00:00",
-        endTime: "12:00:00",
-        weekday: "Thu"
-      }, {
-        startTime: "13:00:00",
-        endTime: "14:30:00",
-        weekday: "Fri"
-      }
-    ];
   }*/
 
   // signs out of the interface (will be routed back to the interface picker)
@@ -267,53 +236,7 @@ export class AdvisorInterfaceComponent implements OnInit {
     }
   }
 
-  /*// sets walk-in hours info in the walk-in hours form using the advisorWalkInHours data
-  setWalkInInfo() {
-    let mondayInfo = ["", ""];
-    let tuesdayInfo = ["", ""];
-    let wednesdayInfo = ["", ""];
-    let thursdayInfo = ["", ""];
-    let fridayInfo = ["", ""];
-
-    for(let day of this.advisorWalkInHours) {
-      switch(day.weekday) {
-        case "Mon":
-          mondayInfo[0] = this.checkTimeLength(day.startTime);
-          mondayInfo[1] = this.checkTimeLength(day.endTime);
-          break;
-        case "Tue":
-          tuesdayInfo[0] = this.checkTimeLength(day.startTime);
-          tuesdayInfo[1] = this.checkTimeLength(day.endTime);
-          break;
-        case "Wed":
-          wednesdayInfo[0] = this.checkTimeLength(day.startTime);
-          wednesdayInfo[1] = this.checkTimeLength(day.endTime);
-          break;
-        case "Thu":
-          thursdayInfo[0] = this.checkTimeLength(day.startTime);
-          thursdayInfo[1] = this.checkTimeLength(day.endTime);
-          break;
-        case "Fri":
-          fridayInfo[0] = this.checkTimeLength(day.startTime);
-          fridayInfo[1] = this.checkTimeLength(day.endTime);
-          break;
-      }
-    }
-
-    this.walkInHoursForm = this.formBuilder.group({
-      mondayStart: mondayInfo[0],
-      mondayEnd: mondayInfo[1],
-      tuesdayStart: tuesdayInfo[0],
-      tuesdayEnd: tuesdayInfo[1],
-      wednesdayStart: wednesdayInfo[0],
-      wednesdayEnd: wednesdayInfo[1],
-      thursdayStart: thursdayInfo[0],
-      thursdayEnd: thursdayInfo[1],
-      fridayStart: fridayInfo[0],
-      fridayEnd: fridayInfo[1]
-    });
-  }*/
-
+  // deletes and replaces the walk-in hours of the current advisor on the server with the values in the walk-in hours area of the interface
   updateWalkInInfo() {
     let walkInData = [
       {
@@ -378,7 +301,18 @@ export class AdvisorInterfaceComponent implements OnInit {
     this.meetingInProgress = true;
     this.meetingStudentIndex = this.advisor.studentQueue.indexOf(this.meetingStudent);
 
-    this.runMeetingTimer();
+    let timeArray = new Date().toISOString().split(".");
+    let meetingStartTime = timeArray[0] + timeArray[1][timeArray[1].length - 1]; // the current time minus any fractional millisecond stuff (but still retaining the timezone identifier)
+
+    let waitTimeReq = {
+      timeIn: this.meetingStudent.timeIn,
+      meetingStartTime: meetingStartTime
+    }
+
+    this.apiService.startMeeting(waitTimeReq).subscribe(() => {
+      console.log("Meeting successfully started.");
+      this.runMeetingTimer();
+    });
   }
 
   // creates a popup asking if you are sure you want to end an in-progress meeting
@@ -398,7 +332,6 @@ export class AdvisorInterfaceComponent implements OnInit {
   // ends an in-progress meeting
   endMeeting() {
     // PUT time into analytics
-    //this.meetingStudent = new Student('', '', '');
     this.meetingStudent = {
       id: -1,
       studentName: "",
@@ -494,9 +427,6 @@ export class AdvisorInterfaceComponent implements OnInit {
 
       // wait until animation completes, then actually swap students in database
       setTimeout(() => {
-        //studentItem.style.animation = "none";
-        //aboveStudentItem.style.animation = "none";
-
         // PUT student into new queue position
         // The student position starts at 1, not 0 like the studentQueue array. 
         // Therefore, a 'newPosition' of 'i' is equivalent to studentQueue[i - 1].
@@ -544,9 +474,6 @@ export class AdvisorInterfaceComponent implements OnInit {
 
       // wait until animation completes, then actually swap students in database
       setTimeout(() => {
-        //studentItem.style.animation = "none";
-        //belowStudentItem.style.animation = "none";
-
         // PUT student into new queue position
         // The student position starts at 1, not 0 like the studentQueue array. 
         // Therefore, a 'newPosition' of 'i + 2' is equivalent to studentQueue[i + 1].
@@ -575,7 +502,6 @@ export class AdvisorInterfaceComponent implements OnInit {
     if(this.meetingStudent.username == studentToDelete) {
       this.meetingInProgress = false;
       this.meetingDuration = "00:00";
-      //this.meetingStudent = new Student('', '', '');
       this.meetingStudent = {
         id: -1,
         studentName: "",
@@ -597,7 +523,6 @@ export class AdvisorInterfaceComponent implements OnInit {
       this.refreshData();
 
       if(!this.advisor.studentQueue || !this.advisor.studentQueue[0]) {
-        //this.selectedStudent = new Student('', '', '');
         this.selectedStudent = {
           id: -1,
           studentName: "",

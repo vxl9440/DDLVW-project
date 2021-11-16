@@ -234,9 +234,6 @@ export class FrontDeskInterfaceComponent implements OnInit {
       aboveStudentItem.style.animationFillMode = "forwards";
 
       setTimeout(() => {
-        //studentItem.style.animation = "none";
-        //aboveStudentItem.style.animation = "none";
-
         // PUT student into new queue position
         // The student position starts at 1, not 0 like the studentQueue array. 
         // Therefore, a 'newPosition' of 'i' is equivalent to studentQueue[i - 1].
@@ -270,9 +267,6 @@ export class FrontDeskInterfaceComponent implements OnInit {
       belowStudentItem.style.animationFillMode = "forwards";
 
       setTimeout(() => {
-        //studentItem.style.animation = "none";
-        //belowStudentItem.style.animation = "none";
-
         // PUT student into new queue position
         // The student position starts at 1, not 0 like the studentQueue array. 
         // Therefore, a 'newPosition' of 'i + 2' is equivalent to studentQueue[i + 1].
@@ -295,10 +289,6 @@ export class FrontDeskInterfaceComponent implements OnInit {
   // deletes a student from the selected advisor's student queue given the student id.
   queueDeleteStudent(i: number) {
     // DELETE student from queue
-    /*let studentToDelete = 
-    {
-      "username": this.selectedAdvisor.studentQueue[i].username
-    };*/
     let studentToDelete = this.selectedAdvisor.studentQueue[i].username;
 
     console.log("studentToDelete: ", studentToDelete);
@@ -613,8 +603,8 @@ export class FrontDeskInterfaceComponent implements OnInit {
   addStudent() {
     if(this.shouldSubmitForm) {
       // POST new student to API
-      //let timeIn = new Date().toISOString();
       let timeArray = new Date().toISOString().split(".");
+      let timeIn = timeArray[0] + timeArray[1][timeArray[1].length - 1]; // the current time minus any fractional millisecond stuff (but still retaining the timezone identifier)
       let studentToAdd = 
       {
         "studentName": this.addStudentForm.get("name")?.value, 
@@ -622,8 +612,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
         "appointment": false, 
         "reasons": [], 
         "meetingHost": this.selectedAdvisor.id,
-        //"timeIn": timeIn.slice(0, timeIn.length - 5)
-        "timeIn": timeArray[0] + timeArray[1][timeArray[1].length - 1] // the current time minus any fractional millisecond stuff (but still retaining the timezone identifier)
+        "timeIn": timeIn
       };
 
       console.log("studentToAdd: ", studentToAdd);

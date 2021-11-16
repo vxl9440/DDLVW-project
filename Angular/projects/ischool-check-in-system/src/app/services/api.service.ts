@@ -111,6 +111,10 @@ export class ApiService {
     return this.httpClient.post(`${ environment.apiUrl }/registration/checkin`, student);
   }
 
+  public startMeeting(waitTimeReq: any) {
+    return this.httpClient.put(`${ environment.apiUrl }/registration/startMeeting`, waitTimeReq);
+  }
+
   /* -------------------- BANNER INFO ENDPOINTS -------------------- */
   /*public getBannerInfo() {
     return this.httpClient.get<any>(`${ environment.apiUrl }/bannerInfo`);
