@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { Advisor } from '../../models/advisor';
 import { Student } from '../../models/student';
+import { Reason } from '../../models/reason';
 import { FormBuilder } from '@angular/forms';
 import { ApiService } from '../../services/api.service';
 
@@ -16,8 +17,10 @@ export class AdvisorInterfaceComponent implements OnInit {
   
   //advisorID: number = 1;
   advisor: Advisor; // the current advisor
-  selectedStudent: Student; // the currently selected student in the advisor's student queue
-  meetingStudent: Student; // the student currently in a meeting
+  //selectedStudent: Student; // the currently selected student in the advisor's student queue
+  selectedStudent: any; // the currently selected student in the advisor's student queue
+  //meetingStudent: Student; // the student currently in a meeting
+  meetingStudent: any; // the student currently in a meeting
   meetingStudentIndex: number; // the queue position of the student currently in a meeting
 
   meetingInProgress: boolean = false; // whether or not a meeting is currently in progress
@@ -63,8 +66,27 @@ export class AdvisorInterfaceComponent implements OnInit {
       studentQueue: []
     };
 
-    this.selectedStudent = new Student('', '', '');
+    //this.selectedStudent = new Student('', '', '');
+    this.selectedStudent = {
+      id: -1,
+      studentName: "",
+      username: "",
+      timeIn: "",
+      appointment: null,
+      reasons: null
+    };
 
+    this.meetingStudent = {
+      id: -1,
+      studentName: "",
+      username: "",
+      timeIn: "",
+      appointment: null,
+      reasons: null
+    };
+  }
+
+  ngAfterViewInit() {
     this.refreshData();
     //this.connect();
   }
@@ -80,28 +102,58 @@ export class AdvisorInterfaceComponent implements OnInit {
   refreshData() {
     // GET advisor
     // for testing only
-    this.apiService.getAllAdvisors().subscribe((data: Advisor[]) => {
-      console.log('getAllAdvisors(): ', data);
-      this.advisor = data[0];
-    //this.activatedRoute.data.subscribe((response: any) => {
-      //console.log('FETCHING ADVISOR: ', response);
-      //this.advisor = response.advisor;
+    this.apiService.getAllAdvisors().subscribe((advisorData: Advisor[]) => {
+      console.log('FETCHING ADVISOR: ', advisorData);
+    //this.activatedRoute.data.subscribe((advisorData: any) => {
+      //console.log('FETCHING ADVISOR: ', advisorData);
 
       // GET student queue
-      this.apiService.getAllStudentQueues().subscribe((data: any[]) => {
-        console.log("FETCHING STUDENT QUEUES: ", data);
-        if(data[this.advisor.id]) {
-          this.advisor.studentQueue = data[this.advisor.id];
-          if(this.advisor.studentQueue[0]) {
+      this.apiService.getAllStudentQueues().subscribe((studentData: any[]) => {
+        console.log("FETCHING STUDENT QUEUES: ", studentData);
+        this.advisor = advisorData[2]; // for testing only - when uncommenting code above, remove this
+        //this.advisor = advisorData.advisor; // uncomment when done testing/demoing
+
+        //if(studentData[this.advisor.id]) {
+          this.advisor.studentQueue = studentData[this.advisor.id];
+
+          /*let i = 0;
+          for(let student of this.advisor.studentQueue) {
+            console.log("student.username: ", student.username);
+            console.log("this.selectedStudent.username: ", this.selectedStudent.username);
+            console.log("---------------------------------");
+            if(student.username == this.selectedStudent.username) {
+              this.selectedStudent = student;
+              (document.getElementsByClassName("student-item-bar")[i] as HTMLDivElement).classList.add("selected-student");
+              //this.setSelectedStudent(i);
+            }
+
+            i++;
+          }*/
+
+          if(this.selectedStudent.id && this.selectedStudent.id == -1 && this.advisor.studentQueue && this.advisor.studentQueue[0]) {
             this.selectedStudent = this.advisor.studentQueue[0];
+
+            /*setTimeout(() => {
+              (document.getElementsByClassName("student-item-bar")[0] as HTMLDivElement).classList.add("selected-student");
+            }, 50);*/
+          }
+
+          console.log("selectedStudent: ", this.selectedStudent);
+
+          /*if(this.advisor.studentQueue[0]) {
+            this.selectedStudent = this.advisor.studentQueue[0];
+            console.log("selectedStudent: ", this.selectedStudent);
             setTimeout(() => {
               (document.getElementsByClassName("student-item-bar")[0] as HTMLDivElement).classList.add("selected-student");
             }, 50);
-          }
-        }
+          }*/
+        //}
       });
 
       // GET reasons
+      /*this.apiService.getAllReasons().subscribe((data: Reason[]) => {
+        console.log("FETCHING REASONS: ", data);
+      });*/
 
       // GET walk-in hours data
       this.apiService.getAdvisorWalkInHours(this.advisor.id).subscribe((data: any[]) => {
@@ -332,11 +384,17 @@ export class AdvisorInterfaceComponent implements OnInit {
 
   // sets selected student info in the typescript and html
   setSelectedStudent(i: number) {
-    if((document.getElementsByClassName("selected-student")[0] as HTMLDivElement)) {
+    /*if((document.getElementsByClassName("selected-student")[0] as HTMLDivElement)) {
       (document.getElementsByClassName("selected-student")[0] as HTMLDivElement).classList.remove("selected-student");
     }
+    console.log("```````````````````");
+    console.log("this.selectedStudent: ", this.selectedStudent);
+    console.log("this.advisor.studentQueue[i]: ", this.advisor.studentQueue[i]);
+    console.log(document.getElementsByClassName("student-item-bar")[i] as HTMLDivElement);
+    console.log("i: ", i);
+    console.log("```````````````````");*/
     this.selectedStudent = this.advisor.studentQueue[i];
-    (document.getElementsByClassName("student-item-bar")[i] as HTMLDivElement).classList.add("selected-student");
+    //(document.getElementsByClassName("student-item-bar")[i] as HTMLDivElement).classList.add("selected-student");
   }
 
   // starts a meeting with the currently selected student
@@ -365,7 +423,15 @@ export class AdvisorInterfaceComponent implements OnInit {
   // ends an in-progress meeting
   endMeeting() {
     // PUT time into analytics
-    this.meetingStudent = new Student('', '', '');
+    //this.meetingStudent = new Student('', '', '');
+    this.meetingStudent = {
+      id: -1,
+      studentName: "",
+      username: "",
+      timeIn: "",
+      appointment: null,
+      reasons: null
+    };
     this.meetingInProgress = false;
     this.meetingDuration = "00:00";
     clearInterval(this.timer);
@@ -429,77 +495,147 @@ export class AdvisorInterfaceComponent implements OnInit {
 
   // moves a student up in the student queue (and runs animation)
   queueMoveStudentUp(i: number) {
+    // is there a student above this one to swap with?
     if(this.advisor.studentQueue[i - 1]) {
+      // animate moving this student up
       let studentItem = (document.getElementsByClassName("student-item")[i] as HTMLDivElement);
       studentItem.style.animation = "swap-student-up";
-      studentItem.style.animationDuration = "0.25s";
+      studentItem.style.animationDuration = "0.3s";
+      studentItem.style.animationFillMode = "forwards";
 
+      // animate moving that student down
       let aboveStudentItem = (document.getElementsByClassName("student-item")[i - 1] as HTMLDivElement);
       aboveStudentItem.style.animation = "swap-student-down";
-      aboveStudentItem.style.animationDuration = "0.25s";
+      aboveStudentItem.style.animationDuration = "0.3s";
+      studentItem.style.animationFillMode = "forwards";
 
+      // wait until animation completes, then actually swap students in database
       setTimeout(() => {
-        studentItem.style.animation = "none";
-        aboveStudentItem.style.animation = "none";
+        //studentItem.style.animation = "none";
+        //aboveStudentItem.style.animation = "none";
 
-        let tempSwapStudent = this.advisor.studentQueue[i - 1];
-        this.advisor.studentQueue[i - 1] = this.advisor.studentQueue[i];
-        this.advisor.studentQueue[i] = tempSwapStudent;
-      }, 250);
+        // PUT student into new queue position
+        // The student position starts at 1, not 0 like the studentQueue array. 
+        // Therefore, a 'newPosition' of 'i' is equivalent to studentQueue[i - 1].
+        let studentMoveInfo = 
+        {
+          "username": this.advisor.studentQueue[i].username,
+          "newPosition": i
+        };
+
+        console.log("studentMoveInfo: ", studentMoveInfo);
+
+        this.apiService.moveStudentInQueue(this.advisor.id, studentMoveInfo).subscribe(() => {
+          console.log("Student successfully moved up in queue.");
+          // refresh data to reflect change in database
+          this.refreshData();
+
+          /*if(this.selectedStudent.username == studentMoveInfo.username) {
+            this.setSelectedStudent(i - 1);
+          }*/
+        });
+      }, 300);
     }
   }
 
   // moves a student down in the student queue (and runs animation)
   queueMoveStudentDown(i: number) {
+    // is there a student below this one to swap with?
     if(this.advisor.studentQueue[i + 1]) {
+      // animate moving that student down
       let studentItem = (document.getElementsByClassName("student-item")[i] as HTMLDivElement);
       studentItem.style.animation = "swap-student-down";
-      studentItem.style.animationDuration = "0.25s";
+      studentItem.style.animationDuration = "0.3s";
+      studentItem.style.animationFillMode = "forwards";
 
+      // animate moving this student up
       let belowStudentItem = (document.getElementsByClassName("student-item")[i + 1] as HTMLDivElement);
       belowStudentItem.style.animation = "swap-student-up";
-      belowStudentItem.style.animationDuration = "0.25s";
+      belowStudentItem.style.animationDuration = "0.3s";
+      studentItem.style.animationFillMode = "forwards";
 
+      // wait until animation completes, then actually swap students in database
       setTimeout(() => {
-        studentItem.style.animation = "none";
-        belowStudentItem.style.animation = "none";
+        //studentItem.style.animation = "none";
+        //belowStudentItem.style.animation = "none";
 
-        let tempSwapStudent = this.advisor.studentQueue[i + 1];
-        this.advisor.studentQueue[i + 1] = this.advisor.studentQueue[i];
-        this.advisor.studentQueue[i] = tempSwapStudent;
-      }, 250);
+        // PUT student into new queue position
+        // The student position starts at 1, not 0 like the studentQueue array. 
+        // Therefore, a 'newPosition' of 'i + 2' is equivalent to studentQueue[i + 1].
+        let studentMoveInfo = 
+        {
+          "username": this.advisor.studentQueue[i].username,
+          "newPosition": i + 2
+        };
+
+        console.log("studentMoveInfo: ", studentMoveInfo);
+
+        this.apiService.moveStudentInQueue(this.advisor.id, studentMoveInfo).subscribe(() => {
+          console.log("Student successfully moved down in queue.");
+          // refresh data to reflect change in database
+          this.refreshData();
+
+          console.log("selectedStudent: ", this.selectedStudent);
+
+          /*if(this.selectedStudent.username == studentMoveInfo.username) {
+            this.setSelectedStudent(i + 1);
+          }*/
+        });
+      }, 300);
     }
   }
 
   // deletes a student from the student queue
   queueDeleteStudent(i: number) {
-    let studentToDelete = this.advisor.studentQueue[i];
+    let studentToDelete = this.advisor.studentQueue[i].username;
 
-    if(this.meetingStudent = studentToDelete) {
+    if(this.meetingStudent.username == studentToDelete) {
       this.meetingInProgress = false;
       this.meetingDuration = "00:00";
-      this.meetingStudent = new Student('', '', '');
+      //this.meetingStudent = new Student('', '', '');
+      this.meetingStudent = {
+        id: -1,
+        studentName: "",
+        username: "",
+        timeIn: "",
+        appointment: null,
+        reasons: null
+      };
       clearInterval(this.timer);
     }
 
     // DELETE student from advisor's queue
-    this.advisor.studentQueue.splice(i, 1);
-    this.deletePopup();
+    console.log("studentToDelete: ", studentToDelete);
+    console.log("advisor.id: ", this.advisor.id);
 
-    if(!this.advisor.studentQueue[0]) {
-      this.selectedStudent = new Student('', '', '');
-    }
-    else if(studentToDelete == this.selectedStudent) {
-      setTimeout(() => {
-        this.setSelectedStudent(0);
-      }, 50);
-    }
+    this.apiService.deleteStudentFromQueue(this.advisor.id, studentToDelete).subscribe(() => {
+      console.log("Student successfully deleted from queue.");
+      this.deletePopup();
+      this.refreshData();
+
+      if(!this.advisor.studentQueue || !this.advisor.studentQueue[0]) {
+        //this.selectedStudent = new Student('', '', '');
+        this.selectedStudent = {
+          id: -1,
+          studentName: "",
+          username: "",
+          timeIn: "",
+          appointment: null,
+          reasons: null
+        };
+      }
+      else if(studentToDelete == this.selectedStudent) {
+        setTimeout(() => {
+          this.setSelectedStudent(0);
+        }, 50);
+      }
+    });
   }
 
   /* -------------------- POPUP STUFF -------------------- */
   // uses the provided info to create a popup box with up to three buttons
   createPopup(popupTitle: string, popupText: string, buttons: any) {
-    (document.getElementsByClassName("popup-blur")[0] as HTMLDivElement).style.display = "flex";
+    (document.getElementsByClassName("popup-background-area")[0] as HTMLDivElement).style.display = "flex";
     this.popupTitle = popupTitle;
     this.popupText = popupText;
 
@@ -526,7 +662,7 @@ export class AdvisorInterfaceComponent implements OnInit {
   deletePopup() {
     this.popupTitle = "";
     this.popupText = "";
-    (document.getElementsByClassName("popup-blur")[0] as HTMLDivElement).style.display = "none";
+    (document.getElementsByClassName("popup-background-area")[0] as HTMLDivElement).style.display = "none";
   }
 
   // needed for the user-provided popup box button 1 action to work
