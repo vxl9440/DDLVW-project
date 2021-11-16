@@ -25,8 +25,15 @@ export class AdminInterfaceComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  getData() {
+  onSubmit(): void {
+    const startTime = this.dateRangeForm.get('timeStart')?.value;
+    const endTime = this.dateRangeForm.get('timeEnd')?.value;
 
+    if (startTime && endTime) {
+      this.apiService.getAnalyticsAvgStudentPerDay(startTime, endTime).subscribe((data: any) => {
+        console.log(data);
+      })
+    }
   }
 
 }

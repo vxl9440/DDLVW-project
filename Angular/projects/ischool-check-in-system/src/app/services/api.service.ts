@@ -138,19 +138,19 @@ export class ApiService {
   }
 
   /* -------------------- ANALYTICS ENDPOINTS -------------------- */
-  public getAnalyticsDownload(timeReq: any) {
-    return this.httpClient.get<any>(`${ environment.apiUrl }/analytics/download`, timeReq);
+  public getAnalyticsDownload(from: string, to: string) {
+    return this.httpClient.get<any>(`${ environment.apiUrl }/analytics/download?from=${ from }&to=${ to }`);
   }
   
-  public getAnalyticsAvgWaitingTime(timeReq: any) {
-    return this.httpClient.get<any>(`${ environment.apiUrl }/analytics/avgWaitingTime`, timeReq);
+  public getAnalyticsAvgWaitingTime(from: string, to: string) {
+    return this.httpClient.get<any>(`${ environment.apiUrl }/analytics/avgWaitingTime?from=${ from }&to=${ to }`);
   }
 
-  public getAnalyticsAvgStudentPerDay(timeReq: any) {
-    return this.httpClient.get<any>(`${ environment.apiUrl }/analytics/avgStudentPerDay`, timeReq);
+  public getAnalyticsAvgStudentPerDay(from: string, to: string) {
+    return this.httpClient.get<any>(`${ environment.apiUrl }/analytics/avgStudentPerDay?from=${ from }&to=${ to }`);
   }
 
-  public getAnalyticsMostCommonReason(timeReq: any) {
-    return this.httpClient.get<any>(`${ environment.apiUrl }/analytics/mostCommonReason`, timeReq);
+  public getAnalyticsMostCommonReason(from: string, to: string) {
+    return this.httpClient.get<any>(`${ environment.apiUrl }/analytics/mostCommonReason?from=${ from }&to=${ to }`);
   }
 }
