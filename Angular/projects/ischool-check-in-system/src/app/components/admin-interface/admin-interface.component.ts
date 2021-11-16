@@ -30,7 +30,7 @@ export class AdminInterfaceComponent implements OnInit {
     const endTime = this.dateRangeForm.get('timeEnd')?.value;
 
     if (startTime && endTime) {
-      this.apiService.getAnalyticsAvgStudentPerDay(startTime, endTime).subscribe((data: any) => {
+      this.apiService.getAnalyticsDownload(startTime, endTime).subscribe((data: any) => {
         console.log(data);
       })
     }
