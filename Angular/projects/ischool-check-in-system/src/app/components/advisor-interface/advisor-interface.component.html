@@ -39,10 +39,8 @@
         </ul>
       </div>
 
-      <!--div class="meeting-clock" *ngIf="meetingInProgress">{{meetingDuration}}</div-->
       <button class="meeting-button green-button" *ngIf="!meetingInProgress && advisor.studentQueue && advisor.studentQueue[0]" (click)="startMeeting()">Start Meeting</button>
       <button class="meeting-button red-button" *ngIf="meetingInProgress && meetingStudent.username == selectedStudent.username" (click)="popupEndMeeting(meetingStudentIndex)">{{meetingDuration}}</button>
-      <!--button class="meeting-button red-button" *ngIf="meetingInProgress && meetingStudent == selectedStudent" (click)="endMeeting()" (mouseenter)="showEndMeetingText()" (mouseleave)="stopShowingEndMeetingText()">{{meetingDuration}}</button-->
       <div *ngIf="!advisor.studentQueue || !advisor.studentQueue[0]" class="none-text-area"><h1>NONE</h1></div>
     </div>
     <div class="walk-in-hours-manager">

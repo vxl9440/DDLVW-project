@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { Advisor } from '../../models/advisor';
-import { Student } from '../../models/student';
-import { Reason } from '../../models/reason';
 import { FormBuilder } from '@angular/forms';
 import { ApiService } from '../../services/api.service';
 
@@ -22,6 +20,7 @@ export class AdvisorInterfaceComponent implements OnInit {
   //meetingStudent: Student; // the student currently in a meeting
   meetingStudent: any; // the student currently in a meeting
   meetingStudentIndex: number; // the queue position of the student currently in a meeting
+  oldStudentQueue: any; // used to check for changes in the student queue
 
   meetingInProgress: boolean = false; // whether or not a meeting is currently in progress
   meetingDuration: string = "00:00"; // the duration of the current meeting
@@ -44,6 +43,34 @@ export class AdvisorInterfaceComponent implements OnInit {
     fridayStart: '',
     fridayEnd: ''
   });
+
+  oldWalkInData: any = [
+    {
+      startTime: "",
+      endTime: "",
+      weekday: 'MON'
+    },
+    {
+      startTime: "",
+      endTime: "",
+      weekday: 'TUE'
+    },
+    {
+      startTime: "",
+      endTime: "",
+      weekday: 'WED'
+    },
+    {
+      startTime: "",
+      endTime: "",
+      weekday: 'THU'
+    },
+    {
+      startTime: "",
+      endTime: "",
+      weekday: 'FRI'
+    }
+  ];
 
   // popup stuff
   buttonActions: string[] = ["deletePopup()", "", ""]; // the actions of the (up to) three buttons in the popup box
@@ -87,12 +114,14 @@ export class AdvisorInterfaceComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.refreshData();
-    //this.connect();
+    //this.refreshData();
+    this.connect();
   }
 
   // runs the loop that gets all required data intermittently (maybe remove later?)
   connect() {
+    this.refreshData();
+
     setInterval(() => {
       this.refreshData();
     }, 10000);
@@ -110,14 +139,51 @@ export class AdvisorInterfaceComponent implements OnInit {
       // GET student queue
       this.apiService.getAllStudentQueues().subscribe((studentData: any[]) => {
         console.log("FETCHING STUDENT QUEUES: ", studentData);
+        this.oldStudentQueue = this.advisor.studentQueue;
         this.advisor = advisorData[2]; // for testing only - when uncommenting code above, remove this
         //this.advisor = advisorData.advisor; // uncomment when done testing/demoing
 
         this.advisor.studentQueue = studentData[this.advisor.id];
+        
+        // if a change in the student queue is detected, the notification sound plays
+        if(this.advisor.studentQueue != this.oldStudentQueue) {
+          let alertSound = new Audio("mixkit-software-interface-start-2574.wav");
+          alertSound.volume = 0.2;
+          alertSound.play();
+        }
 
         if(this.selectedStudent.id && this.selectedStudent.id == -1 && this.advisor.studentQueue && this.advisor.studentQueue[0]) {
           this.selectedStudent = this.advisor.studentQueue[0];
         }
+
+        // set current walk-in hours as oldWalkInHours for comparison later
+        this.oldWalkInData = [
+          {
+            startTime: this.walkInHoursForm.get('mondayStart')?.value,
+            endTime: this.walkInHoursForm.get('mondayEnd')?.value,
+            weekday: 'MON'
+          },
+          {
+            startTime: this.walkInHoursForm.get('tuesdayStart')?.value,
+            endTime: this.walkInHoursForm.get('tuesdayEnd')?.value,
+            weekday: 'TUE'
+          },
+          {
+            startTime: this.walkInHoursForm.get('wednesdayStart')?.value,
+            endTime: this.walkInHoursForm.get('wednesdayEnd')?.value,
+            weekday: 'WED'
+          },
+          {
+            startTime: this.walkInHoursForm.get('thursdayStart')?.value,
+            endTime: this.walkInHoursForm.get('thursdayEnd')?.value,
+            weekday: 'THU'
+          },
+          {
+            startTime: this.walkInHoursForm.get('fridayStart')?.value,
+            endTime: this.walkInHoursForm.get('fridayEnd')?.value,
+            weekday: 'FRI'
+          }
+        ];
 
         // GET walk-in hours data
         this.apiService.getAdvisorWalkInHours(this.advisor.id).subscribe((data: any[]) => {
@@ -129,49 +195,79 @@ export class AdvisorInterfaceComponent implements OnInit {
             this.walkInDataExists = false;
           }
 
-          let mondayInfo = ["", ""];
-          let tuesdayInfo = ["", ""];
-          let wednesdayInfo = ["", ""];
-          let thursdayInfo = ["", ""];
-          let fridayInfo = ["", ""];
-
-          for(let day of data) {
-            switch(day.weekday) {
-              case 'MON':
-                mondayInfo[0] = this.checkTimeLength(day.startTime);
-                mondayInfo[1] = this.checkTimeLength(day.endTime);
-                break;
-              case 'TUE':
-                tuesdayInfo[0] = this.checkTimeLength(day.startTime);
-                tuesdayInfo[1] = this.checkTimeLength(day.endTime);
-                break;
-              case 'WED':
-                wednesdayInfo[0] = this.checkTimeLength(day.startTime);
-                wednesdayInfo[1] = this.checkTimeLength(day.endTime);
-                break;
-              case 'THU':
-                thursdayInfo[0] = this.checkTimeLength(day.startTime);
-                thursdayInfo[1] = this.checkTimeLength(day.endTime);
-                break;
-              case 'FRI':
-                fridayInfo[0] = this.checkTimeLength(day.startTime);
-                fridayInfo[1] = this.checkTimeLength(day.endTime);
-                break;
+          /*for(let [i, day] of data.entries()) {
+            if(day != this.oldWalkInData[i]) {
+              switch(day.weekday) {
+                case 'MON':
+                  mondayInfo[0] = this.checkTimeLength(day.startTime);
+                  mondayInfo[1] = this.checkTimeLength(day.endTime);
+                  break;
+                case 'TUE':
+                  tuesdayInfo[0] = this.checkTimeLength(day.startTime);
+                  tuesdayInfo[1] = this.checkTimeLength(day.endTime);
+                  break;
+                case 'WED':
+                  wednesdayInfo[0] = this.checkTimeLength(day.startTime);
+                  wednesdayInfo[1] = this.checkTimeLength(day.endTime);
+                  break;
+                case 'THU':
+                  thursdayInfo[0] = this.checkTimeLength(day.startTime);
+                  thursdayInfo[1] = this.checkTimeLength(day.endTime);
+                  break;
+                case 'FRI':
+                  fridayInfo[0] = this.checkTimeLength(day.startTime);
+                  fridayInfo[1] = this.checkTimeLength(day.endTime);
+                  break;
+              }
             }
-          }
+          }*/
 
-          this.walkInHoursForm = this.formBuilder.group({
-            mondayStart: mondayInfo[0],
-            mondayEnd: mondayInfo[1],
-            tuesdayStart: tuesdayInfo[0],
-            tuesdayEnd: tuesdayInfo[1],
-            wednesdayStart: wednesdayInfo[0],
-            wednesdayEnd: wednesdayInfo[1],
-            thursdayStart: thursdayInfo[0],
-            thursdayEnd: thursdayInfo[1],
-            fridayStart: fridayInfo[0],
-            fridayEnd: fridayInfo[1]
-          });
+          // only refreshes the walk-in hours data if it actually needs to be refreshed (prevents most unnecessary interrupting of user when editing hours)
+          if(data != this.oldWalkInData) {
+            let mondayInfo = ["", ""];
+            let tuesdayInfo = ["", ""];
+            let wednesdayInfo = ["", ""];
+            let thursdayInfo = ["", ""];
+            let fridayInfo = ["", ""];
+
+            for(let day of data) {
+              switch(day.weekday) {
+                case 'MON':
+                  mondayInfo[0] = this.checkTimeLength(day.startTime);
+                  mondayInfo[1] = this.checkTimeLength(day.endTime);
+                  break;
+                case 'TUE':
+                  tuesdayInfo[0] = this.checkTimeLength(day.startTime);
+                  tuesdayInfo[1] = this.checkTimeLength(day.endTime);
+                  break;
+                case 'WED':
+                  wednesdayInfo[0] = this.checkTimeLength(day.startTime);
+                  wednesdayInfo[1] = this.checkTimeLength(day.endTime);
+                  break;
+                case 'THU':
+                  thursdayInfo[0] = this.checkTimeLength(day.startTime);
+                  thursdayInfo[1] = this.checkTimeLength(day.endTime);
+                  break;
+                case 'FRI':
+                  fridayInfo[0] = this.checkTimeLength(day.startTime);
+                  fridayInfo[1] = this.checkTimeLength(day.endTime);
+                  break;
+              }
+            }
+
+            this.walkInHoursForm = this.formBuilder.group({
+              mondayStart: mondayInfo[0],
+              mondayEnd: mondayInfo[1],
+              tuesdayStart: tuesdayInfo[0],
+              tuesdayEnd: tuesdayInfo[1],
+              wednesdayStart: wednesdayInfo[0],
+              wednesdayEnd: wednesdayInfo[1],
+              thursdayStart: thursdayInfo[0],
+              thursdayEnd: thursdayInfo[1],
+              fridayStart: fridayInfo[0],
+              fridayEnd: fridayInfo[1]
+            });
+          }
         });
       });
     });
@@ -403,127 +499,138 @@ export class AdvisorInterfaceComponent implements OnInit {
 
   // moves a student up in the student queue (and runs animation)
   queueMoveStudentUp(i: number) {
-    // is there a student above this one to swap with?
-    if(this.advisor.studentQueue[i - 1]) {
-      // animate moving this student up
-      let studentItem = (document.getElementsByClassName("student-item")[i] as HTMLDivElement);
-      studentItem.style.animation = "swap-student-up";
-      studentItem.style.animationDuration = "0.3s";
-      studentItem.style.animationFillMode = "forwards";
+    // student queue is refreshed before action to prevent making bad requests with server
+    this.apiService.getAllStudentQueues().subscribe((studentData: any[]) => {
+      console.log("FETCHING STUDENT QUEUES: ", studentData);
 
-      // animate moving that student down
-      let aboveStudentItem = (document.getElementsByClassName("student-item")[i - 1] as HTMLDivElement);
-      aboveStudentItem.style.animation = "swap-student-down";
-      aboveStudentItem.style.animationDuration = "0.3s";
-      aboveStudentItem.style.animationFillMode = "forwards";
+      this.advisor.studentQueue = studentData[this.advisor.id];
 
-      // makes sure the meeting student swaps for any ongoing meetings if needed
-      if(i - 1 == this.meetingStudentIndex) {
-        this.meetingStudentIndex = i;
-      }
-      else if(i == this.meetingStudentIndex) {
-        this.meetingStudentIndex = i - 1;
+      if(this.selectedStudent.id && this.selectedStudent.id == -1 && this.advisor.studentQueue && this.advisor.studentQueue[0]) {
+        this.selectedStudent = this.advisor.studentQueue[0];
       }
 
-      // wait until animation completes, then actually swap students in database
-      setTimeout(() => {
-        // PUT student into new queue position
-        // The student position starts at 1, not 0 like the studentQueue array. 
-        // Therefore, a 'newPosition' of 'i' is equivalent to studentQueue[i - 1].
-        let studentMoveInfo = 
-        {
-          "username": this.advisor.studentQueue[i].username,
-          "newPosition": i
-        };
+      // is there a student above this one to swap with?
+      if(this.advisor.studentQueue[i - 1]) {
+        // animate moving this student up
+        let studentItem = (document.getElementsByClassName("student-item")[i] as HTMLDivElement);
+        studentItem.style.animation = "swap-student-up";
+        studentItem.style.animationDuration = "0.3s";
+        studentItem.style.animationFillMode = "forwards";
 
-        console.log("studentMoveInfo: ", studentMoveInfo);
+        // animate moving that student down
+        let aboveStudentItem = (document.getElementsByClassName("student-item")[i - 1] as HTMLDivElement);
+        aboveStudentItem.style.animation = "swap-student-down";
+        aboveStudentItem.style.animationDuration = "0.3s";
+        aboveStudentItem.style.animationFillMode = "forwards";
 
-        this.apiService.moveStudentInQueue(this.advisor.id, studentMoveInfo).subscribe(() => {
-          console.log("Student successfully moved up in queue.");
-          // refresh data to reflect change in database
-          this.refreshData();
-          //this.refreshStudentQueue();
-        });
-      }, 300);
-    }
+        // makes sure the meeting student swaps for any ongoing meetings if needed
+        if(i - 1 == this.meetingStudentIndex) {
+          this.meetingStudentIndex = i;
+        }
+        else if(i == this.meetingStudentIndex) {
+          this.meetingStudentIndex = i - 1;
+        }
+
+        // wait until animation completes, then actually swap students in database
+        setTimeout(() => {
+          // PUT student into new queue position
+          // The student position starts at 1, not 0 like the studentQueue array. 
+          // Therefore, a 'newPosition' of 'i' is equivalent to studentQueue[i - 1].
+          let studentMoveInfo = 
+          {
+            "username": this.advisor.studentQueue[i].username,
+            "newPosition": i
+          };
+
+          console.log("studentMoveInfo: ", studentMoveInfo);
+
+          this.apiService.moveStudentInQueue(this.advisor.id, studentMoveInfo).subscribe(() => {
+            console.log("Student successfully moved up in queue.");
+            // refresh data to reflect change in database
+            this.refreshData();
+            //this.refreshStudentQueue();
+          });
+        }, 300);
+      }
+    });
   }
 
   // moves a student down in the student queue (and runs animation)
   queueMoveStudentDown(i: number) {
-    // is there a student below this one to swap with?
-    if(this.advisor.studentQueue[i + 1]) {
-      // animate moving that student down
-      let studentItem = (document.getElementsByClassName("student-item")[i] as HTMLDivElement);
-      studentItem.style.animation = "swap-student-down";
-      studentItem.style.animationDuration = "0.3s";
-      studentItem.style.animationFillMode = "forwards";
+    // student queue is refreshed before action to prevent making bad requests with server
+    this.apiService.getAllStudentQueues().subscribe((studentData: any[]) => {
+      console.log("FETCHING STUDENT QUEUES: ", studentData);
 
-      // animate moving this student up
-      let belowStudentItem = (document.getElementsByClassName("student-item")[i + 1] as HTMLDivElement);
-      belowStudentItem.style.animation = "swap-student-up";
-      belowStudentItem.style.animationDuration = "0.3s";
-      belowStudentItem.style.animationFillMode = "forwards";
+      this.advisor.studentQueue = studentData[this.advisor.id];
 
-      // makes sure the meeting student swaps for any ongoing meetings if needed
-      if(i + 1 == this.meetingStudentIndex) {
-        this.meetingStudentIndex = i;
-      }
-      else if(i == this.meetingStudentIndex) {
-        this.meetingStudentIndex = i + 1;
+      if(this.selectedStudent.id && this.selectedStudent.id == -1 && this.advisor.studentQueue && this.advisor.studentQueue[0]) {
+        this.selectedStudent = this.advisor.studentQueue[0];
       }
 
-      // wait until animation completes, then actually swap students in database
-      setTimeout(() => {
-        // PUT student into new queue position
-        // The student position starts at 1, not 0 like the studentQueue array. 
-        // Therefore, a 'newPosition' of 'i + 2' is equivalent to studentQueue[i + 1].
-        let studentMoveInfo = 
-        {
-          "username": this.advisor.studentQueue[i].username,
-          "newPosition": i + 2
-        };
+      // is there a student below this one to swap with?
+      if(this.advisor.studentQueue[i + 1]) {
+        // animate moving that student down
+        let studentItem = (document.getElementsByClassName("student-item")[i] as HTMLDivElement);
+        studentItem.style.animation = "swap-student-down";
+        studentItem.style.animationDuration = "0.3s";
+        studentItem.style.animationFillMode = "forwards";
 
-        console.log("studentMoveInfo: ", studentMoveInfo);
+        // animate moving this student up
+        let belowStudentItem = (document.getElementsByClassName("student-item")[i + 1] as HTMLDivElement);
+        belowStudentItem.style.animation = "swap-student-up";
+        belowStudentItem.style.animationDuration = "0.3s";
+        belowStudentItem.style.animationFillMode = "forwards";
 
-        this.apiService.moveStudentInQueue(this.advisor.id, studentMoveInfo).subscribe(() => {
-          console.log("Student successfully moved down in queue.");
-          // refresh data to reflect change in database
-          this.refreshData();
-          //this.refreshStudentQueue();
-        });
-      }, 300);
-    }
+        // makes sure the meeting student swaps for any ongoing meetings if needed
+        if(i + 1 == this.meetingStudentIndex) {
+          this.meetingStudentIndex = i;
+        }
+        else if(i == this.meetingStudentIndex) {
+          this.meetingStudentIndex = i + 1;
+        }
+
+        // wait until animation completes, then actually swap students in database
+        setTimeout(() => {
+          // PUT student into new queue position
+          // The student position starts at 1, not 0 like the studentQueue array. 
+          // Therefore, a 'newPosition' of 'i + 2' is equivalent to studentQueue[i + 1].
+          let studentMoveInfo = 
+          {
+            "username": this.advisor.studentQueue[i].username,
+            "newPosition": i + 2
+          };
+
+          console.log("studentMoveInfo: ", studentMoveInfo);
+
+          this.apiService.moveStudentInQueue(this.advisor.id, studentMoveInfo).subscribe(() => {
+            console.log("Student successfully moved down in queue.");
+            // refresh data to reflect change in database
+            this.refreshData();
+            //this.refreshStudentQueue();
+          });
+        }, 300);
+      }
+    });
   }
 
   // deletes a student from the student queue
   queueDeleteStudent(i: number) {
-    let studentToDelete = this.advisor.studentQueue[i].username;
+    // student queue is refreshed before action to prevent making bad requests with server
+    this.apiService.getAllStudentQueues().subscribe((studentData: any[]) => {
+      console.log("FETCHING STUDENT QUEUES: ", studentData);
 
-    if(this.meetingStudent.username == studentToDelete) {
-      this.meetingInProgress = false;
-      this.meetingDuration = "00:00";
-      this.meetingStudent = {
-        id: -1,
-        studentName: "",
-        username: "",
-        timeIn: "",
-        appointment: null,
-        reasons: null
-      };
-      clearInterval(this.timer);
-    }
+      this.advisor.studentQueue = studentData[this.advisor.id];
 
-    // DELETE student from advisor's queue
-    console.log("studentToDelete: ", studentToDelete);
-    console.log("advisor.id: ", this.advisor.id);
+      if(this.selectedStudent.id && this.selectedStudent.id == -1 && this.advisor.studentQueue && this.advisor.studentQueue[0]) {
+        this.selectedStudent = this.advisor.studentQueue[0];
+      }
 
-    this.apiService.deleteStudentFromQueue(this.advisor.id, studentToDelete).subscribe(() => {
-      console.log("Student successfully deleted from queue.");
-      this.deletePopup();
-      this.refreshData();
+      let studentToDelete = this.advisor.studentQueue[i].username;
 
-      if(!this.advisor.studentQueue || !this.advisor.studentQueue[0]) {
-        this.selectedStudent = {
+      if(this.meetingStudent.username == studentToDelete) {
+        this.meetingInProgress = false;
+        this.meetingDuration = "00:00";
+        this.meetingStudent = {
           id: -1,
           studentName: "",
           username: "",
@@ -531,12 +638,34 @@ export class AdvisorInterfaceComponent implements OnInit {
           appointment: null,
           reasons: null
         };
+        clearInterval(this.timer);
       }
-      else if(studentToDelete == this.selectedStudent) {
-        setTimeout(() => {
-          this.setSelectedStudent(0);
-        }, 50);
-      }
+
+      // DELETE student from advisor's queue
+      console.log("studentToDelete: ", studentToDelete);
+      console.log("advisor.id: ", this.advisor.id);
+
+      this.apiService.deleteStudentFromQueue(this.advisor.id, studentToDelete).subscribe(() => {
+        console.log("Student successfully deleted from queue.");
+        this.deletePopup();
+        this.refreshData();
+
+        if(!this.advisor.studentQueue || !this.advisor.studentQueue[0]) {
+          this.selectedStudent = {
+            id: -1,
+            studentName: "",
+            username: "",
+            timeIn: "",
+            appointment: null,
+            reasons: null
+          };
+        }
+        else if(studentToDelete == this.selectedStudent) {
+          setTimeout(() => {
+            this.setSelectedStudent(0);
+          }, 50);
+        }
+      });
     });
   }
 
