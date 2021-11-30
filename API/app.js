@@ -13,10 +13,11 @@ import cors from 'cors';
 const port = 8080;
 const app  = express();
 
-// enable static file serving in the public directory
+// enables static file serving in the public directory
 app.use(express.static('public/'));
 
-// TODO: change this header if deploying to production
+// TODO: change or more likely remove this if deploying to production. 
+// CORS shouldn't be needed if client app is on server
 app.use(
     cors({ 
         origin: "*", 

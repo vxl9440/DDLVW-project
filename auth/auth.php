@@ -4,7 +4,7 @@ require 'jwtGenerator.php';
 
 $jwt = new JwtGenerator();
 
-
+// This file should be protected by Shibboleth
 $payload = [
     "fname" => "{$_SERVER['givenName']}",
     "lname" => "{$_SERVER['sn']}",
