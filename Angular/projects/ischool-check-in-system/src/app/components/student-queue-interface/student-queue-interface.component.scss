@@ -147,9 +147,13 @@ $gray-highlighted: rgb(158, 158, 158);
     margin-right: 0.3vw;
     margin-bottom: 0.3vw;
     padding: 10px;
-    background-color: lightgray;
+    background-color: $rit-orange-light-4;
     text-align: center;
     font-size: 1.4vw;
+}
+
+div.advisor-info + .student-box {
+    background-color: $light-green-highlighted;
 }
 
 .student-box:first-of-type {
