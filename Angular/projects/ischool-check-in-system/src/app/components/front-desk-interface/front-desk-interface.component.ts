@@ -252,7 +252,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
       console.log("FETCHING REASONS: ", reasonData);
       this.oldReasons = this.reasons;
 
-      
+
       if(JSON.stringify(reasonData) != JSON.stringify(this.oldReasons)) {
         console.log("Reason data changed on server - refreshing reasons on interface.");
         this.reasons = reasonData;
@@ -287,70 +287,88 @@ export class FrontDeskInterfaceComponent implements OnInit {
   /* -------------------- STUDENT QUEUE STUFF -------------------- */
   // swaps a student in the queue with the student above them
   queueMoveStudentUp(i: number) {
-    // only swaps students if the two students exist
-    if(this.selectedAdvisor.studentQueue[i - 1]) {
-      // animate swapping the student up
-      let studentItem = (document.getElementsByClassName("student-item")[i] as HTMLDivElement);
-      studentItem.style.animation = "swap-student-up";
-      studentItem.style.animationDuration = "0.3s";
-      studentItem.style.animationFillMode = "forwards";
+    // student queue is refreshed before action to prevent making bad requests with server
+    this.apiService.getAllStudentQueues().subscribe((studentData: any[]) => {
+      console.log("FETCHING STUDENT QUEUES: ", studentData);
 
-      // animate swapping the student down
-      let aboveStudentItem = (document.getElementsByClassName("student-item")[i - 1] as HTMLDivElement);
-      aboveStudentItem.style.animation = "swap-student-down";
-      aboveStudentItem.style.animationDuration = "0.3s";
-      aboveStudentItem.style.animationFillMode = "forwards";
+      this.selectedAdvisor.studentQueue = studentData[this.selectedAdvisor.id];
 
-      setTimeout(() => {
-        // PUT student into new queue position
-        // The student position starts at 1, not 0 like the studentQueue array. 
-        // Therefore, a 'newPosition' of 'i' is equivalent to studentQueue[i - 1].
-        let studentMoveInfo = 
-        {
-          "username": this.selectedAdvisor.studentQueue[i].username,
-          "newPosition": i
-        };
+      // only swaps students if the two students exist
+      if(this.selectedAdvisor.studentQueue[i - 1]) {
+        setTimeout(() => { // if this timeout is not here, the animation won't play. I have no idea why.
+          // animate swapping the student up
+          let studentItem = (document.getElementsByClassName("student-item")[i] as HTMLDivElement);
+          studentItem.style.animation = "swap-student-up";
+          studentItem.style.animationDuration = "0.3s";
+          studentItem.style.animationFillMode = "forwards";
 
-        this.apiService.moveStudentInQueue(this.selectedAdvisor.id, studentMoveInfo).subscribe(() => {
-          console.log("Student successfully moved up in queue.");
-          this.refreshData();
-        });
-      }, 300);
-    }
+          // animate swapping the student down
+          let aboveStudentItem = (document.getElementsByClassName("student-item")[i - 1] as HTMLDivElement);
+          aboveStudentItem.style.animation = "swap-student-down";
+          aboveStudentItem.style.animationDuration = "0.3s";
+          aboveStudentItem.style.animationFillMode = "forwards";
+        }, 0);
+
+        setTimeout(() => {
+          // PUT student into new queue position
+          // The student position starts at 1, not 0 like the studentQueue array. 
+          // Therefore, a 'newPosition' of 'i' is equivalent to studentQueue[i - 1].
+          let studentMoveInfo = 
+          {
+            "username": this.selectedAdvisor.studentQueue[i].username,
+            "newPosition": i
+          };
+
+          this.apiService.moveStudentInQueue(this.selectedAdvisor.id, studentMoveInfo).subscribe(() => {
+            console.log("Student successfully moved up in queue.");
+            this.refreshData();
+          });
+        }, 300);
+      }
+    });
   }
 
   // swaps a student in the queue with the student below them
   queueMoveStudentDown(i: number) {
-    // only swaps students if the two students exist
-    if(this.selectedAdvisor.studentQueue[i + 1]) {
-      // animate swapping the student down
-      let studentItem = (document.getElementsByClassName("student-item")[i] as HTMLDivElement);
-      studentItem.style.animation = "swap-student-down";
-      studentItem.style.animationDuration = "0.3s";
-      studentItem.style.animationFillMode = "forwards";
+    // student queue is refreshed before action to prevent making bad requests with server
+    this.apiService.getAllStudentQueues().subscribe((studentData: any[]) => {
+      console.log("FETCHING STUDENT QUEUES: ", studentData);
 
-      // animate swapping the student up
-      let belowStudentItem = (document.getElementsByClassName("student-item")[i + 1] as HTMLDivElement);
-      belowStudentItem.style.animation = "swap-student-up";
-      belowStudentItem.style.animationDuration = "0.3s";
-      belowStudentItem.style.animationFillMode = "forwards";
+      this.selectedAdvisor.studentQueue = studentData[this.selectedAdvisor.id];
 
-      setTimeout(() => {
-        // PUT student into new queue position
-        // The student position starts at 1, not 0 like the studentQueue array. 
-        // Therefore, a 'newPosition' of 'i + 2' is equivalent to studentQueue[i + 1].
-        let studentMoveInfo = 
-        {
-          "username": this.selectedAdvisor.studentQueue[i].username,
-          "newPosition": i + 2
-        };
+      // only swaps students if the two students exist
+      if(this.selectedAdvisor.studentQueue[i + 1]) {
+        setTimeout(() => { // if this timeout is not here, the animation won't play. I have no idea why.
+          // animate swapping the student down
+          let studentItem = (document.getElementsByClassName("student-item")[i] as HTMLDivElement);
+          studentItem.style.animation = "swap-student-down";
+          studentItem.style.animationDuration = "0.3s";
+          studentItem.style.animationFillMode = "forwards";
 
-        this.apiService.moveStudentInQueue(this.selectedAdvisor.id, studentMoveInfo).subscribe(() => {
-          console.log("Student successfully moved down in queue.");
-          this.refreshData();
-        });
-      }, 300);
-    }
+          // animate swapping the student up
+          let belowStudentItem = (document.getElementsByClassName("student-item")[i + 1] as HTMLDivElement);
+          belowStudentItem.style.animation = "swap-student-up";
+          belowStudentItem.style.animationDuration = "0.3s";
+          belowStudentItem.style.animationFillMode = "forwards";
+        }, 0);
+
+        setTimeout(() => {
+          // PUT student into new queue position
+          // The student position starts at 1, not 0 like the studentQueue array. 
+          // Therefore, a 'newPosition' of 'i + 2' is equivalent to studentQueue[i + 1].
+          let studentMoveInfo = 
+          {
+            "username": this.selectedAdvisor.studentQueue[i].username,
+            "newPosition": i + 2
+          };
+
+          this.apiService.moveStudentInQueue(this.selectedAdvisor.id, studentMoveInfo).subscribe(() => {
+            console.log("Student successfully moved down in queue.");
+            this.refreshData();
+          });
+        }, 300);
+      }
+    });
   }
   
   // deletes a student from the selected advisor's student queue given the student id.

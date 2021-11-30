@@ -545,17 +545,19 @@ export class AdvisorInterfaceComponent implements OnInit {
 
       // is there a student above this one to swap with?
       if(this.advisor.studentQueue[i - 1]) {
-        // animate moving this student up
-        let studentItem = (document.getElementsByClassName("student-item")[i] as HTMLDivElement);
-        studentItem.style.animation = "swap-student-up";
-        studentItem.style.animationDuration = "0.3s";
-        studentItem.style.animationFillMode = "forwards";
+        setTimeout(() => { // if this timeout is not here, the animation won't play. I have no idea why.
+          // animate moving this student up
+          let studentItem = (document.getElementsByClassName("student-item")[i] as HTMLDivElement);
+          studentItem.style.animation = "swap-student-up";
+          studentItem.style.animationDuration = "0.3s";
+          studentItem.style.animationFillMode = "forwards";
 
-        // animate moving that student down
-        let aboveStudentItem = (document.getElementsByClassName("student-item")[i - 1] as HTMLDivElement);
-        aboveStudentItem.style.animation = "swap-student-down";
-        aboveStudentItem.style.animationDuration = "0.3s";
-        aboveStudentItem.style.animationFillMode = "forwards";
+          // animate moving that student down
+          let aboveStudentItem = (document.getElementsByClassName("student-item")[i - 1] as HTMLDivElement);
+          aboveStudentItem.style.animation = "swap-student-down";
+          aboveStudentItem.style.animationDuration = "0.3s";
+          aboveStudentItem.style.animationFillMode = "forwards";
+        }, 0);
 
         // makes sure the meeting student swaps for any ongoing meetings if needed
         if(i - 1 == this.meetingStudentIndex) {
@@ -604,19 +606,19 @@ export class AdvisorInterfaceComponent implements OnInit {
 
       // is there a student below this one to swap with?
       if(this.advisor.studentQueue[i + 1]) {
-        // animate moving that student down
-        let studentItem = (document.getElementsByClassName("student-item")[i] as HTMLDivElement);
-        console.log("--- studentItem: ", studentItem);
-        studentItem.style.animation = "swap-student-down";
-        studentItem.style.animationDuration = "0.3s";
-        studentItem.style.animationFillMode = "forwards";
+        setTimeout(() => { // if this timeout is not here, the animation won't play. I have no idea why.
+          // animate moving that student down
+          let studentItem = (document.getElementsByClassName("student-item")[i] as HTMLDivElement);
+          studentItem.style.animation = "swap-student-down";
+          studentItem.style.animationDuration = "0.3s";
+          studentItem.style.animationFillMode = "forwards";
 
-        // animate moving this student up
-        let belowStudentItem = (document.getElementsByClassName("student-item")[i + 1] as HTMLDivElement);
-        console.log("--- belowStudentItem: ", belowStudentItem);
-        belowStudentItem.style.animation = "swap-student-up";
-        belowStudentItem.style.animationDuration = "0.3s";
-        belowStudentItem.style.animationFillMode = "forwards";
+          // animate moving this student up
+          let belowStudentItem = (document.getElementsByClassName("student-item")[i + 1] as HTMLDivElement);
+          belowStudentItem.style.animation = "swap-student-up";
+          belowStudentItem.style.animationDuration = "0.3s";
+          belowStudentItem.style.animationFillMode = "forwards";
+        }, 0);
 
         // makes sure the meeting student swaps for any ongoing meetings if needed
         if(i + 1 == this.meetingStudentIndex) {
