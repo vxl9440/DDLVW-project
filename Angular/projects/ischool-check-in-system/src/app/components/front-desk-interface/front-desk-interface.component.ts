@@ -1,3 +1,7 @@
+// Created by Drew Bissen of Team DDLVW
+// Senior Development Project II
+// Last modified 11/30/2021
+
 import { Component, OnInit } from '@angular/core';
 import { Advisor } from '../../models/advisor';
 import { Reason } from '../../models/reason';
@@ -19,7 +23,16 @@ export class FrontDeskInterfaceComponent implements OnInit {
   connected: boolean = false; // whether or not we are connected to the server
 
   advisors: Advisor[] = [];
-  selectedAdvisor: Advisor = {id: -1, firstName: "", middleName: "", lastName: "", email: "", portraitURL: "", studentQueue: []};
+  selectedAdvisor: Advisor = { // the currently selected advisor from the advisors list
+    id: -1, 
+    firstName: "", 
+    middleName: "", 
+    lastName: "", 
+    email: "", 
+    portraitURL: "", 
+    studentQueue: []
+  };
+
   advisorInfoForm = this.formBuilder.group({
     fname: '',
     mname: '',
@@ -32,7 +45,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
   imagesOnServer: any[] = [];
 
   reasons: Reason[] = [];
-  selectedReason: Reason = new Reason(-1, "", false);
+  selectedReason: Reason = new Reason(-1, "", false); // the currently selected reason from the reasons list
   addingReason: boolean = true; // if true, we are adding a reason. If false, we are editing a reason.
   reasonForm = this.formBuilder.group({
     rname: '',
@@ -68,90 +81,9 @@ export class FrontDeskInterfaceComponent implements OnInit {
     this.environment = environment;
   }
 
-  ngOnInit() {
-    /*this.advisors.push({id: 0, firstName: "Elissa", middleName: '', lastName: "Weeden", email: "jnd1234@rit.edu", portraitURL: "../assets/ElissaWeeden.png", studentQueue: [
-      new Student('Jack Smith', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
-      new Student('Jane Doe', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Jill Smith', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'})
-    ]});
-    this.advisors.push({id: 1, firstName: "Kevin", middleName: '', lastName: "Stiner", email: "rcs4321@rit.edu", portraitURL: "../assets/KevinStiner.png", studentQueue: [
-      new Student('Tim Bim', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
-      new Student('Rebecca Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Billy Mann', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'})
-    ]});
-    this.advisors.push({id: 2, firstName: "Betty", middleName: '', lastName: "Hillman", email: "gym1324@rit.edu", portraitURL: "../assets/BettyHillman.png", studentQueue: [
-      new Student('Tim Bim', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
-      new Student('Rebecca Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Billy Mann', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
-      new Student('Mikah Guell', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Diesel Feesel', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Dani Sel', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Larry Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Shima Plok', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Gus Juss', 'jwd2222', '2021-09-19T19:57:55+00:00')
-    ]});
-    this.advisors.push({id: 3, firstName: "Stephen", middleName: '', lastName: "Zilora", email: "jnd1234@rit.edu", portraitURL: "../assets/StephenZilora.png", studentQueue: [
-      new Student('Jack Smith', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
-      new Student('Jane Doe', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Jill Smith', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
-      new Student('Max Lile', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Dani Tuu', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Moe Bo', 'jwd2222', '2021-09-19T19:57:55+00:00')
-    ]});
-    this.advisors.push({id: 4, firstName: "Melissa", middleName: '', lastName: "Hanna", email: "jnd1234@rit.edu", portraitURL: "../assets/MelissaHanna.png", studentQueue: []});
-    this.advisors.push({id: 5, firstName: "Kristen", middleName: '', lastName: "Shinohara", email: "gym1324@rit.edu", portraitURL: "../assets/KristenShinohara.png", studentQueue: [
-      new Student('Tim Bim', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
-      new Student('Rebecca Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Billy Mann', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
-      new Student('Mikah Guell', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Diesel Feesel', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Dani Sel', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Larry Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Shima Plok', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Gus Juss', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Tim Bim', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
-      new Student('Rebecca Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Billy Mann', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
-      new Student('Mikah Guell', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Diesel Feesel', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Dani Sel', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Larry Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Shima Plok', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Gus Juss', 'jwd2222', '2021-09-19T19:57:55+00:00')
-    ]});*/
-
-    /*this.reasons.push(new Reason(0, "General Questions", false));
-    this.reasons.push(new Reason(1, "Reason 1", true));
-    this.reasons.push(new Reason(2, "Reason 2", false));
-    this.reasons.push(new Reason(3, "Reason 3", true));
-    this.reasons.push(new Reason(4, "Reason 4 with a really long name", false));
-    this.reasons.push(new Reason(5, "Reason5WithAReallyReallyLongName", true));
-    this.reasons.push(new Reason(6, "Reason 6", false));
-    this.reasons.push(new Reason(7, "Reason 7", true));
-    this.reasons.push(new Reason(8, "Reason 8", false));
-    this.reasons.push(new Reason(9, "Reason 9", true));
-    this.reasons.push(new Reason(10, "Reason 10", false));
-    this.reasons.push(new Reason(11, "Reason 11", true));
-    this.reasons.push(new Reason(12, "Reason 12", false));
-    this.reasons.push(new Reason(13, "Reason 13", true));
-    this.reasons.push(new Reason(14, "Reason 14 with a really long name", false));
-    this.reasons.push(new Reason(15, "Reason15WithAReallyReallyLongName", true));
-    this.reasons.push(new Reason(16, "Reason 16", false));
-    this.reasons.push(new Reason(17, "Reason 17", true));
-    this.reasons.push(new Reason(18, "Reason 18", false));
-    this.reasons.push(new Reason(19, "Reason 19", true));*/
-  }
+  ngOnInit() { }
 
   ngAfterViewInit() {
-    /*this.selectedAdvisor = this.advisors[0];
-    this.updateAdvisorInfoForm();
-
-    if(this.reasons && this.reasons[0]) {
-      console.log("testing 1 2 3");
-      this.reasonSetToEditMode();
-    }*/
-    // everything above this is temporary - remove when testing with server
-    //this.refreshData();
     this.connect();
   }
 
@@ -165,42 +97,11 @@ export class FrontDeskInterfaceComponent implements OnInit {
       this.connected = true;
       console.log("FETCHING ADVISORS: ", advisorData);
 
-      /*// GET student queues
-      this.apiService.getAllStudentQueues().subscribe((studentData: any[]) => {
-        console.log("FETCHING STUDENT QUEUES: ", studentData);
-
-        this.advisors = advisorData;
-
-        let i = 0;
-        for(let advisor of this.advisors) {
-          // attaches student queues to advisors if they exist
-          if(studentData[advisor.id]) {
-            this.advisors[i].studentQueue = studentData[advisor.id];
-          }
-
-          // refreshes the selected advisor
-          if(advisor.id == this.selectedAdvisor.id) {
-            this.selectedAdvisor = advisor;
-          }
-          
-          i++;
-        }
-
-        // if there is no selected advisor, sets the first advisor in the list as the selected advisor
-        if(this.selectedAdvisor.id == -1 && this.advisors && this.advisors[0]) {
-          this.selectedAdvisor = this.advisors[0];
-        }
-
-        this.updateAdvisorInfoForm();
-      });*/
-
       // GET student queues
       this.apiService.getAllStudentQueues().subscribe((studentData: any[]) => {
         console.log("FETCHING STUDENT QUEUES: ", studentData);
 
         let selectedAdvisorId = 0;
-
-        //this.advisors = advisorData;
 
         let i = 0;
         for(let advisor of advisorData) {
@@ -212,7 +113,6 @@ export class FrontDeskInterfaceComponent implements OnInit {
           // refreshes the selected advisor
           if(advisor.id == this.selectedAdvisor.id) {
             selectedAdvisorId = i;
-            //this.selectedAdvisor = advisor;
           }
           
           i++;
@@ -227,11 +127,6 @@ export class FrontDeskInterfaceComponent implements OnInit {
           if(this.advisors && this.advisors[0]) {
             this.selectedAdvisor = this.advisors[selectedAdvisorId];
           }
-
-          // if there is no selected advisor, sets the first advisor in the list as the selected advisor
-          /*if(this.selectedAdvisor.id == -1 && this.advisors && this.advisors[0]) {
-            this.selectedAdvisor = this.advisors[0];
-          }*/
 
           this.updateAdvisorInfoForm();
         }
@@ -252,11 +147,10 @@ export class FrontDeskInterfaceComponent implements OnInit {
       console.log("FETCHING REASONS: ", reasonData);
       this.oldReasons = this.reasons;
 
-
+      // only refreshes the reasons info if it has actually changed on the server
       if(JSON.stringify(reasonData) != JSON.stringify(this.oldReasons)) {
         console.log("Reason data changed on server - refreshing reasons on interface.");
         this.reasons = reasonData;
-        //this.selectReason(0);
 
         // if any reasons exist, default the reason manager to 'edit mode'
         if(this.reasons && this.reasons[0]) {
@@ -280,7 +174,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
 
   // signs out of the interface (will be routed back to the interface picker)
   logout() {
-    console.log("logout");
+    console.log("Logging out.");
     this.authService.logout();
   }
 
@@ -288,6 +182,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
   // swaps a student in the queue with the student above them
   queueMoveStudentUp(i: number) {
     // student queue is refreshed before action to prevent making bad requests with server
+    // GET student queues
     this.apiService.getAllStudentQueues().subscribe((studentData: any[]) => {
       console.log("FETCHING STUDENT QUEUES: ", studentData);
 
@@ -310,7 +205,6 @@ export class FrontDeskInterfaceComponent implements OnInit {
         }, 0);
 
         setTimeout(() => {
-          // PUT student into new queue position
           // The student position starts at 1, not 0 like the studentQueue array. 
           // Therefore, a 'newPosition' of 'i' is equivalent to studentQueue[i - 1].
           let studentMoveInfo = 
@@ -319,6 +213,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
             "newPosition": i
           };
 
+          // PUT student into new queue position
           this.apiService.moveStudentInQueue(this.selectedAdvisor.id, studentMoveInfo).subscribe(() => {
             console.log("Student successfully moved up in queue.");
             this.refreshData();
@@ -331,6 +226,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
   // swaps a student in the queue with the student below them
   queueMoveStudentDown(i: number) {
     // student queue is refreshed before action to prevent making bad requests with server
+    // GET student queues
     this.apiService.getAllStudentQueues().subscribe((studentData: any[]) => {
       console.log("FETCHING STUDENT QUEUES: ", studentData);
 
@@ -353,7 +249,6 @@ export class FrontDeskInterfaceComponent implements OnInit {
         }, 0);
 
         setTimeout(() => {
-          // PUT student into new queue position
           // The student position starts at 1, not 0 like the studentQueue array. 
           // Therefore, a 'newPosition' of 'i + 2' is equivalent to studentQueue[i + 1].
           let studentMoveInfo = 
@@ -362,6 +257,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
             "newPosition": i + 2
           };
 
+          // PUT student into new queue position
           this.apiService.moveStudentInQueue(this.selectedAdvisor.id, studentMoveInfo).subscribe(() => {
             console.log("Student successfully moved down in queue.");
             this.refreshData();
@@ -373,9 +269,9 @@ export class FrontDeskInterfaceComponent implements OnInit {
   
   // deletes a student from the selected advisor's student queue given the student id.
   queueDeleteStudent(i: number) {
-    // DELETE student from queue
     let studentToDelete = this.selectedAdvisor.studentQueue[i].username;
 
+    // DELETE student from queue
     this.apiService.deleteStudentFromQueue(this.selectedAdvisor.id, studentToDelete).subscribe(() => {
       console.log("Student successfully deleted from queue.");
       this.deletePopup();
@@ -403,7 +299,6 @@ export class FrontDeskInterfaceComponent implements OnInit {
 
   // saves the modified advisor info to the API from the advisor info form
   saveAdvisorInfo() {
-    // PUT updated advisor info into advisor info on server
     let advisorInfoToUpdate = 
     {
       "firstName": this.advisorInfoForm.get("fname")?.value,
@@ -414,13 +309,14 @@ export class FrontDeskInterfaceComponent implements OnInit {
       "enabled": true
     };
 
+    // PUT updated advisor info into advisor info on server
     this.apiService.updateAdvisor(this.selectedAdvisor.id, advisorInfoToUpdate).subscribe(() => {
       console.log("Advisor info successfully updated.");
       this.refreshData();
     });
   }
 
-  // swaps an advisor in the list with the advisor above them (NOT IN USE - NO API ENDPOINT)
+  // swaps an advisor in the list with the advisor above them (NOT IN USE - NO API ENDPOINT. ALSO, THINGS HAVE CHANGED SINCE THIS WAS HIDDEN - IT MIGHT NOT WORK).
   /*listMoveAdvisorUp(i: number) {
     if(this.advisors[i - 1]) {
       let advisorItem = (document.getElementsByClassName("advisor-item")[i] as HTMLDivElement);
@@ -442,7 +338,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
     }
   }*/
 
-  // swaps an advisor in the list with the advisor below them (NOT IN USE - NO API ENDPOINT)
+  // swaps an advisor in the list with the advisor below them (NOT IN USE - NO API ENDPOINT. ALSO, THINGS HAVE CHANGED SINCE THIS WAS HIDDEN - IT MIGHT NOT WORK)
   /*listMoveAdvisorDown(i: number) {
     if(this.advisors[i + 1]) {
       let advisorItem = (document.getElementsByClassName("advisor-item")[i] as HTMLDivElement);
@@ -464,7 +360,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
     }
   }*/
   
-  // deletes an advisor from the list given their id
+  // deletes an advisor from the list given their id (NOT IN USE - ADVISORS CAN NO LONGER BE DELETED. ALSO, THINGS HAVE CHANGED SINCE THIS WAS HIDDEN - IT MIGHT NOT WORK ANYMORE)
   /*listDeleteAdvisor(i: number) {
     if(this.advisors.length == 1) {
       this.selectedAdvisor = {id: -1, firstName: "", middleName: "", lastName: "", email: "", portraitURL: "", studentQueue: []};
@@ -510,6 +406,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
     }
 
     console.log("Uploading image(s)...");
+    // POST new announcement images to the server
     this.apiService.createAnnouncements(fd).subscribe(() => {
       console.log("Image(s) successfully uploaded.");
       this.refreshData();
@@ -519,6 +416,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
   // deletes all banner images from the server
   clearBanner() {
     console.log("Deleting all banner images...");
+    // DELETE all banner images from the server
     this.apiService.deleteAnnouncements().subscribe(() => {
       console.log("Banner image(s) successfully deleted.");
       this.refreshData();
@@ -531,13 +429,13 @@ export class FrontDeskInterfaceComponent implements OnInit {
   addOrSaveReason() {
     if(this.shouldSubmitForm) {
       if(this.addingReason) {
-        // POST new reason to API
         let reasonToAdd = 
         {
           "name": this.reasonForm.get("rname")?.value, 
           "needsAppt": this.reasonForm.get("rappt")?.value
         };
 
+        // POST new reason to API
         this.apiService.createReason(reasonToAdd).subscribe(() => {
           console.log("Reason successfully added.");
           this.refreshData();
@@ -546,13 +444,13 @@ export class FrontDeskInterfaceComponent implements OnInit {
         });
       }
       else {
-        // PUT existing reason in API
         let reasonToUpdate = 
         {
           "name": this.reasonForm.get("rname")?.value, 
           "needsAppt": this.reasonForm.get("rappt")?.value
         };
 
+        // PUT existing reason in API
         this.apiService.updateReason(this.selectedReason.id, reasonToUpdate).subscribe(() => {
           console.log("Reason successfully updated.");
           this.refreshData();
@@ -594,18 +492,11 @@ export class FrontDeskInterfaceComponent implements OnInit {
 
   // selects a reason given its id
   selectReason(i: number) {
-    /*if(document.getElementsByClassName("selected-reason")[0]) {
-      document.getElementsByClassName("selected-reason")[0].classList.remove("selected-reason");
-    }*/
     this.selectedReason = this.reasons[i];
 
     if(!this.selectedReason) {
       this.selectedReason = new Reason(-1, "", false);
     }
-
-    /*if(document.getElementsByClassName("reason-item")[i]) {
-      document.getElementsByClassName("reason-item")[i].classList.add("selected-reason");
-    }*/
 
     this.updateReasonForm();
   }
@@ -620,7 +511,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
 
   // sets the reason form to 'add mode', allowing it to add new reasons instead of edit existing reasons
   reasonSetToAddMode() {
-    this.selectedReason = new Reason(-1, "", false);
+    this.selectedReason = new Reason(-1, "", false); // unselects whatever reason is currently selected
     this.updateReasonForm();
 
     this.addingReason = true;
@@ -642,7 +533,6 @@ export class FrontDeskInterfaceComponent implements OnInit {
   // adds a new advisor to the API using info from the 'add advisor' form
   addAdvisor() {
     if(this.shouldSubmitForm) {
-      // POST new advisor to API
       let advisorToAdd = 
       {
         "firstName": this.addAdvisorForm.get("fname")?.value, 
@@ -652,6 +542,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
         "portraitURL": this.addAdvisorForm.get("portraitURL")?.value
       };
 
+      // POST new advisor to API
       this.apiService.createAdvisor(advisorToAdd).subscribe(() => {
         console.log("Advisor successfully added.");
         this.clearAddAdvisorForm();
@@ -676,7 +567,6 @@ export class FrontDeskInterfaceComponent implements OnInit {
   // adds a new student to the API using info from the 'add student' form
   addStudent() {
     if(this.shouldSubmitForm) {
-      // POST new student to API
       let timeArray = new Date().toISOString().split(".");
       let timeIn = timeArray[0] + timeArray[1][timeArray[1].length - 1]; // the current time minus any fractional millisecond stuff (but still retaining the timezone identifier)
       let studentToAdd = 
@@ -689,6 +579,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
         "timeIn": timeIn
       };
 
+      // POST new student to API
       this.apiService.checkInStudent(studentToAdd).subscribe(() => {
         console.log("Student successfully added.");
         this.clearAddStudentForm();
@@ -805,7 +696,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
     );
   }
 
-  // creates a popup box for deleting an advisor from the advisor list
+  // creates a popup box for deleting an advisor from the advisor list (NOT IN USE - ADVISORS CAN NO LONGER BE DELETED).
   /*popupDeleteAdvisor(i: number) {
     let advisorName = `${this.advisors[i].firstName} ${this.advisors[i].lastName}`;
 

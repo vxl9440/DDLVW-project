@@ -1,3 +1,7 @@
+// Created by Drew Bissen of Team DDLVW
+// Senior Development Project II
+// Last modified 11/30/2021
+
 /* global variables */
 $rit-orange: rgb(230, 113, 45);
 $rit-orange-light-1: rgb(255, 126, 51);
@@ -72,6 +76,7 @@ input[type="submit"]:hover {
     margin-right: 5px;
 }
 
+// general styling for any sort of Remove buttons
 .remove-button {
     display: flex;
     align-items: center;
@@ -160,17 +165,6 @@ input[type="submit"]:hover {
     margin-right: 5px;
 }
 
-/*// the actual link area used by each top bar button
-.top-bar-buttons button a {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    color: white;
-}*/
-
 /* -------------------- SECTION STUFF -------------------- */
 // general section label styling
 .section-label {
@@ -186,9 +180,6 @@ input[type="submit"]:hover {
     100% {
         transform: translateY(-60px);
     }
-    /*100% {
-        transform: translateY(-60px);
-    }*/
 }
 
 // animation for swapping student down in the queue
@@ -199,9 +190,6 @@ input[type="submit"]:hover {
     100% {
         transform: translateY(60px);
     }
-    /*100% {
-        transform: translateY(60px);
-    }*/
 }
 
 // the left-most area of the screen (the student queue manager)
@@ -276,8 +264,7 @@ input[type="submit"]:hover {
     box-sizing: border-box;
     display: flex;
     align-items: center;
-    //width: calc(100% - 55px);
-    width: calc(100% - 156px);
+    width: calc(100% - 156px); // the full width minus 52px for each button
     margin-right: 2px;
     padding: 5px;
     padding-left: 10px;
@@ -338,28 +325,6 @@ input[type="submit"]:hover {
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25) inset;
 }
 
-.check-button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50px;
-    height: 50px;
-    padding: 0;
-    background-color: $light-green;
-    border: none;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.125);
-}
-
-.check-button:hover {
-    background-color: $light-green-highlighted;
-}
-
-.check-button:active {
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25) inset;
-}
-
 // this area is used if there are no students in the student queue
 .none-text-area {
     height: 100%;
@@ -416,7 +381,6 @@ input[type="submit"]:hover {
 // the section label used by the advisor list manager
 .advisor-list-manager h2 {
     width: 20%;
-    //height: 5vh;
     height: auto;
     margin-top: -15px;
     margin-left: -15px;
@@ -430,9 +394,6 @@ input[type="submit"]:hover {
 // contains all advisor list stuff - without the section label
 .advisor-stuff {
     display: flex;
-    //justify-content: space-between;
-    //gap: 10px;
-    //height: calc(100% - 4.3vh);
     height: 90%;
 }
 
@@ -442,9 +403,7 @@ input[type="submit"]:hover {
     display: flex;
     flex-direction: column;
     align-items: center;
-    //flex-grow: 1;
     width: 50%;
-    //width: calc(50% - 5px);
     height: 100%;
     margin-right: 10px;
     overflow-y: auto;
@@ -476,9 +435,6 @@ input[type="submit"]:hover {
     width: calc(100% - 10px);
     margin-top: 5px;
     margin-right: 5px;
-    //padding: 10px;
-    //background-color: $rit-orange;
-    //color: white;
     border-radius: 5px;
 }
 
@@ -489,7 +445,6 @@ input[type="submit"]:hover {
 // the small arrow used to show which advisor is selected
 .selected-advisor-arrow {
     height: 1.8vh;
-    //margin-bottom: 2px;
     margin-right: 5px;
 }
 
@@ -498,8 +453,8 @@ input[type="submit"]:hover {
     display: flex;
     align-items: center;
     height: 50px;
-    width: calc(100% - 55px);
-    //width: calc(100% - 156px);
+    width: calc(100% - 55px); // the full width minus 55px for the one 'X' button
+    //width: calc(100% - 156px); // was used when swapping advisors in the advisor list was possible (they had three buttons total)
     margin-right: 2px;
     padding: 5px;
     padding-left: 10px;
@@ -515,27 +470,46 @@ input[type="submit"]:hover {
     background-color: $rit-orange-light-3;
 }
 
+// the check button indicating that an advisor is enabled
+.check-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    padding: 0;
+    background-color: $light-green;
+    border: none;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.125);
+}
+
+.check-button:hover {
+    background-color: $light-green-highlighted;
+}
+
+.check-button:active {
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25) inset;
+}
+
 .add-advisor-button {
     margin-top: auto;
     margin-right: 10px;
 }
 
-/*.selectedAdvisor {
-    background-color: $rit-orange-light-3;
-    font-weight: bold;
-}*/
-
+// the vertical line used to separate the advisor list from the advisor info
 .vertical-line {
     grid-row: 2 / 3;
     grid-column: 4 / 5;
     width: 5px;
-    //height: 100%;
     max-height: calc(48vh + 30px);
     margin-left: auto;
     margin-right: auto;
     background-color: $rit-orange;
 }
 
+// contains the advisor photo and info form
 .advisor-info {
     box-sizing: border-box;
     display: flex;
@@ -547,18 +521,16 @@ input[type="submit"]:hover {
     font-size: 1vw;
 }
 
+// styling for the advisor image
 .advisor-info img {
     height: 8vw;
     width: 8vw;
     margin-bottom: 20px;
     object-fit: cover;
     background-color: lightgray;
-    //background-color: black;
-    //border: 1px solid black;
-    //border-radius: 50%;
-    //margin-right: 10px;
 }
 
+// the advisor info form
 .advisor-info form {
     display: flex;
     flex-direction: column;
@@ -568,6 +540,7 @@ input[type="submit"]:hover {
     margin-right: 40px;
 }
 
+// styling for each row of the advisor info form (and maybe other forms?)
 .form-row {
     display: flex;
     justify-content: space-between;
@@ -580,6 +553,7 @@ input[type="submit"]:hover {
     align-items: center;
 }
 
+// form styling should change if using a chackbox
 .checkbox-row {
     display: flex;
     justify-content: flex-start;
@@ -587,6 +561,7 @@ input[type="submit"]:hover {
     margin-bottom: 5px;
 }
 
+// styling for text inputs
 input[type="text"] {
     flex-grow: 1;
     margin-left: 10px;
@@ -597,6 +572,8 @@ input[type="text"] {
 }
 
 /* -------------------- BANNER INFO MANAGER STUFF -------------------- */
+// *note: banner images and announcement images are the same thing
+
 .banner-info-manager {
     grid-row: 4 / 5;
     grid-column: 4 / 5;
@@ -607,16 +584,19 @@ input[type="text"] {
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
 }
 
+// contains everything banner-related except for the section title
 .banner-info-stuff {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
 }
 
+// used for styling of the 'Images currently on the server' list
 .banner-info-item {
     width: 33%;
 }
 
+// the section title
 .banner-info-manager h2 {
     width: 20%;
     height: 5vh;
@@ -629,12 +609,11 @@ input[type="text"] {
     border-bottom-right-radius: 10px;
 }
 
+// the banner images uploader form
 .banner-info-manager form {
     display: flex;
     flex-direction: column;
     align-items: center;
-    //height: 70%;
-    //margin-top: 6vh;
 }
 
 .banner-info-manager form label {
@@ -642,21 +621,7 @@ input[type="text"] {
     font-size: 1vw;
 }
 
-#bannerText {
-    width: 90%;
-    //height: 100%;
-    padding: 10px;
-    border: 2px solid $rit-orange;
-    border-radius: 5px;
-    font-size: 0.9vw;
-    resize: none;
-}
-
-#bannerText:focus {
-    border-color: $rit-orange-light-1;
-    outline-color: $rit-orange-light-1;
-}
-
+// possibly not being used?
 .banner-info-manager form div {
     margin-top: 10px;
 }
@@ -693,12 +658,12 @@ input[type="text"] {
     display: none;
 }
 
+// styling for popup boxes
 .popup-box {
     display: flex;
     flex-direction: column;
     height: 20vh;
     width: 20vw;
-    //margin: 40%;
     background-color: $rit-white-orange;
     border: 5px solid $rit-orange;
     border-radius: 10px;
@@ -706,6 +671,7 @@ input[type="text"] {
     z-index: 1;
 }
 
+// the top bar of the popup box (contains the popup box title)
 .popup-top-bar {
     display: flex;
     align-items: center;
@@ -723,23 +689,14 @@ input[type="text"] {
     font-size: 1vw;
 }
 
-.popup-subtitle-area {
-    margin: 0;
-    margin-bottom: 10px;
-    font-size: 1.2vw;
-}
-
-.popup-subtitle-area h2 {
-    font-size: 1.2vw;
-}
-
+// contains popup info minus the top bar
 .popup-text-area {
     margin: 10px;
     font-size: 0.80vw;
 }
 
+// contains the popup box buttons
 .popup-buttons-area {
-    //width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -747,6 +704,7 @@ input[type="text"] {
     margin-top: auto;
 }
 
+// buttons at the bottom of popup boxes
 .popup-button {
     display: none;
     width: 5vw;
@@ -780,7 +738,6 @@ input[type="text"] {
 }
 
 .popup-red-button:hover {
-    //background-color: $light-red-highlighted;
     background-color: $light-red-light-1;
 }
 
@@ -813,23 +770,33 @@ input[type="text"] {
 }
 
 /* -------------------- POPUP REASON MANAGER STUFF -------------------- */
+// used in the Reason Manager for the 'Add Reason/Edit Reason' selector
+.popup-subtitle-area {
+    margin: 0;
+    margin-bottom: 10px;
+    font-size: 1.2vw;
+}
+
+.popup-subtitle-area h2 {
+    font-size: 1.2vw;
+}
+
 #reason {
     display: none;
 }
 
+// styling specific to the reason manager popup box (in this case, makes it bigger)
 .reason-box {
     height: 45vh;
     width: 45vw;
 }
 
+// functionally the same as popup-text-area, but for the reason box (popup-text-area is used for both the left and right areas of the reason box)
 .popup-reasons-main-area {
     display: flex;
 }
 
-.popup-reasons-left-area {
-    width: 50%;
-}
-
+// used for the 'Add Reason/Edit Reason' selector
 .add-reason-subtitle {
     display: inline;
 }
@@ -851,6 +818,12 @@ input[type="text"] {
     color: gray;
 }
 
+// used to hold the reasons editor/adder form
+.popup-reasons-left-area {
+    width: 50%;
+}
+
+// used to hold the reasons list
 .popup-reasons-right-area {
     width: 50%;
     height: 30vh;
@@ -860,6 +833,7 @@ input[type="text"] {
     overflow-y: auto;
 }
 
+// each reason item in the reasons list
 .reason-item {
     display: flex;
     align-items: center;
@@ -875,10 +849,6 @@ input[type="text"] {
     background-color: $rit-orange-light-2;
     cursor: pointer;
 }
-
-/*.selected-reason {
-    background-color: $rit-orange-light-2;
-}*/
 
 // the small arrow used to show which reason is selected
 .selected-reason-arrow {

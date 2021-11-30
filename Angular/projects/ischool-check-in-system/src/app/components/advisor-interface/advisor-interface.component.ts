@@ -1,3 +1,7 @@
+// Created by Drew Bissen of Team DDLVW
+// Senior Development Project II
+// Last modified 11/30/2021
+
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
@@ -13,10 +17,8 @@ import { ApiService } from '../../services/api.service';
 export class AdvisorInterfaceComponent implements OnInit {
   title = 'advisor-interface';
   
-  //advisorID: number = 1;
   advisor: Advisor; // the current advisor
   hasSetAdvisor: boolean = false; // whether or not the advisor has been determined
-  //selectedStudent: Student; // the currently selected student in the advisor's student queue
   selectedStudent: any; // the currently selected student in the advisor's student queue
   meetingStudent: any; // the student currently in a meeting
   meetingStudentIndex: number; // the queue position of the student currently in a meeting
@@ -26,10 +28,9 @@ export class AdvisorInterfaceComponent implements OnInit {
   meetingDuration: string = "00:00"; // the duration of the current meeting
   timer: any; // the meeting timer
 
-  playSound: boolean = true;
+  playSound: boolean = true; // whether or not the notification sound should be played when a change happens to the student queue
 
   advisorWalkInHours: any; // the advisor's walk-in hours data
-  //walkInDataExists: boolean = false;
 
   // the walk-in hours form
   walkInHoursForm = this.formBuilder.group({
@@ -45,6 +46,7 @@ export class AdvisorInterfaceComponent implements OnInit {
     fridayEnd: ''
   });
 
+  // used for comparing new walk-in hours data from the server with the current walk-in hours data to see if there are any changes
   oldWalkInData: any = [
     {
       startTime: "",
@@ -84,9 +86,7 @@ export class AdvisorInterfaceComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute, private authService: AuthService, private apiService: ApiService, private formBuilder: FormBuilder) {}
 
   ngOnInit() {
-    // uncomment this for production
-    // this.advisor = this.activatedRoute.snapshot.data.advisor;
-
+    // default values are set for advisor, selectedStudent, and meetingStudent
     this.advisor = {
       id: 0,
       firstName: '',
@@ -97,7 +97,9 @@ export class AdvisorInterfaceComponent implements OnInit {
       studentQueue: []
     };
 
-    //this.selectedStudent = new Student('', '', '');
+    // uncomment this when done testing
+    this.advisor = this.activatedRoute.snapshot.data.advisor;
+
     this.selectedStudent = {
       id: -1,
       studentName: "",
@@ -118,7 +120,6 @@ export class AdvisorInterfaceComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    //this.refreshData();
     this.connect();
   }
 
@@ -137,16 +138,15 @@ export class AdvisorInterfaceComponent implements OnInit {
     // for testing only
     if(!this.hasSetAdvisor) {
       // temporary - comment out when done testing
-      this.apiService.getAllAdvisors().subscribe((advisorData: Advisor[]) => {
-        console.log('FETCHING ADVISOR: ', advisorData);
+      //this.apiService.getAllAdvisors().subscribe((advisorData: Advisor[]) => {
       // uncomment when done testing
-      //this.activatedRoute.data.subscribe((advisorData: any) => {
-        //console.log('FETCHING ADVISOR: ', advisorData);
+      this.activatedRoute.data.subscribe((advisorData: any) => {
+        console.log('FETCHING ADVISOR: ', advisorData);
 
         // temporary - comment out when done testing
-        this.refreshStudentQueue(advisorData[2]);
+        //this.refreshStudentQueue(advisorData[2]);
         // uncomment when done testing
-        //this.refreshStudentQueue(advisorData.advisor);
+        this.refreshStudentQueue(advisorData.advisor);
 
         this.refreshWalkInData();
 
@@ -192,10 +192,6 @@ export class AdvisorInterfaceComponent implements OnInit {
       else {
         console.log("No refresh of student queue data needed.");
       }
-
-      /*if(this.selectedStudent.id && this.selectedStudent.id == -1 && this.advisor.studentQueue && this.advisor.studentQueue[0]) {
-        this.selectedStudent = this.advisor.studentQueue[0];
-      }*/
     });
   }
 
@@ -204,12 +200,6 @@ export class AdvisorInterfaceComponent implements OnInit {
     // GET walk-in hours data
     this.apiService.getAdvisorWalkInHours(this.advisor.id).subscribe((walkInData: any[]) => {
       console.log("FETCHING WALK-IN DATA: ", walkInData);
-      /*if(walkInData) {
-        this.walkInDataExists = true;
-      }
-      else {
-        this.walkInDataExists = false;
-      }*/
 
       // set current walk-in hours as oldWalkInHours for comparison later
       this.oldWalkInData = [
@@ -246,6 +236,7 @@ export class AdvisorInterfaceComponent implements OnInit {
       let thursdayInfo = ["", ""];
       let fridayInfo = ["", ""];
 
+      // assigns each day's walk-in hours data
       for(let day of walkInData) {
         switch(day.weekday) {
           case 'MON':
@@ -329,7 +320,7 @@ export class AdvisorInterfaceComponent implements OnInit {
       this.endMeeting();
     }
     
-    console.log("logout");
+    console.log("Logging out.");
     this.authService.logout();
   }
 
@@ -403,16 +394,6 @@ export class AdvisorInterfaceComponent implements OnInit {
         weekday: 'FRI'
       }
     ];
-
-    /*if(this.walkInDataExists) {
-      //PUT walk-in hours data
-      this.apiService.updateAdvisorWalkInHours(this.advisor.id, walkInData);
-    }
-    else {
-      //POST walk-in hours data
-      this.apiService.createAdvisorWalkInHours(this.advisor.id, walkInData);
-    }*/
-
 
     this.apiService.deleteAdvisorWalkInHours(this.advisor.id).subscribe(() => {
       console.log("Advisor Walk-In Hours successfully deleted.");
@@ -526,14 +507,6 @@ export class AdvisorInterfaceComponent implements OnInit {
     }, 1000);
   }
 
-  /*showEndMeetingText() {
-    (document.getElementsByClassName('meeting-button red-button')[0] as HTMLButtonElement).innerText = "End Meeting";
-  }
-
-  stopShowingEndMeetingText() {
-    (document.getElementsByClassName('meeting-button red-button')[0] as HTMLButtonElement).innerText = this.meetingDuration;
-  }*/
-
   // moves a student up in the student queue (and runs animation)
   queueMoveStudentUp(i: number) {
     // student queue is refreshed before action to prevent making bad requests with server
@@ -542,6 +515,7 @@ export class AdvisorInterfaceComponent implements OnInit {
 
       this.advisor.studentQueue = studentData[this.advisor.id];
 
+      // if there is currently no selected student, selects the first student in the queue (if possible)
       if(this.selectedStudent.id && this.selectedStudent.id == -1 && this.advisor.studentQueue && this.advisor.studentQueue[0]) {
         this.selectedStudent = this.advisor.studentQueue[0];
       }
@@ -581,8 +555,6 @@ export class AdvisorInterfaceComponent implements OnInit {
             "newPosition": i
           };
 
-          console.log("studentMoveInfo: ", studentMoveInfo);
-
           this.apiService.moveStudentInQueue(this.advisor.id, studentMoveInfo).subscribe(() => {
             console.log("Student successfully moved up in queue.");
             this.playSound = false; // makes sure the notification sound isn't played
@@ -603,6 +575,7 @@ export class AdvisorInterfaceComponent implements OnInit {
 
       this.advisor.studentQueue = studentData[this.advisor.id];
 
+      // if there is currently no selected student, selects the first student in the queue (if possible)
       if(this.selectedStudent.id && this.selectedStudent.id == -1 && this.advisor.studentQueue && this.advisor.studentQueue[0]) {
         this.selectedStudent = this.advisor.studentQueue[0];
       }
@@ -642,14 +615,11 @@ export class AdvisorInterfaceComponent implements OnInit {
             "newPosition": i + 2
           };
 
-          console.log("studentMoveInfo: ", studentMoveInfo);
-
           this.apiService.moveStudentInQueue(this.advisor.id, studentMoveInfo).subscribe(() => {
             console.log("Student successfully moved down in queue.");
             this.playSound = false; // makes sure the notification sound isn't played
             // refresh data to reflect change in database
             this.refreshData();
-            //this.refreshStudentQueue();
           });
         }, 300);
       }
@@ -664,12 +634,14 @@ export class AdvisorInterfaceComponent implements OnInit {
 
       this.advisor.studentQueue = studentData[this.advisor.id];
 
+      // if there is currently no selected student, selects the first student in the queue (if possible)
       if(this.selectedStudent.id && this.selectedStudent.id == -1 && this.advisor.studentQueue && this.advisor.studentQueue[0]) {
         this.selectedStudent = this.advisor.studentQueue[0];
       }
 
       let studentToDelete = this.advisor.studentQueue[i].username;
 
+      // if the student being deleted is in a meeting, ends the meeting
       if(this.meetingStudent.username == studentToDelete) {
         this.meetingInProgress = false;
         this.meetingDuration = "00:00";
@@ -685,9 +657,6 @@ export class AdvisorInterfaceComponent implements OnInit {
       }
 
       // DELETE student from advisor's queue
-      console.log("studentToDelete: ", studentToDelete);
-      console.log("advisor.id: ", this.advisor.id);
-
       this.apiService.deleteStudentFromQueue(this.advisor.id, studentToDelete).subscribe(() => {
         console.log("Student successfully deleted from queue.");
         this.deletePopup();

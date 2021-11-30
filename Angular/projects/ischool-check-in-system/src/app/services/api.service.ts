@@ -129,7 +129,6 @@ export class ApiService {
   }
 
   public createAnnouncements(formData: any) {
-    //return this.httpClient.post(`${ environment.apiUrl }/announcements`, files);
     return this.httpClient.post(`${ environment.apiUrl }/announcements`, formData);
   }
 

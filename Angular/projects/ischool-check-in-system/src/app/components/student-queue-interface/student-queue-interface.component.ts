@@ -1,6 +1,9 @@
+// Created by Drew Bissen of Team DDLVW
+// Senior Development Project II
+// Last modified 11/30/2021
+
 import { Component, OnInit } from '@angular/core';
 import { Advisor } from '../../models/advisor';
-import { Reason } from '../../models/reason';
 
 import { ApiService } from '../../services/api.service';
 import { environment } from '../../../environments/environment';
@@ -15,105 +18,27 @@ export class StudentQueueInterfaceComponent implements OnInit {
   environment: any;
 
   advisors: Advisor[] = [];
-  enabledAdvisors: Advisor[] = [];
+  enabledAdvisors: Advisor[] = []; // contains only the enabled advisors (only advisors in this array will show on the interface).
   maxAdvisorsToShow: number = 5; // the maximum amount of advisors to show on the screen.
   maxStudentsInList: number = 9; // the maximum amount of students to show in an advisor's student queue before ending the list with '...'
   maxStudentNameLength: number = 15; // the maximum length that a student's first name can be before it is cut off
-  connected: boolean = false;
-  timeUpdated: string = "?";
-  //bannerText: string = "";
-  /*this.bannerText = "This is an example of the bottom banner text. It should be large enough to be clearly legible by students looking at the interface, " + 
-      "and should catch their attention without being annoying or distracting.";*/
+  connected: boolean = false; // whether or not we are connected to the server
+  timeUpdated: string = "?"; // the time the data from the server was last updated
   announcements: string[] = [];
   aIndex: number = 0; // the announcement index
-  isSlideshowRunning: boolean = false;
-  reasons: Reason[] = [];
+  isSlideshowRunning: boolean = false; // whether or not the announcement slideshow is currently running
 
   constructor(private apiService: ApiService) {
     this.environment = environment;
   }
 
-  ngOnInit() {
-    /*this.advisors.push({id: 0, firstName: "Elissa", middleName: '', lastName: "Weeden", email: "jnd1234@rit.edu", portraitURL: "../assets/ElissaWeeden.png", studentQueue: [
-      new Student('Jack Smith', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
-      new Student('Jane Doe', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Jill Smith', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'})
-    ]});
-    this.advisors.push({id: 1, firstName: "Melissa", middleName: '', lastName: "Hanna", email: "jnd1234@rit.edu", portraitURL: "../assets/MelissaHanna.png", studentQueue: []});
-    this.advisors.push({id: 2, firstName: "Betty", middleName: '', lastName: "Hillman", email: "gym1324@rit.edu", portraitURL: "../assets/BettyHillman.png", studentQueue: [
-      new Student('Tim Bim', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
-      new Student('Rebecca Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Billy Mann', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
-      new Student('Mikah Guell', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Diesel Feesel', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Dani Sel', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Larry Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Shima Plok', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Gus Juss', 'jwd2222', '2021-09-19T19:57:55+00:00')
-    ]});
-    this.advisors.push({id: 3, firstName: "Stephen", middleName: '', lastName: "Zilora", email: "jnd1234@rit.edu", portraitURL: "../assets/StephenZilora.png", studentQueue: [
-      new Student('Jack Smith', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
-      new Student('Jane Doe', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Jill Smith', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
-      new Student('Max Lile', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Dani Tuu', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Moe Bo', 'jwd2222', '2021-09-19T19:57:55+00:00')
-    ]});
-    this.advisors.push({id: 4, firstName: "Kristen", middleName: '', lastName: "Shinohara", email: "gym1324@rit.edu", portraitURL: "../assets/KristenShinohara.png", studentQueue: [
-      new Student('Timgirgheroihgeoriugherogwehrogirhewohowroihgwrohrpiyhgiwiroihorwohigwoirghoiwr Bim', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
-      new Student('Rebecca Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Billy Mann', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
-      new Student('Mikah Guell', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Diesel Feesel', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Dani Sel', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Larry Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Shima Plok', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Gus Juss', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Tim Bim', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
-      new Student('Rebecca Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Billy Mann', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
-      new Student('Mikah Guell', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Diesel Feesel', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Dani Sel', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Larry Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Shima Plok', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Gus Juss', 'jwd2222', '2021-09-19T19:57:55+00:00')
-    ]});
-    this.advisors.push({id: 5, firstName: "Kevin", middleName: '', lastName: "Stiner", email: "rcs4321@rit.edu", portraitURL: "../assets/KevinStiner.png", studentQueue: [
-      new Student('Tim Bim', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
-      new Student('Rebecca Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Billy Mann', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'})
-    ]});
-    this.advisors.push({id: 6, firstName: "Kevin", middleName: '', lastName: "Stiner2", email: "rcs4321@rit.edu", portraitURL: "../assets/KevinStiner.png", studentQueue: [
-      new Student('Tim Bim', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
-      new Student('Rebecca Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Billy Mann', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'})
-    ]});
-    this.advisors.push({id: 7, firstName: "Kevin", middleName: '', lastName: "Stiner3", email: "rcs4321@rit.edu", portraitURL: "../assets/KevinStiner.png", studentQueue: [
-      new Student('Tim Bim', 'jms1111', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'}),
-      new Student('Rebecca Grobb', 'jwd2222', '2021-09-19T19:57:55+00:00'),
-      new Student('Billy Mann', 'jos3333', '2021-09-19T19:57:55+00:00', {startTime: '2021-09-19T19:57:55+00:00', endTime: '2021-09-19T19:57:55+00:00'})
-    ]});*/
-
-    //this.announcements.push("../assets/person2.jpg");
-  }
+  ngOnInit() { }
 
   ngAfterViewInit() {
-    /*setTimeout(() => {
-      if(!this.announcements || !this.announcements[0]) {
-        document.getElementsByClassName("advisor-area")[0].classList.add("full-width");
-        this.maxAdvisorsToShow = 7;
-        console.log(this.maxAdvisorsToShow);
-      }
-      else {
-        document.getElementsByClassName("advisor-area")[0].classList.remove("full-width");
-        this.maxAdvisorsToShow = 5;
-      }
-    }, 50);*/
     this.connect();
   }
   
-  // runs the loop that gets all required data intermittently (maybe remove later?)
+  // runs the loop that gets all required data intermittently
   connect() {
     this.refreshData();
 
@@ -124,21 +49,21 @@ export class StudentQueueInterfaceComponent implements OnInit {
 
   // gets all required data from the API and deals with it appropriately
   refreshData() {
-    //this.getBannerText();
     this.connected = false;
+    // GET advisors
     this.apiService.getAllAdvisors().subscribe((advisorData: Advisor[]) => {
-      //console.log("getAllAdvisors: ", data);
       console.log("Advisors acquired.");
 
       this.connected = true;
       this.timeUpdated = this.getCurrentTimeString();
-      //this.advisors = data;
 
+      // GET student queues
       this.apiService.getAllStudentQueues().subscribe((studentData: any[]) => {
-        //console.log("getAllStudentQueues: ", data);
         console.log("Student Queues acquired.");
 
         this.advisors = advisorData;
+
+        // assigns student queues to their corresponding advisors
         let i = 0;
         while(i < this.advisors.length) {
           if(studentData[this.advisors[i].id]) {
@@ -148,6 +73,7 @@ export class StudentQueueInterfaceComponent implements OnInit {
           i++;
         }
 
+        // creates and populates the enabled advisors array
         this.enabledAdvisors = [];
         for(let advisor of this.advisors) {
           if(advisor.enabled) {
@@ -157,26 +83,20 @@ export class StudentQueueInterfaceComponent implements OnInit {
       });
     });
 
-    /*this.apiService.getBannerInfo().subscribe((data: any) => {
-      this.bannerText = data.bannerInfo;
-      if(this.bannerText.length > 750) {
-        this.bannerText = this.bannerText.slice(0, 746);
-        this.bannerText += " ...";
-      }
-    });*/
+    // GET announcements
+    this.apiService.getAnnouncements().subscribe((announcementData: any) => {
+      console.log("Announcements acquired.");
 
-    this.apiService.getAnnouncements().subscribe((data: any) => {
-      console.log("Announcements: ", data);
-      //console.log("Announcements acquired.");
-
-      this.announcements = data;
+      this.announcements = announcementData;
       if(!this.announcements || !this.announcements[0]) {
+        // removes the announcements part of the interface if there are no announcements to show
         document.getElementsByClassName("advisor-area")[0].classList.add("full-width");
-        this.maxAdvisorsToShow = 7;
+        this.maxAdvisorsToShow = 7; // 7 advisors can comfortably fit when not showing announcements
       }
       else {
+        // adds the announcements part of the interface if there are announcements to show
         document.getElementsByClassName("advisor-area")[0].classList.remove("full-width");
-        this.maxAdvisorsToShow = 5;
+        this.maxAdvisorsToShow = 5; // only 5 advisors can comfortably fit when also showing announcements
         this.runAnnouncementsSlideshow();
       }
     });
@@ -209,14 +129,9 @@ export class StudentQueueInterfaceComponent implements OnInit {
     }
   }
 
-  /*getBannerText() {
-    if(this.bannerText.length > 750) {
-      this.bannerText = this.bannerText.slice(0, 746);
-      this.bannerText += " ...";
-    }
-  }*/
-
+  // runs the announcement slideshow which cycles through all announcement images (10s per image)
   runAnnouncementsSlideshow() {
+    // only tries running the slideshow if it's not already running
     if(!this.isSlideshowRunning) {
       this.isSlideshowRunning = true;
 
@@ -227,9 +142,6 @@ export class StudentQueueInterfaceComponent implements OnInit {
             this.aIndex = 0;
           }
         }
-        /*else {
-          this.aIndex = 0;
-        }*/
       }, 10000);
     }
   }

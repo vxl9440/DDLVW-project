@@ -20,7 +20,7 @@
           <h2>{{advisor.firstName}} {{advisor.lastName}}</h2>
         </div>
         <div class="student-box" *ngFor="let student of advisor.studentQueue | slice:0:maxStudentsInList; index as i">
-          <!-- Iterates through the student name, displaying all names except the last name, which it abbreviates. This is for multi-word first names, a rare but potential occurance -->
+          <!-- Iterates through the student name, displaying all names except the last name, which it abbreviates. This is for multi-word first names, a rare but potential occurance. Sorry to whoever has to make sense of this in the future. -->
           <h3><span *ngFor="let name of student.studentName.split(' ') | slice:0:student.studentName.split(' ').length - 1">{{name.slice(0, maxStudentNameLength)}}<span *ngIf="name.length > maxStudentNameLength">...</span></span> {{student.studentName.split(' ')[student.studentName.split(' ').length - 1].slice(0, 1)}}.</h3>
           <div class="fake-student-box" *ngIf="i == maxStudentsInList - 1">
             <h3>...</h3>
@@ -31,9 +31,5 @@
     </div>
     <div class="side-banner-area" *ngIf="announcements && announcements[0]">
       <img src="{{environment.apiUrl + '/uploads/' + announcements[aIndex]}}">
-      <!--img src="{{announcements[0]}}"-->
     </div>
-    <!--div class="banner-area">
-      <div *ngIf="announcements && announcements[0]"><img src="{{environment.apiUrl + '/api/announcements/:' + announcements[aIndex]}}"></div>
-    </div-->
   </div>
