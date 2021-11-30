@@ -28,15 +28,14 @@ export class FrontDeskInterfaceComponent implements OnInit {
     portraitURL: ''
   });
 
-  selectedFiles: File[] = [];
+  selectedFiles: File[] = []; // the files selected by the user to be uploaded to the server
   imagesOnServer: any[] = [];
 
   reasons: Reason[] = [];
   selectedReason: Reason = new Reason(-1, "", false);
-  addingReason: boolean = true;
+  addingReason: boolean = true; // if true, we are adding a reason. If false, we are editing a reason.
   reasonForm = this.formBuilder.group({
     rname: '',
-    rcode: '',
     rappt: false
   });
 
@@ -52,6 +51,9 @@ export class FrontDeskInterfaceComponent implements OnInit {
     name: '',
     username: ''
   });
+
+  oldAdvisors: Advisor[]; // used to check for changes in the advisor list
+  oldReasons: Reason[]; // used to check for changes in the reason list
 
   buttonActions: string[] = ["deletePopup()", "", ""];
   popupTitle: string = "";
@@ -138,15 +140,6 @@ export class FrontDeskInterfaceComponent implements OnInit {
     this.reasons.push(new Reason(17, "Reason 17", true));
     this.reasons.push(new Reason(18, "Reason 18", false));
     this.reasons.push(new Reason(19, "Reason 19", true));*/
-
-    //this.refreshData();
-    //let timeIn = new Date().toISOString();
-    //console.log(timeIn.slice(0, timeIn.length - 5));
-    
-    // testing different way of formatting time
-    /*console.log(new Date().toISOString());
-    let timeArray = new Date().toISOString().split(".");
-    console.log(timeArray[0] + timeArray[1][timeArray[1].length - 1]);*/
   }
 
   ngAfterViewInit() {
@@ -158,17 +151,21 @@ export class FrontDeskInterfaceComponent implements OnInit {
       this.reasonSetToEditMode();
     }*/
     // everything above this is temporary - remove when testing with server
-    this.refreshData();
+    //this.refreshData();
+    this.connect();
   }
 
   // refreshes all data from the API and takes appropriate actions on the page based on the data received
   refreshData() {
+    this.oldAdvisors = this.advisors;
+    this.oldReasons = this.reasons;
+
     // GET advisors
     this.apiService.getAllAdvisors().subscribe((advisorData: Advisor[]) => {
       this.connected = true;
       console.log("FETCHING ADVISORS: ", advisorData);
 
-      // GET student queues
+      /*// GET student queues
       this.apiService.getAllStudentQueues().subscribe((studentData: any[]) => {
         console.log("FETCHING STUDENT QUEUES: ", studentData);
 
@@ -176,10 +173,12 @@ export class FrontDeskInterfaceComponent implements OnInit {
 
         let i = 0;
         for(let advisor of this.advisors) {
+          // attaches student queues to advisors if they exist
           if(studentData[advisor.id]) {
             this.advisors[i].studentQueue = studentData[advisor.id];
           }
 
+          // refreshes the selected advisor
           if(advisor.id == this.selectedAdvisor.id) {
             this.selectedAdvisor = advisor;
           }
@@ -187,11 +186,58 @@ export class FrontDeskInterfaceComponent implements OnInit {
           i++;
         }
 
+        // if there is no selected advisor, sets the first advisor in the list as the selected advisor
         if(this.selectedAdvisor.id == -1 && this.advisors && this.advisors[0]) {
           this.selectedAdvisor = this.advisors[0];
         }
 
         this.updateAdvisorInfoForm();
+      });*/
+
+      // GET student queues
+      this.apiService.getAllStudentQueues().subscribe((studentData: any[]) => {
+        console.log("FETCHING STUDENT QUEUES: ", studentData);
+
+        let selectedAdvisorId = 0;
+
+        //this.advisors = advisorData;
+
+        let i = 0;
+        for(let advisor of advisorData) {
+          // attaches student queues to advisors if they exist
+          if(studentData[advisor.id]) {
+            advisorData[i].studentQueue = studentData[advisor.id];
+          }
+
+          // refreshes the selected advisor
+          if(advisor.id == this.selectedAdvisor.id) {
+            selectedAdvisorId = i;
+            //this.selectedAdvisor = advisor;
+          }
+          
+          i++;
+        }
+
+        // only refreshes the advisor/student queue info if it has actually changed on the server
+        if(JSON.stringify(this.oldAdvisors) != JSON.stringify(advisorData)) {
+          console.log("Advisor/student queue data changed on server - refreshing advisor/student queue info on interface.");
+          this.advisors = advisorData;
+
+          // sets the selected advisor (defaults to the first advisor if they exist)
+          if(this.advisors && this.advisors[0]) {
+            this.selectedAdvisor = this.advisors[selectedAdvisorId];
+          }
+
+          // if there is no selected advisor, sets the first advisor in the list as the selected advisor
+          /*if(this.selectedAdvisor.id == -1 && this.advisors && this.advisors[0]) {
+            this.selectedAdvisor = this.advisors[0];
+          }*/
+
+          this.updateAdvisorInfoForm();
+        }
+        else {
+          console.log("No refresh of advisor/student queue data needed.");
+        }
       });
     });
 
@@ -202,15 +248,34 @@ export class FrontDeskInterfaceComponent implements OnInit {
     });
 
     // GET reasons
-    this.apiService.getAllReasons().subscribe((data: Reason[]) => {
-      console.log("FETCHING REASONS: ", data);
-      this.reasons = data;
-      //this.selectReason(0);
+    this.apiService.getAllReasons().subscribe((reasonData: Reason[]) => {
+      console.log("FETCHING REASONS: ", reasonData);
+      this.oldReasons = this.reasons;
 
-      if(this.reasons && this.reasons[0]) {
-        this.reasonSetToEditMode();
+      
+      if(JSON.stringify(reasonData) != JSON.stringify(this.oldReasons)) {
+        console.log("Reason data changed on server - refreshing reasons on interface.");
+        this.reasons = reasonData;
+        //this.selectReason(0);
+
+        // if any reasons exist, default the reason manager to 'edit mode'
+        if(this.reasons && this.reasons[0]) {
+          this.reasonSetToEditMode();
+        }
+      }
+      else {
+        console.log("No refresh of reason data needed.");
       }
     });
+  }
+
+  // runs the loop that gets all required data intermittently
+  connect() {
+    this.refreshData();
+
+    setInterval(() => {
+      this.refreshData();
+    }, 10000);
   }
 
   // signs out of the interface (will be routed back to the interface picker)
@@ -222,12 +287,15 @@ export class FrontDeskInterfaceComponent implements OnInit {
   /* -------------------- STUDENT QUEUE STUFF -------------------- */
   // swaps a student in the queue with the student above them
   queueMoveStudentUp(i: number) {
+    // only swaps students if the two students exist
     if(this.selectedAdvisor.studentQueue[i - 1]) {
+      // animate swapping the student up
       let studentItem = (document.getElementsByClassName("student-item")[i] as HTMLDivElement);
       studentItem.style.animation = "swap-student-up";
       studentItem.style.animationDuration = "0.3s";
       studentItem.style.animationFillMode = "forwards";
 
+      // animate swapping the student down
       let aboveStudentItem = (document.getElementsByClassName("student-item")[i - 1] as HTMLDivElement);
       aboveStudentItem.style.animation = "swap-student-down";
       aboveStudentItem.style.animationDuration = "0.3s";
@@ -243,8 +311,6 @@ export class FrontDeskInterfaceComponent implements OnInit {
           "newPosition": i
         };
 
-        console.log("studentMoveInfo: ", studentMoveInfo);
-
         this.apiService.moveStudentInQueue(this.selectedAdvisor.id, studentMoveInfo).subscribe(() => {
           console.log("Student successfully moved up in queue.");
           this.refreshData();
@@ -255,12 +321,15 @@ export class FrontDeskInterfaceComponent implements OnInit {
 
   // swaps a student in the queue with the student below them
   queueMoveStudentDown(i: number) {
+    // only swaps students if the two students exist
     if(this.selectedAdvisor.studentQueue[i + 1]) {
+      // animate swapping the student down
       let studentItem = (document.getElementsByClassName("student-item")[i] as HTMLDivElement);
       studentItem.style.animation = "swap-student-down";
       studentItem.style.animationDuration = "0.3s";
       studentItem.style.animationFillMode = "forwards";
 
+      // animate swapping the student up
       let belowStudentItem = (document.getElementsByClassName("student-item")[i + 1] as HTMLDivElement);
       belowStudentItem.style.animation = "swap-student-up";
       belowStudentItem.style.animationDuration = "0.3s";
@@ -276,8 +345,6 @@ export class FrontDeskInterfaceComponent implements OnInit {
           "newPosition": i + 2
         };
 
-        console.log("studentMoveInfo: ", studentMoveInfo);
-
         this.apiService.moveStudentInQueue(this.selectedAdvisor.id, studentMoveInfo).subscribe(() => {
           console.log("Student successfully moved down in queue.");
           this.refreshData();
@@ -290,9 +357,6 @@ export class FrontDeskInterfaceComponent implements OnInit {
   queueDeleteStudent(i: number) {
     // DELETE student from queue
     let studentToDelete = this.selectedAdvisor.studentQueue[i].username;
-
-    console.log("studentToDelete: ", studentToDelete);
-    console.log("selectedAdvisor.id: ", this.selectedAdvisor.id);
 
     this.apiService.deleteStudentFromQueue(this.selectedAdvisor.id, studentToDelete).subscribe(() => {
       console.log("Student successfully deleted from queue.");
@@ -331,8 +395,6 @@ export class FrontDeskInterfaceComponent implements OnInit {
       "portraitURL": this.advisorInfoForm.get("portraitURL")?.value,
       "enabled": true
     };
-
-    console.log("advisorInfoToUpdate: ", advisorInfoToUpdate);
 
     this.apiService.updateAdvisor(this.selectedAdvisor.id, advisorInfoToUpdate).subscribe(() => {
       console.log("Advisor info successfully updated.");
@@ -423,6 +485,7 @@ export class FrontDeskInterfaceComponent implements OnInit {
 
   // uploads any selected images to the server to be used as banner images on the Student Queue Interface
   uploadBannerImages() {
+    // a new FormData is created containing all the selected images
     const fd = new FormData();
     for(let file of this.selectedFiles) {
       fd.append('announcement_files', file, file.name);
@@ -457,8 +520,6 @@ export class FrontDeskInterfaceComponent implements OnInit {
           "needsAppt": this.reasonForm.get("rappt")?.value
         };
 
-        console.log("reasonToAdd: ", reasonToAdd);
-
         this.apiService.createReason(reasonToAdd).subscribe(() => {
           console.log("Reason successfully added.");
           this.refreshData();
@@ -473,8 +534,6 @@ export class FrontDeskInterfaceComponent implements OnInit {
           "name": this.reasonForm.get("rname")?.value, 
           "needsAppt": this.reasonForm.get("rappt")?.value
         };
-
-        console.log("reasonToUpdate: ", reasonToUpdate);
 
         this.apiService.updateReason(this.selectedReason.id, reasonToUpdate).subscribe(() => {
           console.log("Reason successfully updated.");
@@ -497,7 +556,6 @@ export class FrontDeskInterfaceComponent implements OnInit {
   deleteReason() {
     for(let reason of this.reasons) {
       if(reason == this.selectedReason) {
-        console.log("Reason to delete: ", reason);
         // DELETE existing reason in API
         this.apiService.deleteReason(this.selectedReason.id).subscribe(() => {
           console.log("Reason successfully deleted.");
@@ -576,8 +634,6 @@ export class FrontDeskInterfaceComponent implements OnInit {
         "portraitURL": this.addAdvisorForm.get("portraitURL")?.value
       };
 
-      console.log("advisorToAdd: ", advisorToAdd);
-
       this.apiService.createAdvisor(advisorToAdd).subscribe(() => {
         console.log("Advisor successfully added.");
         this.clearAddAdvisorForm();
@@ -615,8 +671,6 @@ export class FrontDeskInterfaceComponent implements OnInit {
         "timeIn": timeIn
       };
 
-      console.log("studentToAdd: ", studentToAdd);
-    
       this.apiService.checkInStudent(studentToAdd).subscribe(() => {
         console.log("Student successfully added.");
         this.clearAddStudentForm();
@@ -643,18 +697,21 @@ export class FrontDeskInterfaceComponent implements OnInit {
 
     (document.getElementById("confirm") as HTMLDivElement).style.display = "flex";
 
+    // create button 1 if possible
     if(buttons[0]) {
       this.popupButton1Text = buttons[0][0];
       this.buttonActions[0] = buttons[0][1];
       document.getElementById("popup-button-1")?.classList.add(`popup-${buttons[0][2]}-button`);
     }
 
+    // create button 2 if possible
     if(buttons[1]) {
       this.popupButton2Text = buttons[1][0];
       this.buttonActions[1] = buttons[1][1];
       document.getElementById("popup-button-2")?.classList.add(`popup-${buttons[1][2]}-button`);
     }
 
+    // create button 3 if possible
     if(buttons[2]) {
       this.popupButton3Text = buttons[2][0];
       this.buttonActions[2] = buttons[2][1];

@@ -15,9 +15,9 @@ export class AdvisorInterfaceComponent implements OnInit {
   
   //advisorID: number = 1;
   advisor: Advisor; // the current advisor
+  hasSetAdvisor: boolean = false; // whether or not the advisor has been determined
   //selectedStudent: Student; // the currently selected student in the advisor's student queue
   selectedStudent: any; // the currently selected student in the advisor's student queue
-  //meetingStudent: Student; // the student currently in a meeting
   meetingStudent: any; // the student currently in a meeting
   meetingStudentIndex: number; // the queue position of the student currently in a meeting
   oldStudentQueue: any; // used to check for changes in the student queue
@@ -29,7 +29,7 @@ export class AdvisorInterfaceComponent implements OnInit {
   playSound: boolean = true;
 
   advisorWalkInHours: any; // the advisor's walk-in hours data
-  walkInDataExists: boolean = false;
+  //walkInDataExists: boolean = false;
 
   // the walk-in hours form
   walkInHoursForm = this.formBuilder.group({
@@ -132,162 +132,193 @@ export class AdvisorInterfaceComponent implements OnInit {
   refreshData() {
     // GET advisor
     // for testing only
-    this.apiService.getAllAdvisors().subscribe((advisorData: Advisor[]) => {
-      console.log('FETCHING ADVISOR: ', advisorData);
-    //this.activatedRoute.data.subscribe((advisorData: any) => {
-      //console.log('FETCHING ADVISOR: ', advisorData);
+    if(!this.hasSetAdvisor) {
+      // temporary - comment out when done testing
+      this.apiService.getAllAdvisors().subscribe((advisorData: Advisor[]) => {
+        console.log('FETCHING ADVISOR: ', advisorData);
+      // uncomment when done testing
+      //this.activatedRoute.data.subscribe((advisorData: any) => {
+        //console.log('FETCHING ADVISOR: ', advisorData);
 
-      // GET student queue
-      this.apiService.getAllStudentQueues().subscribe((studentData: any[]) => {
-        console.log("FETCHING STUDENT QUEUES: ", studentData);
-        this.oldStudentQueue = this.advisor.studentQueue;
-        this.advisor = advisorData[2]; // for testing only - when uncommenting code above, remove this
-        //this.advisor = advisorData.advisor; // uncomment when done testing/demoing
+        // temporary - comment out when done testing
+        this.refreshStudentQueue(advisorData[2]);
+        // uncomment when done testing
+        //this.refreshStudentQueue(advisorData.advisor);
+
+        this.refreshWalkInData();
+
+        this.playSound = true; // allows the notification sound to play if the user doesn't make changes themselves
+      });
+    }
+    else {
+      this.refreshStudentQueue(this.advisor);
+    }
+  }
+
+  // refreshes the student queue
+  refreshStudentQueue(chosenAdvisor: Advisor) {
+    // GET student queue
+    this.apiService.getAllStudentQueues().subscribe((studentData: any[]) => {
+      console.log("FETCHING STUDENT QUEUES: ", studentData);
+      this.oldStudentQueue = this.advisor.studentQueue;
+
+      if(!this.hasSetAdvisor) {
+        this.advisor = chosenAdvisor; // for testing only - when uncommenting code above, remove this
+        this.hasSetAdvisor = true; // so the advisor never has to be set again
+      }
+
+      // only refreshes the student queue info if it has actually changed on the server
+      if(JSON.stringify(studentData[this.advisor.id]) != JSON.stringify(this.oldStudentQueue)) {
+        console.log("Student queue data changed on server - refreshing student queue info on interface.");
 
         this.advisor.studentQueue = studentData[this.advisor.id];
-        
-        // if a change in the student queue is detected, the notification sound plays
-        if(this.advisor.studentQueue != this.oldStudentQueue && this.playSound) {
-          let alertSound = new Audio("mixkit-software-interface-start-2574.wav");
-          alertSound.volume = 0.2;
-          alertSound.play();
-        }
 
+        // if there is no currently selected student, selects the first student in the queue (if possible)
         if(this.selectedStudent.id && this.selectedStudent.id == -1 && this.advisor.studentQueue && this.advisor.studentQueue[0]) {
           this.selectedStudent = this.advisor.studentQueue[0];
         }
 
-        // set current walk-in hours as oldWalkInHours for comparison later
-        this.oldWalkInData = [
-          {
-            startTime: this.walkInHoursForm.get('mondayStart')?.value,
-            endTime: this.walkInHoursForm.get('mondayEnd')?.value,
-            weekday: 'MON'
-          },
-          {
-            startTime: this.walkInHoursForm.get('tuesdayStart')?.value,
-            endTime: this.walkInHoursForm.get('tuesdayEnd')?.value,
-            weekday: 'TUE'
-          },
-          {
-            startTime: this.walkInHoursForm.get('wednesdayStart')?.value,
-            endTime: this.walkInHoursForm.get('wednesdayEnd')?.value,
-            weekday: 'WED'
-          },
-          {
-            startTime: this.walkInHoursForm.get('thursdayStart')?.value,
-            endTime: this.walkInHoursForm.get('thursdayEnd')?.value,
-            weekday: 'THU'
-          },
-          {
-            startTime: this.walkInHoursForm.get('fridayStart')?.value,
-            endTime: this.walkInHoursForm.get('fridayEnd')?.value,
-            weekday: 'FRI'
-          }
-        ];
+        // if a change in the student queue from the server is detected, the notification sound plays
+        if(this.playSound) {
+          console.log("Playing notification sound.");
+          let alertSound = new Audio("../../../assets/audio/mixkit-software-interface-start-2574.wav");
+          alertSound.volume = 0.2;
+          alertSound.play();
+        }
+      }
+      else {
+        console.log("No refresh of student queue data needed.");
+      }
 
-        // GET walk-in hours data
-        this.apiService.getAdvisorWalkInHours(this.advisor.id).subscribe((data: any[]) => {
-          console.log("FETCHING WALK-IN DATA: ", data);
-          if(data) {
-            this.walkInDataExists = true;
-          }
-          else {
-            this.walkInDataExists = false;
-          }
-
-          /*for(let [i, day] of data.entries()) {
-            if(day != this.oldWalkInData[i]) {
-              switch(day.weekday) {
-                case 'MON':
-                  mondayInfo[0] = this.checkTimeLength(day.startTime);
-                  mondayInfo[1] = this.checkTimeLength(day.endTime);
-                  break;
-                case 'TUE':
-                  tuesdayInfo[0] = this.checkTimeLength(day.startTime);
-                  tuesdayInfo[1] = this.checkTimeLength(day.endTime);
-                  break;
-                case 'WED':
-                  wednesdayInfo[0] = this.checkTimeLength(day.startTime);
-                  wednesdayInfo[1] = this.checkTimeLength(day.endTime);
-                  break;
-                case 'THU':
-                  thursdayInfo[0] = this.checkTimeLength(day.startTime);
-                  thursdayInfo[1] = this.checkTimeLength(day.endTime);
-                  break;
-                case 'FRI':
-                  fridayInfo[0] = this.checkTimeLength(day.startTime);
-                  fridayInfo[1] = this.checkTimeLength(day.endTime);
-                  break;
-              }
-            }
-          }*/
-
-          // only refreshes the walk-in hours data if it actually needs to be refreshed (prevents most unnecessary interrupting of user when editing hours)
-          if(data != this.oldWalkInData) {
-            let mondayInfo = ["", ""];
-            let tuesdayInfo = ["", ""];
-            let wednesdayInfo = ["", ""];
-            let thursdayInfo = ["", ""];
-            let fridayInfo = ["", ""];
-
-            for(let day of data) {
-              switch(day.weekday) {
-                case 'MON':
-                  mondayInfo[0] = this.checkTimeLength(day.startTime);
-                  mondayInfo[1] = this.checkTimeLength(day.endTime);
-                  break;
-                case 'TUE':
-                  tuesdayInfo[0] = this.checkTimeLength(day.startTime);
-                  tuesdayInfo[1] = this.checkTimeLength(day.endTime);
-                  break;
-                case 'WED':
-                  wednesdayInfo[0] = this.checkTimeLength(day.startTime);
-                  wednesdayInfo[1] = this.checkTimeLength(day.endTime);
-                  break;
-                case 'THU':
-                  thursdayInfo[0] = this.checkTimeLength(day.startTime);
-                  thursdayInfo[1] = this.checkTimeLength(day.endTime);
-                  break;
-                case 'FRI':
-                  fridayInfo[0] = this.checkTimeLength(day.startTime);
-                  fridayInfo[1] = this.checkTimeLength(day.endTime);
-                  break;
-              }
-            }
-
-            this.walkInHoursForm = this.formBuilder.group({
-              mondayStart: mondayInfo[0],
-              mondayEnd: mondayInfo[1],
-              tuesdayStart: tuesdayInfo[0],
-              tuesdayEnd: tuesdayInfo[1],
-              wednesdayStart: wednesdayInfo[0],
-              wednesdayEnd: wednesdayInfo[1],
-              thursdayStart: thursdayInfo[0],
-              thursdayEnd: thursdayInfo[1],
-              fridayStart: fridayInfo[0],
-              fridayEnd: fridayInfo[1]
-            });
-          }
-        });
-      });
-
-      this.playSound = true; // allows the notification sound to play if the user doesn't make changes themselves
+      /*if(this.selectedStudent.id && this.selectedStudent.id == -1 && this.advisor.studentQueue && this.advisor.studentQueue[0]) {
+        this.selectedStudent = this.advisor.studentQueue[0];
+      }*/
     });
   }
 
-  /*refreshStudentQueue() {
-    // GET student queue
-    this.apiService.getAllStudentQueues().subscribe((studentData: any[]) => {
-      console.log("FETCHING STUDENT QUEUES: ", studentData);
-      
-      this.advisor.studentQueue = studentData[this.advisor.id];
+  // refreshes the walk-in hours data
+  refreshWalkInData() {
+    // GET walk-in hours data
+    this.apiService.getAdvisorWalkInHours(this.advisor.id).subscribe((walkInData: any[]) => {
+      console.log("FETCHING WALK-IN DATA: ", walkInData);
+      /*if(walkInData) {
+        this.walkInDataExists = true;
+      }
+      else {
+        this.walkInDataExists = false;
+      }*/
 
-      if(this.selectedStudent.id && this.selectedStudent.id == -1 && this.advisor.studentQueue && this.advisor.studentQueue[0]) {
-        this.selectedStudent = this.advisor.studentQueue[0];
+      // set current walk-in hours as oldWalkInHours for comparison later
+      this.oldWalkInData = [
+        {
+          startTime: this.walkInHoursForm.get('mondayStart')?.value,
+          endTime: this.walkInHoursForm.get('mondayEnd')?.value,
+          weekday: 'MON'
+        },
+        {
+          startTime: this.walkInHoursForm.get('tuesdayStart')?.value,
+          endTime: this.walkInHoursForm.get('tuesdayEnd')?.value,
+          weekday: 'TUE'
+        },
+        {
+          startTime: this.walkInHoursForm.get('wednesdayStart')?.value,
+          endTime: this.walkInHoursForm.get('wednesdayEnd')?.value,
+          weekday: 'WED'
+        },
+        {
+          startTime: this.walkInHoursForm.get('thursdayStart')?.value,
+          endTime: this.walkInHoursForm.get('thursdayEnd')?.value,
+          weekday: 'THU'
+        },
+        {
+          startTime: this.walkInHoursForm.get('fridayStart')?.value,
+          endTime: this.walkInHoursForm.get('fridayEnd')?.value,
+          weekday: 'FRI'
+        }
+      ];
+      
+      let mondayInfo = ["", ""];
+      let tuesdayInfo = ["", ""];
+      let wednesdayInfo = ["", ""];
+      let thursdayInfo = ["", ""];
+      let fridayInfo = ["", ""];
+
+      for(let day of walkInData) {
+        switch(day.weekday) {
+          case 'MON':
+            mondayInfo[0] = this.checkTimeLength(day.startTime);
+            mondayInfo[1] = this.checkTimeLength(day.endTime);
+            break;
+          case 'TUE':
+            tuesdayInfo[0] = this.checkTimeLength(day.startTime);
+            tuesdayInfo[1] = this.checkTimeLength(day.endTime);
+            break;
+          case 'WED':
+            wednesdayInfo[0] = this.checkTimeLength(day.startTime);
+            wednesdayInfo[1] = this.checkTimeLength(day.endTime);
+            break;
+          case 'THU':
+            thursdayInfo[0] = this.checkTimeLength(day.startTime);
+            thursdayInfo[1] = this.checkTimeLength(day.endTime);
+            break;
+          case 'FRI':
+            fridayInfo[0] = this.checkTimeLength(day.startTime);
+            fridayInfo[1] = this.checkTimeLength(day.endTime);
+            break;
+        }
+      }
+
+      // needed for comparing old/new walk-in hours data (the data directly from the server contains ids which we do not use)
+      let noIDWalkInData = [
+        {
+          "startTime": mondayInfo[0],
+          "endTime": mondayInfo[1],
+          "weekday": "MON"
+        },
+        {
+          "startTime": tuesdayInfo[0],
+          "endTime": tuesdayInfo[1],
+          "weekday": "TUE"
+        },
+        {
+          "startTime": wednesdayInfo[0],
+          "endTime": wednesdayInfo[1],
+          "weekday": "WED"
+        },
+        {
+          "startTime": thursdayInfo[0],
+          "endTime": thursdayInfo[1],
+          "weekday": "THU"
+        },
+        {
+          "startTime": fridayInfo[0],
+          "endTime": fridayInfo[1],
+          "weekday": "FRI"
+        }
+      ];
+
+      // only refreshes the walk-in hours info if it has actually changed on the server
+      if(JSON.stringify(noIDWalkInData) != JSON.stringify(this.oldWalkInData)) {
+        console.log("Walk-in hours data changed on server - refreshing walk-in hours info on interface.");
+
+        this.walkInHoursForm = this.formBuilder.group({
+          mondayStart: mondayInfo[0],
+          mondayEnd: mondayInfo[1],
+          tuesdayStart: tuesdayInfo[0],
+          tuesdayEnd: tuesdayInfo[1],
+          wednesdayStart: wednesdayInfo[0],
+          wednesdayEnd: wednesdayInfo[1],
+          thursdayStart: thursdayInfo[0],
+          thursdayEnd: thursdayInfo[1],
+          fridayStart: fridayInfo[0],
+          fridayEnd: fridayInfo[1]
+        });
+      }
+      else {
+        console.log("No refresh of walk-in hours data needed.");
       }
     });
-  }*/
+  }
 
   // signs out of the interface (will be routed back to the interface picker)
   logout() {
@@ -575,12 +606,14 @@ export class AdvisorInterfaceComponent implements OnInit {
       if(this.advisor.studentQueue[i + 1]) {
         // animate moving that student down
         let studentItem = (document.getElementsByClassName("student-item")[i] as HTMLDivElement);
+        console.log("--- studentItem: ", studentItem);
         studentItem.style.animation = "swap-student-down";
         studentItem.style.animationDuration = "0.3s";
         studentItem.style.animationFillMode = "forwards";
 
         // animate moving this student up
         let belowStudentItem = (document.getElementsByClassName("student-item")[i + 1] as HTMLDivElement);
+        console.log("--- belowStudentItem: ", belowStudentItem);
         belowStudentItem.style.animation = "swap-student-up";
         belowStudentItem.style.animationDuration = "0.3s";
         belowStudentItem.style.animationFillMode = "forwards";

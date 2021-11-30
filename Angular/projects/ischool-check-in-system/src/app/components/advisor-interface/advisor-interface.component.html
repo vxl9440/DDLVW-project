@@ -26,12 +26,13 @@
       <div *ngIf="selectedStudent.username">{{selectedStudent.username}}@rit.edu</div>
       <br>
       <div *ngIf="selectedStudent.timeIn">Checked in at {{getDateTimeInfo(selectedStudent.timeIn)}}</div>
-      <br>
       <div class="appointment-info" *ngIf="selectedStudent.appointment && selectedStudent.appointment.startTime && selectedStudent.appointment.endTime">
+        <hr>
         <h2>Appointment</h2>
         <div>{{getDateTimeInfo(selectedStudent.appointment.startTime)}} - {{getDateTimeInfo(selectedStudent.appointment.endTime)}}</div>
       </div>
       <div class="reason-info">
+        <hr>
         <h2 *ngIf="selectedStudent.reasons && selectedStudent.reasons.length == 1">Reason</h2><h2 *ngIf="selectedStudent.reasons && selectedStudent.reasons.length > 1 || selectedStudent.reasons && selectedStudent.reasons.length == 0">Reasons</h2>
         <ul>
           <li *ngFor="let reason of selectedStudent.reasons">{{reason}}</li>

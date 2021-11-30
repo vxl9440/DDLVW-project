@@ -44,6 +44,17 @@ input[type="submit"]:hover {
     cursor: pointer;
 }
 
+hr {
+    width: 100%;
+    //height: 4px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    background-color: $rit-orange;
+    //border: none;
+    border: 2px solid $rit-orange;
+    border-radius: 2px;
+}
+
 /* -------------------- TOP BAR STUFF -------------------- */
 // the top bar containing the page title and any buttons
 .top-bar {
@@ -263,19 +274,19 @@ input[type="submit"]:hover {
 
 // animations for swapping students in the queue
 @keyframes swap-student-up {
-    from {
+    0% {
         transform: translateY(0);
     }
-    to {
+    100% {
         transform: translateY(-60px);
     }
 }
 
 @keyframes swap-student-down {
-    from {
+    0% {
         transform: translateY(0);
     }
-    to {
+    100% {
         transform: translateY(60px);
     }
 }
@@ -306,6 +317,7 @@ input[type="submit"]:hover {
     background-color: $gray-light-4;
 }
 
+// styling for the 'Start Meeting' button at the bottom of the screen
 .meeting-button {
     align-self: center;
     display: flex;
