@@ -84,6 +84,9 @@ export class AdvisorInterfaceComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute, private authService: AuthService, private apiService: ApiService, private formBuilder: FormBuilder) {}
 
   ngOnInit() {
+    // uncomment this for production
+    // this.advisor = this.activatedRoute.snapshot.data.advisor;
+
     this.advisor = {
       id: 0,
       firstName: '',

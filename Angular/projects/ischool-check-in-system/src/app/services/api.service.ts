@@ -52,8 +52,8 @@ export class ApiService {
     return this.httpClient.get<Advisor>(`${ environment.apiUrl }/meetingHost/${id}`);
   }
 
-  public getAdvisorByUsername(username: string) {
-    return this.httpClient.get<Advisor>(`${ environment.apiUrl }/meetingHost?user=${ username }`);
+  public getAdvisorByEmail(email: string) {
+    return this.httpClient.get<Advisor>(`${ environment.apiUrl }/meetingHost?email=${ email }`);
   }
 
   public createAdvisor(advisor: any) {

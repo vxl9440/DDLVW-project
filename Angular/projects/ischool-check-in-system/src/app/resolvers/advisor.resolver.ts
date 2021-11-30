@@ -17,7 +17,7 @@ export class AdvisorResolver implements Resolve<Advisor> {
   constructor(private apiService: ApiService, private authService: AuthService) {}
 
   resolve(): Observable<Advisor> {
-    const username = this.authService.user?.email ?? "";
-    return this.apiService.getAdvisorByUsername(username);
+    const email = this.authService.user?.email ?? "";
+    return this.apiService.getAdvisorByEmail(email);
   }
 }
