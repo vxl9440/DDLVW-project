@@ -29,7 +29,7 @@ const routes: Routes = [
     component: AdvisorInterfaceComponent,
     canActivate: [AuthGuard],
     data: { roles: [UserRole.Advisor, UserRole.Admin] },
-    // resolve: { advisor: AdvisorResolver }
+    resolve: { advisor: AdvisorResolver }
   },
   { 
     path: 'login', 
