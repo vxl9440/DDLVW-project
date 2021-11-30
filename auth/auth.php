@@ -4,17 +4,22 @@ require 'jwtGenerator.php';
 
 $jwt = new JwtGenerator();
 
-// This file should be protected by Shibboleth
+// Add functionality to change role based on the authenticated user
+// Role can be "admin", "advisor", or "manager" they are used in the Angular app
+$role = "admin";
+
 $payload = [
-    "fname" => "{$_SERVER['givenName']}",
-    "lname" => "{$_SERVER['sn']}",
+    "firstname" => "{$_SERVER['givenName']}",
+    "lastname" => "{$_SERVER['sn']}",
     "email" => "{$_SERVER['mail']}",
+    "role" => "{$role}"
 ];
 
 $token = $jwt->jwt_encode_data($payload);
 
-// redirect back to angular app with token in param
-header("Location: http://localhost:4200/?token=$token");
+
+header("Location: http://localhost:4200/login?token=$token");
+
 
 exit();
 ?>

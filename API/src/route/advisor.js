@@ -57,9 +57,9 @@ router.delete('/:id/queue/:username', async (req, res) => {
 
 //select all advisors
 router.get('/', (req, res) => {
-    const user = req.query.user;
-    if (user) {
-        advisor.getAdvisorByEmail(user)
+    const email = req.query.email;
+    if (email) {
+        advisor.getAdvisorByEmail(email)
             .then(advisor => res.json(advisor[0]))
             .catch(err => res.json(err));
     } else {
