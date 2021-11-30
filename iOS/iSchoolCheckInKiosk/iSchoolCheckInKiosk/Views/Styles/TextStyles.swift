@@ -7,6 +7,9 @@
 
 import SwiftUI
 
+// I started making these Text style wrapper views, but they aren't used everywhere. I didn't have enough
+// time to full decide if I liked this approach or not.
+
 struct Title: View {
 	
 	let text: String

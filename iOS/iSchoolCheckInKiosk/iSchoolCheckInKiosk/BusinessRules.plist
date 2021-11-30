@@ -4,5 +4,7 @@
 <dict>
 	<key>maxReasons</key>
 	<integer>2</integer>
+	<key>api</key>
+	<string>http://&lt;server ip or domain&gt;/api/kiosk</string>
 </dict>
 </plist>

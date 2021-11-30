@@ -10,9 +10,9 @@ import Foundation
 final class NetworkManager {
 	
 	static let errorManager = ErrorManager.shared
-	private static let api = "http://45.79.164.175/api/kiosk"
+	private static let api  = API.address
 
-	
+	// Performs the request with a URL and optional errorIfFail flag
 	private static func makeRequest(_ url: URL, errorIfFail: Bool = true) async -> (Data, URLResponse)? {
 		do {
 			return try await URLSession.shared.data(from: url)
@@ -27,6 +27,8 @@ final class NetworkManager {
 		}
 	}
 	
+	
+	// Performs the request using a provided URLRequest
 	private static func makeRequest(_ request: URLRequest) async -> (Data, URLResponse)? {
 		do {
 			return try await URLSession.shared.data(for: request)
@@ -44,6 +46,7 @@ final class NetworkManager {
 	}
 	
 	
+	// Attempts to retrieve Advisors from the system that have current walk in hours and are enabled
 	static func fetchAvailableAdivsors(errorIfFail: Bool = true) async -> [Advisor] {
 		
 		guard let url = URL(string: "\(api)/meetingHost/available") else { return [] }
@@ -59,6 +62,7 @@ final class NetworkManager {
 	}
 	
 	
+	// Fetches a student from the system given their UID
 	static func fetchStudent(id: String) async -> Student? {
 		guard let url = URL(string: "\(api)/student/\(id)") else { return nil }
 		
@@ -73,6 +77,7 @@ final class NetworkManager {
 	}
 	
 	
+	// Attempts to fetch reasons from the system
 	static func fetchReasons() async -> [Reason] {
 		guard let url = URL(string: "\(api)/reason") else { return [] }
 		
@@ -87,6 +92,7 @@ final class NetworkManager {
 	}
 	
 	
+	// Attempts to check in the student with a given Registration
 	static func checkIn(with registration: Registration) async -> Bool {
 		guard let url = URL(string: "\(api)/registration/checkin") else { return false }
 		

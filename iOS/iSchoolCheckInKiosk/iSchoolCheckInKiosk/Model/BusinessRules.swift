@@ -10,6 +10,7 @@ import Foundation
 final class BusinessRules {
 	
 	let maxReasons: Int
+	let api: String
 	
 	static let shared = BusinessRules()
 	
@@ -29,6 +30,11 @@ final class BusinessRules {
 			fatalError("\(filename).plist is missing entry 'maxReasons' with associated number value.")
 		}
 		
+		guard let api = rules["api"] as? String else {
+			fatalError("\(filename).plist is missing entry 'api' with associated URL to the api.")
+		}
+		
+		self.api = api
 		self.maxReasons = maxReasons
 	}
 }
@@ -46,4 +52,8 @@ extension String {
 
 enum Rules {
 	static let maxReasons = BusinessRules.shared.maxReasons
+}
+
+enum API {
+	static let address = BusinessRules.shared.api
 }

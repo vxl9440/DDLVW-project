@@ -13,7 +13,6 @@ struct InitialScreen: View {
 
 	@EnvironmentObject private var sessionManager: SessionManager
 	@FocusState private var isFocused: Bool
-	@State private var isLoading = false // TODO: Implement loading indicator
 	@State private var advisors: [Advisor] = []
 
 	let focusCheck = Timer.publish(every: 5, tolerance: 5, on: .main, in: .common).autoconnect()
@@ -75,7 +74,7 @@ struct InitialScreen: View {
 	
 	
 	private func updateAdvisorList() async {
-		advisors = await NetworkManager.fetchAvailableAdivsors(errorIfFail: false)
+		advisors = await sessionManager.currentSession.getAvailableAdvisors(errorIfFail: false)
 	}
 }
 
