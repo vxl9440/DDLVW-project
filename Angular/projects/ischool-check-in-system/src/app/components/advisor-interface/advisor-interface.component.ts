@@ -26,8 +26,9 @@ export class AdvisorInterfaceComponent implements OnInit {
   meetingDuration: string = "00:00"; // the duration of the current meeting
   timer: any; // the meeting timer
 
-  advisorWalkInHours: any; // the advisor's walk-in hours data
+  playSound: boolean = true;
 
+  advisorWalkInHours: any; // the advisor's walk-in hours data
   walkInDataExists: boolean = false;
 
   // the walk-in hours form
@@ -118,7 +119,7 @@ export class AdvisorInterfaceComponent implements OnInit {
     this.connect();
   }
 
-  // runs the loop that gets all required data intermittently (maybe remove later?)
+  // runs the loop that gets all required data intermittently
   connect() {
     this.refreshData();
 
@@ -146,7 +147,7 @@ export class AdvisorInterfaceComponent implements OnInit {
         this.advisor.studentQueue = studentData[this.advisor.id];
         
         // if a change in the student queue is detected, the notification sound plays
-        if(this.advisor.studentQueue != this.oldStudentQueue) {
+        if(this.advisor.studentQueue != this.oldStudentQueue && this.playSound) {
           let alertSound = new Audio("mixkit-software-interface-start-2574.wav");
           alertSound.volume = 0.2;
           alertSound.play();
@@ -270,6 +271,8 @@ export class AdvisorInterfaceComponent implements OnInit {
           }
         });
       });
+
+      this.playSound = true; // allows the notification sound to play if the user doesn't make changes themselves
     });
   }
 
@@ -546,6 +549,7 @@ export class AdvisorInterfaceComponent implements OnInit {
 
           this.apiService.moveStudentInQueue(this.advisor.id, studentMoveInfo).subscribe(() => {
             console.log("Student successfully moved up in queue.");
+            this.playSound = false; // makes sure the notification sound isn't played
             // refresh data to reflect change in database
             this.refreshData();
             //this.refreshStudentQueue();
@@ -604,6 +608,7 @@ export class AdvisorInterfaceComponent implements OnInit {
 
           this.apiService.moveStudentInQueue(this.advisor.id, studentMoveInfo).subscribe(() => {
             console.log("Student successfully moved down in queue.");
+            this.playSound = false; // makes sure the notification sound isn't played
             // refresh data to reflect change in database
             this.refreshData();
             //this.refreshStudentQueue();
@@ -648,6 +653,7 @@ export class AdvisorInterfaceComponent implements OnInit {
       this.apiService.deleteStudentFromQueue(this.advisor.id, studentToDelete).subscribe(() => {
         console.log("Student successfully deleted from queue.");
         this.deletePopup();
+        this.playSound = false; // makes sure the notification sound isn't played
         this.refreshData();
 
         if(!this.advisor.studentQueue || !this.advisor.studentQueue[0]) {
